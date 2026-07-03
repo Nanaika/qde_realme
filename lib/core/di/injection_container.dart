@@ -15,8 +15,12 @@ import 'package:qde_realme/features/auth/data/datasources/auth_remote_datasource
 import 'package:qde_realme/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:qde_realme/features/auth/domain/repositories/auth_repository.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:qde_realme/features/home/bloc/confirm_account_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/home/bloc/confirm_account_remote_datasource.dart';
+import '../../features/home/bloc/confirm_account_repository.dart';
+import '../../features/home/bloc/confirm_account_repository_impl.dart';
 import '../services/remote_config_service.dart';
 
 final getIt = GetIt.instance;
@@ -56,12 +60,20 @@ Future<void> initDependencies() async {
     );
   }
   getIt.registerSingleton(RemoteConfigService());
+
   // Auth Feature
   getIt.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl());
-
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
+  //Confirm account
+
+  getIt.registerLazySingleton<ConfirmAccountRemoteDataSource>(() => ConfirmAccountRemoteDataSourceImpl());
+  getIt.registerLazySingleton<ConfirmAccountRepository>(
+    () => ConfirmAccountRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
   getIt.registerLazySingleton(() => AuthBloc(repository: getIt()));
+  getIt.registerLazySingleton(() => ConfirmAccountBloc(repository: getIt()));
 }

@@ -8,6 +8,7 @@ import 'package:qde_realme/core/notifications/notification_service.dart';
 import 'package:qde_realme/core/router/app_router.dart';
 import 'package:qde_realme/core/services/theme_service.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:qde_realme/features/home/bloc/confirm_account_bloc.dart';
 import 'package:qde_realme/generated/locale_keys.g.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -43,7 +44,10 @@ void main() async {
       fallbackLocale: const Locale('en'),
       useOnlyLangCode: true,
       child: MultiBlocProvider(
-        providers: [BlocProvider<AuthBloc>(create: (_) => getIt<AuthBloc>())],
+        providers: [
+          BlocProvider<AuthBloc>(create: (_) => getIt<AuthBloc>()),
+          BlocProvider<ConfirmAccountBloc>(create: (_) => getIt<ConfirmAccountBloc>()),
+        ],
         child: const MyApp(),
       ),
     ),

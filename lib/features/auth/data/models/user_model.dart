@@ -34,5 +34,19 @@ class UserModel extends UserEntity {
       isModerated: isModerated,
     );
   }
+
+  UserModel copyWith({
+    String? id,
+    String? email,
+    String? number,
+    bool? isModerated,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      number: number ?? this.number,
+      isModerated: isModerated ?? this.isModerated,
+    );
+  }
 }
 
