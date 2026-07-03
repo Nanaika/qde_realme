@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "219323219125",
+    "project_id": "qde-realme",
+    "storage_bucket": "qde-realme.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219323219125:android:e776e4695f6d6fbfb752fc",
+        "android_client_info": {
+          "package_name": "com.qde.qde_realme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219323219125-gsg67i9mm2h1k97d0sopcg5kcka7amea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qde.qde_realme",
+            "certificate_hash": "3bf2421f7915b8200614840bc08893ac39afcf60"
+          }
+        },
+        {
+          "client_id": "219323219125-se6ck2fbkfcopug10oc2568hb722g126.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuZESpEQ1NyjYFsci0U0NGL1jIi59wu_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219323219125-se6ck2fbkfcopug10oc2568hb722g126.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

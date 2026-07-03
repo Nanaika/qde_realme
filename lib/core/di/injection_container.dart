@@ -1,0 +1,67 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get_it/get_it.dart';
+import 'package:qde_realme/core/network/api_client.dart';
+import 'package:qde_realme/core/network/network_info.dart';
+import 'package:qde_realme/core/notifications/notification_handler.dart';
+import 'package:qde_realme/core/notifications/notification_service.dart';
+import 'package:qde_realme/core/services/analytics_service.dart';
+import 'package:qde_realme/core/services/storage_service.dart';
+import 'package:qde_realme/core/services/theme_service.dart';
+import 'package:qde_realme/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:qde_realme/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:qde_realme/features/auth/domain/repositories/auth_repository.dart';
+import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../services/remote_config_service.dart';
+
+final getIt = GetIt.instance;
+
+Future<void> initDependencies() async {
+  bool firebaseInitialized = false;
+  try {
+    await Firebase.initializeApp();
+    getIt.registerLazySingleton<FirebaseMessaging>(() => FirebaseMessaging.instance);
+    firebaseInitialized = true;
+  } catch (e) {}
+  getIt.registerLazySingleton<FlutterLocalNotificationsPlugin>(() => FlutterLocalNotificationsPlugin());
+
+  // Network
+  getIt.registerLazySingleton<Dio>(() => Dio());
+  getIt.registerLazySingleton<ApiClient>(() => ApiClient(getIt()));
+  getIt.registerLazySingleton<Connectivity>(() => Connectivity());
+  getIt.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(getIt()));
+
+  // Storage
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+
+  // Services
+  getIt.registerLazySingleton<StorageService>(() => StorageServiceImpl(getIt()));
+  getIt.registerLazySingleton<AnalyticsService>(() => AnalyticsServiceImpl());
+  getIt.registerLazySingleton<ThemeService>(() => ThemeServiceImpl(getIt()));
+
+  if (firebaseInitialized) {
+    getIt.registerLazySingleton<NotificationHandler>(() => NotificationHandler(getIt()));
+    getIt.registerLazySingleton<NotificationService>(
+      () => NotificationService(
+        localNotifications: getIt(),
+        firebaseMessaging: getIt<FirebaseMessaging>(),
+        handler: getIt(),
+      ),
+    );
+  }
+  getIt.registerSingleton(RemoteConfigService());
+  // Auth Feature
+  getIt.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl());
+
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
+  getIt.registerLazySingleton(() => AuthBloc(repository: getIt()));
+}
