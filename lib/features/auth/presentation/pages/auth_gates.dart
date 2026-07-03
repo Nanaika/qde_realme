@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/pages/login_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/home_gates.dart';
-import 'package:qde_realme/features/home/presentation/pages/home_page_slave.dart';
 
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_state.dart';

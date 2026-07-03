@@ -47,7 +47,7 @@ class ThemeBorderStyles {
             context,
             ThemeColors.inputBorder,
             ThemeColors.inputBorderDark,
-          ).withOpacity(0.5),
+          ).withValues(alpha: 0.5),
           width: 1.0,
         ),
       );
