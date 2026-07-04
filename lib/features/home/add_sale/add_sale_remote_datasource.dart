@@ -11,12 +11,22 @@ class AddSaleRemoteDataSourceImpl implements AddSaleRemoteDataSource {
 
   @override
   Future<void> add(SaleModel sale) async {
+    final batch = db.batch();
+
     final refModerate = db.collection(AppConstants.moderateSales).doc();
 
     final updatedSale = sale.copyWith(id: refModerate.id);
-    final ref = db.collection(AppConstants.users).doc(sale.ownerId).collection(AppConstants.ownerSales).doc(updatedSale.id);
 
-    await refModerate.set({...updatedSale.toJson(), 'dateAdded': FieldValue.serverTimestamp()});
-    await ref.set({...updatedSale.toJson(), 'dateAdded': FieldValue.serverTimestamp()});
+    final ref = db
+        .collection(AppConstants.users)
+        .doc(sale.ownerId)
+        .collection(AppConstants.ownerSales)
+        .doc(updatedSale.id);
+
+    batch.set(refModerate, {...updatedSale.toJson(), 'dateAdded': FieldValue.serverTimestamp()});
+
+    batch.set(ref, {...updatedSale.toJson(), 'dateAdded': FieldValue.serverTimestamp()});
+
+    await batch.commit();
   }
 }

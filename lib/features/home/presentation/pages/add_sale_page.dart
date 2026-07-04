@@ -7,6 +7,7 @@ import 'package:qde_realme/features/home/add_sale/add_sale_bloc.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_event.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_state.dart';
 import 'package:qde_realme/features/home/add_sale/sale_model.dart';
+import 'package:qde_realme/features/home/presentation/pages/imei_scanner_screen.dart';
 
 class AddSalePage extends StatefulWidget {
   const AddSalePage({super.key});
@@ -45,6 +46,9 @@ class _AddSalePageState extends State<AddSalePage> {
                   },
                   child: Text('send'),
                 ),
+                ElevatedButton(onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const ImeiScannerScreen(); }));
+                }, child: Text('test'))
               ],
             ),
           ),

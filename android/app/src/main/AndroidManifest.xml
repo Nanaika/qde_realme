@@ -6,6 +6,8 @@
     <!-- Разрешения для уведомлений (опционально) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
     
     <application
         android:label="Flutter Template"

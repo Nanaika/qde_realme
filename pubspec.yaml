@@ -48,6 +48,11 @@ dependencies:
   firebase_auth: ^6.0.2
   google_sign_in: ^7.1.1
 
+
+  camera: ^0.11.0 # или актуальная версия
+  google_mlkit_text_recognition: ^0.14.0 # или актуальная версия
+  permission_handler: ^11.3.1
+
   firebase_remote_config: ^6.1.0
 
   # Refresh Control
