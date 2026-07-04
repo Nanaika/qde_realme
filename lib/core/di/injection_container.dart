@@ -16,6 +16,7 @@ import 'package:qde_realme/features/auth/data/repositories/auth_repository_impl.
 import 'package:qde_realme/features/auth/domain/repositories/auth_repository.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_bloc.dart';
+import 'package:qde_realme/features/home/slave_data/slave_data_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/home/add_sale/add_sale_remote_datasource.dart';
@@ -25,6 +26,9 @@ import '../../features/home/confirm_account/confirm_account_bloc.dart';
 import '../../features/home/confirm_account/confirm_account_remote_datasource.dart';
 import '../../features/home/confirm_account/confirm_account_repository.dart';
 import '../../features/home/confirm_account/confirm_account_repository_impl.dart';
+import '../../features/home/slave_data/slave_data_remote_datasource.dart';
+import '../../features/home/slave_data/slave_data_repository.dart';
+import '../../features/home/slave_data/slave_data_repository_impl.dart';
 import '../services/remote_config_service.dart';
 
 final getIt = GetIt.instance;
@@ -84,7 +88,14 @@ Future<void> initDependencies() async {
         () => AddSaleRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
+  //slave data
+  getIt.registerLazySingleton<SlaveDataRemoteDataSource>(() => SlaveDataRemoteDataSourceImpl());
+  getIt.registerLazySingleton<SlaveDataRepository>(
+        () => SlaveDataRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
   getIt.registerLazySingleton(() => AuthBloc(repository: getIt()));
   getIt.registerLazySingleton(() => ConfirmAccountBloc(repository: getIt()));
   getIt.registerLazySingleton(() => AddSaleBloc(repository: getIt()));
+  getIt.registerLazySingleton(() => SlaveDataBloc(repository: getIt()));
 }
