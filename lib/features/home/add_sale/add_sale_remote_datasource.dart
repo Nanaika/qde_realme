@@ -1,0 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:qde_realme/core/utils/app_constants.dart';
+import 'package:qde_realme/features/home/add_sale/sale_model.dart';
+
+abstract class AddSaleRemoteDataSource {
+  Future add(SaleModel sale);
+}
+
+class AddSaleRemoteDataSourceImpl implements AddSaleRemoteDataSource {
+  final db = FirebaseFirestore.instance;
+
+  @override
+  Future<void> add(SaleModel sale) async {
+    final refModerate = db.collection(AppConstants.moderateSales).doc();
+
+    final updatedSale = sale.copyWith(id: refModerate.id);
+    final ref = db.collection(AppConstants.users).doc(sale.ownerId).collection(AppConstants.ownerSales).doc(updatedSale.id);
+
+    await refModerate.set({...updatedSale.toJson(), 'dateAdded': FieldValue.serverTimestamp()});
+    await ref.set({...updatedSale.toJson(), 'dateAdded': FieldValue.serverTimestamp()});
+  }
+}

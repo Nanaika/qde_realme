@@ -8,9 +8,11 @@ import 'package:qde_realme/core/notifications/notification_service.dart';
 import 'package:qde_realme/core/router/app_router.dart';
 import 'package:qde_realme/core/services/theme_service.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:qde_realme/features/home/bloc/confirm_account_bloc.dart';
+import 'package:qde_realme/features/home/add_sale/add_sale_bloc.dart';
 import 'package:qde_realme/generated/locale_keys.g.dart';
 import 'package:showcaseview/showcaseview.dart';
+
+import 'features/home/confirm_account/confirm_account_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,6 +49,7 @@ void main() async {
         providers: [
           BlocProvider<AuthBloc>(create: (_) => getIt<AuthBloc>()),
           BlocProvider<ConfirmAccountBloc>(create: (_) => getIt<ConfirmAccountBloc>()),
+          BlocProvider<AddSaleBloc>(create: (_) => getIt<AddSaleBloc>()),
         ],
         child: const MyApp(),
       ),

@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:qde_realme/features/auth/presentation/pages/auth_gates.dart';
 import 'package:qde_realme/features/auth/presentation/pages/login_page.dart';
+import 'package:qde_realme/features/home/presentation/pages/add_sale_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/confirm_account_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/home_page_slave.dart';
 
@@ -36,6 +37,11 @@ class AppRouter {
         path: '/confirm_account',
         name: 'confirm_account',
         builder: (context, state) => const ConfirmAccountPage(),
+      ),
+      GoRoute(
+        path: '/add_sale',
+        name: 'add_sale',
+        builder: (context, state) => const AddSalePage(),
       ),
 
     ],

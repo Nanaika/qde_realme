@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
-import 'package:qde_realme/features/home/bloc/confirm_account_bloc.dart';
-import 'package:qde_realme/features/home/bloc/confirm_account_event.dart';
-import 'package:qde_realme/features/home/bloc/confirm_account_state.dart';
+
+import '../../confirm_account/confirm_account_bloc.dart';
+import '../../confirm_account/confirm_account_event.dart';
+import '../../confirm_account/confirm_account_state.dart';
 
 class ConfirmAccountPage extends StatefulWidget {
   const ConfirmAccountPage({super.key});

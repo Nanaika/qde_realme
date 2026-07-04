@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qde_realme/features/home/bloc/confirm_account_event.dart';
-import 'package:qde_realme/features/home/bloc/confirm_account_repository.dart';
-import 'package:qde_realme/features/home/bloc/confirm_account_state.dart';
 
 import '../../../core/error/failures.dart';
+import 'confirm_account_event.dart';
+import 'confirm_account_repository.dart';
+import 'confirm_account_state.dart';
 
 class ConfirmAccountBloc extends Bloc<ConfirmAccountEvent, ConfirmAccountState> {
   final ConfirmAccountRepository repository;

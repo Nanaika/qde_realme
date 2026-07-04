@@ -54,6 +54,9 @@ class _HomePageSlaveState extends State<HomePageSlave> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+          context.push('/add_sale');
+      },child: Text('add sale'),),
     );
   }
 
