@@ -31,11 +31,9 @@ class HomePageAdmin extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: ThemeDimensions.spacingS),
-            Text(
-              LocaleKeys.home_description.tr(),
-              style: ThemeTextStyles.bodyLarge(context),
-              textAlign: TextAlign.center,
-            ),
+            ElevatedButton(onPressed: () {
+              context.push('/add_item');
+            }, child: Text('add item screen')),
             SizedBox(height: ThemeDimensions.spacingXL),
             // Модуль аутентификации
             _ModuleCard(

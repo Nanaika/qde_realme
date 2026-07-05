@@ -9,6 +9,7 @@ import 'package:qde_realme/core/network/network_info.dart';
 import 'package:qde_realme/core/notifications/notification_handler.dart';
 import 'package:qde_realme/core/notifications/notification_service.dart';
 import 'package:qde_realme/core/services/analytics_service.dart';
+import 'package:qde_realme/core/services/excel_service.dart';
 import 'package:qde_realme/core/services/storage_service.dart';
 import 'package:qde_realme/core/services/theme_service.dart';
 import 'package:qde_realme/features/auth/data/datasources/auth_remote_datasource.dart';
@@ -19,6 +20,14 @@ import 'package:qde_realme/features/home/add_sale/add_sale_bloc.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../features/home/add_item/add_item_bloc.dart';
+import '../../features/home/add_item/add_item_remote_datasource.dart';
+import '../../features/home/add_item/add_item_repository.dart';
+import '../../features/home/add_item/add_item_repository_impl.dart';
+import '../../features/home/add_items/add_items_bloc.dart';
+import '../../features/home/add_items/add_items_remote_datasource.dart';
+import '../../features/home/add_items/add_items_repository.dart';
+import '../../features/home/add_items/add_items_repository_impl.dart';
 import '../../features/home/add_sale/add_sale_remote_datasource.dart';
 import '../../features/home/add_sale/add_sale_repository.dart';
 import '../../features/home/add_sale/add_sale_repository_impl.dart';
@@ -68,6 +77,7 @@ Future<void> initDependencies() async {
     );
   }
   getIt.registerSingleton(RemoteConfigService());
+  getIt.registerSingleton(ExcelService());
 
   // Auth Feature
   getIt.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl());
@@ -94,8 +104,22 @@ Future<void> initDependencies() async {
         () => SlaveDataRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
+  //add item
+  getIt.registerLazySingleton<AddItemRemoteDataSource>(() => AddItemRemoteDataSourceImpl());
+  getIt.registerLazySingleton<AddItemRepository>(
+        () => AddItemRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
+  //add items
+  getIt.registerLazySingleton<AddItemsRemoteDataSource>(() => AddItemsRemoteDataSourceImpl());
+  getIt.registerLazySingleton<AddItemsRepository>(
+        () => AddItemsRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
   getIt.registerLazySingleton(() => AuthBloc(repository: getIt()));
   getIt.registerLazySingleton(() => ConfirmAccountBloc(repository: getIt()));
   getIt.registerLazySingleton(() => AddSaleBloc(repository: getIt()));
   getIt.registerLazySingleton(() => SlaveDataBloc(repository: getIt()));
+  getIt.registerLazySingleton(() => AddItemBloc(repository: getIt()));
+  getIt.registerLazySingleton(() => AddItemsBloc(repository: getIt(), excelService: getIt()));
 }

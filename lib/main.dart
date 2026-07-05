@@ -13,6 +13,8 @@ import 'package:qde_realme/features/home/slave_data/slave_data_bloc.dart';
 import 'package:qde_realme/generated/locale_keys.g.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import 'features/home/add_item/add_item_bloc.dart';
+import 'features/home/add_items/add_items_bloc.dart';
 import 'features/home/confirm_account/confirm_account_bloc.dart';
 
 void main() async {
@@ -52,6 +54,8 @@ void main() async {
           BlocProvider<ConfirmAccountBloc>(create: (_) => getIt<ConfirmAccountBloc>()),
           BlocProvider<AddSaleBloc>(create: (_) => getIt<AddSaleBloc>()),
           BlocProvider<SlaveDataBloc>(create: (_) => getIt<SlaveDataBloc>()),
+          BlocProvider<AddItemBloc>(create: (_) => getIt<AddItemBloc>()),
+          BlocProvider<AddItemsBloc>(create: (_) => getIt<AddItemsBloc>()),
         ],
         child: const MyApp(),
       ),
