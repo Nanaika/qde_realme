@@ -16,6 +16,7 @@ import 'package:showcaseview/showcaseview.dart';
 import 'features/home/add_item/add_item_bloc.dart';
 import 'features/home/add_items/add_items_bloc.dart';
 import 'features/home/confirm_account/confirm_account_bloc.dart';
+import 'features/home/moferate_users/moderate_users_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +57,7 @@ void main() async {
           BlocProvider<SlaveDataBloc>(create: (_) => getIt<SlaveDataBloc>()),
           BlocProvider<AddItemBloc>(create: (_) => getIt<AddItemBloc>()),
           BlocProvider<AddItemsBloc>(create: (_) => getIt<AddItemsBloc>()),
+          BlocProvider<ModerateUsersBloc>(create: (_) => getIt<ModerateUsersBloc>()),
         ],
         child: const MyApp(),
       ),

@@ -17,6 +17,7 @@ import 'package:qde_realme/features/auth/data/repositories/auth_repository_impl.
 import 'package:qde_realme/features/auth/domain/repositories/auth_repository.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_bloc.dart';
+import 'package:qde_realme/features/home/moferate_users/moderate_users_bloc.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,6 +36,9 @@ import '../../features/home/confirm_account/confirm_account_bloc.dart';
 import '../../features/home/confirm_account/confirm_account_remote_datasource.dart';
 import '../../features/home/confirm_account/confirm_account_repository.dart';
 import '../../features/home/confirm_account/confirm_account_repository_impl.dart';
+import '../../features/home/moferate_users/moderate_users_remote_datasource.dart';
+import '../../features/home/moferate_users/moderate_users_repository.dart';
+import '../../features/home/moferate_users/moderate_users_repository_impl.dart';
 import '../../features/home/slave_data/slave_data_remote_datasource.dart';
 import '../../features/home/slave_data/slave_data_repository.dart';
 import '../../features/home/slave_data/slave_data_repository_impl.dart';
@@ -116,10 +120,17 @@ Future<void> initDependencies() async {
         () => AddItemsRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
+  //moderate users
+  getIt.registerLazySingleton<ModerateUsersRemoteDataSource>(() => ModerateUsersRemoteDataSourceImpl());
+  getIt.registerLazySingleton<ModerateUsersRepository>(
+        () => ModerateUsersRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
   getIt.registerLazySingleton(() => AuthBloc(repository: getIt()));
   getIt.registerLazySingleton(() => ConfirmAccountBloc(repository: getIt()));
   getIt.registerLazySingleton(() => AddSaleBloc(repository: getIt()));
   getIt.registerLazySingleton(() => SlaveDataBloc(repository: getIt()));
   getIt.registerLazySingleton(() => AddItemBloc(repository: getIt()));
   getIt.registerLazySingleton(() => AddItemsBloc(repository: getIt(), excelService: getIt()));
+  getIt.registerLazySingleton(() => ModerateUsersBloc(repository: getIt()));
 }

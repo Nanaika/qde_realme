@@ -35,49 +35,19 @@ class HomePageAdmin extends StatelessWidget {
               context.push('/add_item');
             }, child: Text('add item screen')),
             SizedBox(height: ThemeDimensions.spacingXL),
-            // Модуль аутентификации
-            _ModuleCard(
-              title: LocaleKeys.home_auth_module.tr(),
-              description: LocaleKeys.home_auth_module_desc.tr(),
-              icon: Icons.login,
-              color: Colors.blue,
-              onTap: () => context.go('/auth'),
-            ),
+            ElevatedButton(onPressed: () {
+              context.push('/moderate_users');
+            }, child: Text('MODERATE USERS')),
+
             SizedBox(height: ThemeDimensions.spacingM),
-            // Модуль счетчика
-            _ModuleCard(
-              title: LocaleKeys.home_counter_module.tr(),
-              description: LocaleKeys.home_counter_module_desc.tr(),
-              icon: Icons.add_circle_outline,
-              color: Colors.green,
-              onTap: () => context.go('/counter'),
-            ),
+
+
             SizedBox(height: ThemeDimensions.spacingM),
-            // Пример модуль
-            _ModuleCard(
-              title: LocaleKeys.home_example_module.tr(),
-              description: LocaleKeys.home_example_module_desc.tr(),
-              icon: Icons.list,
-              color: Colors.orange,
-              onTap: () => context.go('/example'),
-            ),
+
+
             SizedBox(height: ThemeDimensions.spacingXL),
-            // Статус авторизации
-            BlocBuilder<AuthBloc, AuthState>(
-              builder: (context, state) {
-                return Card(
-                  child: Container(
-                    padding: EdgeInsets.all(ThemeDimensions.cardPadding),
-                    child: Column(
-                      children: [
-                        Text(LocaleKeys.home_auth_status.tr(), style: ThemeTextStyles.titleLarge(context)),
-                        SizedBox(height: ThemeDimensions.spacingS),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+
+
           ],
         ),
       ),

@@ -4,6 +4,7 @@ import 'package:qde_realme/features/auth/presentation/pages/login_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/add_sale_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/confirm_account_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/home_page_slave.dart';
+import 'package:qde_realme/features/home/presentation/pages/moderate_users_page.dart';
 
 import '../../features/home/presentation/pages/add_item_page.dart';
 import '../../features/home/presentation/pages/home_page_admin.dart';
@@ -48,6 +49,11 @@ class AppRouter {
         path: '/add_item',
         name: 'add_item',
         builder: (context, state) => const AddItemPage(),
+      ),
+      GoRoute(
+        path: '/moderate_users',
+        name: 'moderate_users',
+        builder: (context, state) => const ModerateUsersPage(),
       ),
 
     ],
