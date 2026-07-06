@@ -5,5 +5,7 @@ abstract class ModerateUsersRepository {
 
   Future<List<UserModel>> getNext();
 
+  Future<void> moderateUser(bool isModerated, String userId);
+
   bool get hasReachedMax;
 }

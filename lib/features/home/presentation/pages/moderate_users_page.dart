@@ -3,6 +3,8 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:qde_realme/core/utils/app_constants.dart';
 import 'package:qde_realme/features/auth/data/models/user_model.dart';
+import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 
 import '../../moferate_users/moderate_users_bloc.dart';
 import '../../moferate_users/moderate_users_event.dart';
@@ -43,12 +45,15 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        for(int i = 0; i < 100; i++) {
-          FirebaseFirestore.instance.collection(AppConstants.moderateUsers).add(UserModel(id: '${i}', email: 'test', number: '', isModerated: false).toJson());
-        }
-
-      }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          for (int i = 0; i < 100; i++) {
+            FirebaseFirestore.instance
+                .collection(AppConstants.moderateUsers)
+                .add(UserModel(id: '${i}', email: 'test', number: '', isModerated: false).toJson());
+          }
+        },
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -75,7 +80,6 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                         controller: _scrollController,
                         itemCount: state.items.length + (state.isMoreLoading ? 1 : 0),
                         itemBuilder: (context, index) {
-
                           if (index >= state.items.length) {
                             return const Padding(
                               padding: EdgeInsets.all(16.0),
@@ -96,22 +100,40 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                   Text('Moderated = ${user.isModerated.toString()}'),
                                   Row(
                                     children: [
-                                      Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius: BorderRadius.circular(10.0),
+                                      GestureDetector(
+                                        onTap: () {
+                                          final userId =
+                                              (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
+                                          context.read<ModerateUsersBloc>().add(
+                                            ModerateUserEvent(userId: userId, isModerated: true),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text('confirm'),
                                         ),
-                                        child: Text('confirm'),
                                       ),
                                       SizedBox(width: 20),
-                                      Container(
-                                        padding: EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius: BorderRadius.circular(10.0),
+                                      GestureDetector(
+                                        onTap: () {
+                                          final userId =
+                                              (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
+                                          context.read<ModerateUsersBloc>().add(
+                                            ModerateUserEvent(userId: userId, isModerated: false),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text('decline'),
                                         ),
-                                        child: Text('decline'),
                                       ),
                                     ],
                                   ),

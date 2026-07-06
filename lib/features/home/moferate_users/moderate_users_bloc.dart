@@ -12,6 +12,36 @@ class ModerateUsersBloc extends Bloc<ModerateUsersEvent, ModerateUsersState> {
   ModerateUsersBloc({required this.repository}) : super(ModerateUsersInitial()) {
     on<ModerateUsersGetFirstEvent>(_onGetFirst);
     on<ModerateUsersGetNextEvent>(_onGetNext);
+    on<ModerateUserEvent>(_onModerateUser);
+  }
+
+  Future<void> _onModerateUser(
+      ModerateUserEvent event,
+      Emitter<ModerateUsersState> emit,
+      ) async {
+    // Действуем только если текущий стейт успешный и у нас есть список юзеров
+    if (state is ModerateUsersSuccess) {
+      final currentState = state as ModerateUsersSuccess;
+
+      try {
+        // 1. Сразу удаляем юзера из локального списка на UI, чтобы приложение не тупило
+        // и юзер мгновенно исчезал с экрана (Optimistic UI)
+        final updatedItems = List<UserModel>.from(currentState.items)
+          ..removeWhere((user) => user.id == event.userId);
+
+        // Выплевываем обновленный список (без этого юзера)
+        emit(currentState.copyWith(items: updatedItems));
+
+        // 2. Стучимся в репозиторий к нашему батчу
+        await repository.moderateUser(event.isModerated, event.userId);
+
+      } on Failure catch (failure) {
+        // Если сервак ответил ошибкой — возвращаем юзера обратно в список и показываем ошибку
+        emit(ModerateUsersError(failure));
+      } catch (e) {
+        emit(ModerateUsersError(ServerFailure(e.toString())));
+      }
+    }
   }
 
   Future<void> _onGetFirst(ModerateUsersEvent event, Emitter<ModerateUsersState> emit) async {

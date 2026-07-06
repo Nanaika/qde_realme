@@ -6,11 +6,13 @@ abstract class ModerateUsersRemoteDataSource {
   Future<List<UserModel>> getFirst();
 
   Future<List<UserModel>> getNext();
+
+  Future<void> moderateUser(bool isModerated, String userId);
 }
 
 class ModerateUsersRemoteDataSourceImpl implements ModerateUsersRemoteDataSource {
   final db = FirebaseFirestore.instance;
-  final limit = 5;
+  final limit = 20;
 
   DocumentSnapshot? _lastDocument;
   bool hasReachedMax = false;
@@ -56,5 +58,27 @@ class ModerateUsersRemoteDataSourceImpl implements ModerateUsersRemoteDataSource
     }
 
     return querySnapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList();
+  }
+
+  @override
+  Future<void> moderateUser(bool isModerated, String userId) async {
+    // 1. Создаем батч
+    final batch = db.batch();
+
+    // 2. Ссылки на документы
+    final userRef = db.collection(AppConstants.users).doc(userId);
+    final moderateUserRef = db.collection(AppConstants.moderateUsers).doc(userId);
+    final historyRef = db.collection(AppConstants.users).doc(userId).collection(AppConstants.history).doc(); // .doc() без параметров создает новый ID для add-операции
+
+    // 3. Навешиваем операции на батч
+    batch.update(userRef, {'isModerated': isModerated});
+    batch.delete(moderateUserRef);
+    batch.set(historyRef, {
+      'date': FieldValue.serverTimestamp(),
+      'message': 'user isModerate to $isModerated',
+    });
+
+    // 4. Пуляем всё это одним махом в базу
+    await batch.commit();
   }
 }

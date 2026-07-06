@@ -38,4 +38,10 @@ class ModerateUsersRepositoryImpl implements ModerateUsersRepository {
 
     return items;
   }
+
+  @override
+  Future<void> moderateUser(bool isModerated, String userId) async{
+    await remoteDataSource.moderateUser(isModerated, userId);
+
+  }
 }
