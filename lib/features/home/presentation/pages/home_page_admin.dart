@@ -40,7 +40,9 @@ class HomePageAdmin extends StatelessWidget {
             }, child: Text('MODERATE USERS')),
 
             SizedBox(height: ThemeDimensions.spacingM),
-
+            ElevatedButton(onPressed: () {
+              context.push('/moderate_sales');
+            }, child: Text('MODERATE SALES')),
 
             SizedBox(height: ThemeDimensions.spacingM),
 

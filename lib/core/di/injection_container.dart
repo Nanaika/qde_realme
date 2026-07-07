@@ -36,6 +36,10 @@ import '../../features/home/confirm_account/confirm_account_bloc.dart';
 import '../../features/home/confirm_account/confirm_account_remote_datasource.dart';
 import '../../features/home/confirm_account/confirm_account_repository.dart';
 import '../../features/home/confirm_account/confirm_account_repository_impl.dart';
+import '../../features/home/moderate_sales/moderate_sales_bloc.dart';
+import '../../features/home/moderate_sales/moderate_sales_remote_datasource.dart';
+import '../../features/home/moderate_sales/moderate_sales_repository.dart';
+import '../../features/home/moderate_sales/moderate_sales_repository_impl.dart';
 import '../../features/home/moferate_users/moderate_users_remote_datasource.dart';
 import '../../features/home/moferate_users/moderate_users_repository.dart';
 import '../../features/home/moferate_users/moderate_users_repository_impl.dart';
@@ -125,6 +129,12 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton<ModerateUsersRepository>(
         () => ModerateUsersRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
+  //moderate sales
+  getIt.registerLazySingleton<ModerateSalesRemoteDataSource>(() => ModerateSalesRemoteDataSourceImpl());
+  getIt.registerLazySingleton<ModerateSalesRepository>(
+        () => ModerateSalesRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
 
   getIt.registerLazySingleton(() => AuthBloc(repository: getIt()));
   getIt.registerLazySingleton(() => ConfirmAccountBloc(repository: getIt()));
@@ -133,4 +143,5 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton(() => AddItemBloc(repository: getIt()));
   getIt.registerLazySingleton(() => AddItemsBloc(repository: getIt(), excelService: getIt()));
   getIt.registerLazySingleton(() => ModerateUsersBloc(repository: getIt()));
+  getIt.registerLazySingleton(() => ModerateSalesBloc(repository: getIt()));
 }

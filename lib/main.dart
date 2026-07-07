@@ -16,6 +16,7 @@ import 'package:showcaseview/showcaseview.dart';
 import 'features/home/add_item/add_item_bloc.dart';
 import 'features/home/add_items/add_items_bloc.dart';
 import 'features/home/confirm_account/confirm_account_bloc.dart';
+import 'features/home/moderate_sales/moderate_sales_bloc.dart';
 import 'features/home/moferate_users/moderate_users_bloc.dart';
 
 void main() async {
@@ -58,6 +59,7 @@ void main() async {
           BlocProvider<AddItemBloc>(create: (_) => getIt<AddItemBloc>()),
           BlocProvider<AddItemsBloc>(create: (_) => getIt<AddItemsBloc>()),
           BlocProvider<ModerateUsersBloc>(create: (_) => getIt<ModerateUsersBloc>()),
+          BlocProvider<ModerateSalesBloc>(create: (_) => getIt<ModerateSalesBloc>()),
         ],
         child: const MyApp(),
       ),

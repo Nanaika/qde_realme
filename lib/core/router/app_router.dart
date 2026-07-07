@@ -8,6 +8,7 @@ import 'package:qde_realme/features/home/presentation/pages/moderate_users_page.
 
 import '../../features/home/presentation/pages/add_item_page.dart';
 import '../../features/home/presentation/pages/home_page_admin.dart';
+import '../../features/home/presentation/pages/moderate_sales_page.dart';
 
 class AppRouter {
   static GoRouter get router => _router;
@@ -54,6 +55,11 @@ class AppRouter {
         path: '/moderate_users',
         name: 'moderate_users',
         builder: (context, state) => const ModerateUsersPage(),
+      ),
+      GoRoute(
+        path: '/moderate_sales',
+        name: 'moderate_sales',
+        builder: (context, state) => const ModerateSalesPage(),
       ),
 
     ],
