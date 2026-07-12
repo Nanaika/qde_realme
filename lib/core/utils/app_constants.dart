@@ -20,6 +20,7 @@ class AppConstants {
   static const String moderateSales = 'moderateSales';
   static const String ownerSales = 'sales';
   static const String history = 'history';
+  static const String bonuses = 'bonuses';
 
   //Remote config names
   static const String adminEmails = 'admin_emails';

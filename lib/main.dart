@@ -15,6 +15,7 @@ import 'package:showcaseview/showcaseview.dart';
 
 import 'features/home/add_item/add_item_bloc.dart';
 import 'features/home/add_items/add_items_bloc.dart';
+import 'features/home/bonuses/bonuses_bloc.dart';
 import 'features/home/confirm_account/confirm_account_bloc.dart';
 import 'features/home/history/history_bloc.dart';
 import 'features/home/moderate_sales/moderate_sales_bloc.dart';
@@ -73,6 +74,7 @@ void main() async {
             create: (_) => getIt<ModerateSalesBloc>(),
           ),
           BlocProvider<HistoryBloc>(create: (_) => getIt<HistoryBloc>()),
+          BlocProvider<BonusesBloc>(create: (_) => getIt<BonusesBloc>()),
         ],
         child: const MyApp(),
       ),

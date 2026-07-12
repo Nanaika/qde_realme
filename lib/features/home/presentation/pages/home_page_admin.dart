@@ -65,6 +65,12 @@ class HomePageAdmin extends StatelessWidget {
             ),
 
             SizedBox(height: ThemeDimensions.spacingXL),
+            ElevatedButton(
+              onPressed: () {
+                context.push('/bonuses');
+              },
+              child: Text('Bonuses'),
+            ),
           ],
         ),
       ),

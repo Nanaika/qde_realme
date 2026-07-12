@@ -32,6 +32,10 @@ import '../../features/home/add_items/add_items_repository_impl.dart';
 import '../../features/home/add_sale/add_sale_remote_datasource.dart';
 import '../../features/home/add_sale/add_sale_repository.dart';
 import '../../features/home/add_sale/add_sale_repository_impl.dart';
+import '../../features/home/bonuses/bonuses_bloc.dart';
+import '../../features/home/bonuses/bonuses_remote_datasource.dart';
+import '../../features/home/bonuses/bonuses_repository.dart';
+import '../../features/home/bonuses/bonuses_repository_impl.dart';
 import '../../features/home/confirm_account/confirm_account_bloc.dart';
 import '../../features/home/confirm_account/confirm_account_remote_datasource.dart';
 import '../../features/home/confirm_account/confirm_account_repository.dart';
@@ -124,8 +128,7 @@ Future<void> initDependencies() async {
     () => AddSaleRemoteDataSourceImpl(),
   );
   getIt.registerLazySingleton<AddSaleRepository>(
-    () =>
-        AddSaleRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () => AddSaleRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   //slave data
@@ -144,8 +147,7 @@ Future<void> initDependencies() async {
     () => AddItemRemoteDataSourceImpl(),
   );
   getIt.registerLazySingleton<AddItemRepository>(
-    () =>
-        AddItemRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () => AddItemRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   //add items
@@ -153,8 +155,7 @@ Future<void> initDependencies() async {
     () => AddItemsRemoteDataSourceImpl(),
   );
   getIt.registerLazySingleton<AddItemsRepository>(
-    () =>
-        AddItemsRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () => AddItemsRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   //moderate users
@@ -183,8 +184,15 @@ Future<void> initDependencies() async {
     () => HistoryRemoteDataSourceImpl(),
   );
   getIt.registerLazySingleton<HistoryRepository>(
-    () =>
-        HistoryRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () => HistoryRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
+  //bonuses
+  getIt.registerLazySingleton<BonusesRemoteDataSource>(
+    () => BonusesRemoteDataSourceImpl(),
+  );
+  getIt.registerLazySingleton<BonusesRepository>(
+    () => BonusesRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   getIt.registerLazySingleton(() => AuthBloc(repository: getIt()));
@@ -198,4 +206,5 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton(() => ModerateUsersBloc(repository: getIt()));
   getIt.registerLazySingleton(() => ModerateSalesBloc(repository: getIt()));
   getIt.registerLazySingleton(() => HistoryBloc(repository: getIt()));
+  getIt.registerLazySingleton(() => BonusesBloc(repository: getIt()));
 }
