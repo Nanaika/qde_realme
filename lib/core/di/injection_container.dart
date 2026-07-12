@@ -36,6 +36,10 @@ import '../../features/home/confirm_account/confirm_account_bloc.dart';
 import '../../features/home/confirm_account/confirm_account_remote_datasource.dart';
 import '../../features/home/confirm_account/confirm_account_repository.dart';
 import '../../features/home/confirm_account/confirm_account_repository_impl.dart';
+import '../../features/home/history/history_bloc.dart';
+import '../../features/home/history/history_remote_datasource.dart';
+import '../../features/home/history/history_repository.dart';
+import '../../features/home/history/history_repository_impl.dart';
 import '../../features/home/moderate_sales/moderate_sales_bloc.dart';
 import '../../features/home/moderate_sales/moderate_sales_remote_datasource.dart';
 import '../../features/home/moderate_sales/moderate_sales_repository.dart';
@@ -54,10 +58,14 @@ Future<void> initDependencies() async {
   bool firebaseInitialized = false;
   try {
     await Firebase.initializeApp();
-    getIt.registerLazySingleton<FirebaseMessaging>(() => FirebaseMessaging.instance);
+    getIt.registerLazySingleton<FirebaseMessaging>(
+      () => FirebaseMessaging.instance,
+    );
     firebaseInitialized = true;
   } catch (e) {}
-  getIt.registerLazySingleton<FlutterLocalNotificationsPlugin>(() => FlutterLocalNotificationsPlugin());
+  getIt.registerLazySingleton<FlutterLocalNotificationsPlugin>(
+    () => FlutterLocalNotificationsPlugin(),
+  );
 
   // Network
   getIt.registerLazySingleton<Dio>(() => Dio());
@@ -70,12 +78,16 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   // Services
-  getIt.registerLazySingleton<StorageService>(() => StorageServiceImpl(getIt()));
+  getIt.registerLazySingleton<StorageService>(
+    () => StorageServiceImpl(getIt()),
+  );
   getIt.registerLazySingleton<AnalyticsService>(() => AnalyticsServiceImpl());
   getIt.registerLazySingleton<ThemeService>(() => ThemeServiceImpl(getIt()));
 
   if (firebaseInitialized) {
-    getIt.registerLazySingleton<NotificationHandler>(() => NotificationHandler(getIt()));
+    getIt.registerLazySingleton<NotificationHandler>(
+      () => NotificationHandler(getIt()),
+    );
     getIt.registerLazySingleton<NotificationService>(
       () => NotificationService(
         localNotifications: getIt(),
@@ -88,60 +100,102 @@ Future<void> initDependencies() async {
   getIt.registerSingleton(ExcelService());
 
   // Auth Feature
-  getIt.registerLazySingleton<AuthRemoteDataSource>(() => AuthRemoteDataSourceImpl());
+  getIt.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSourceImpl(),
+  );
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   //Confirm account
 
-  getIt.registerLazySingleton<ConfirmAccountRemoteDataSource>(() => ConfirmAccountRemoteDataSourceImpl());
+  getIt.registerLazySingleton<ConfirmAccountRemoteDataSource>(
+    () => ConfirmAccountRemoteDataSourceImpl(),
+  );
   getIt.registerLazySingleton<ConfirmAccountRepository>(
-    () => ConfirmAccountRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () => ConfirmAccountRepositoryImpl(
+      remoteDataSource: getIt(),
+      networkInfo: getIt(),
+    ),
   );
 
   //add sale
-  getIt.registerLazySingleton<AddSaleRemoteDataSource>(() => AddSaleRemoteDataSourceImpl());
+  getIt.registerLazySingleton<AddSaleRemoteDataSource>(
+    () => AddSaleRemoteDataSourceImpl(),
+  );
   getIt.registerLazySingleton<AddSaleRepository>(
-        () => AddSaleRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () =>
+        AddSaleRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   //slave data
-  getIt.registerLazySingleton<SlaveDataRemoteDataSource>(() => SlaveDataRemoteDataSourceImpl());
+  getIt.registerLazySingleton<SlaveDataRemoteDataSource>(
+    () => SlaveDataRemoteDataSourceImpl(),
+  );
   getIt.registerLazySingleton<SlaveDataRepository>(
-        () => SlaveDataRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () => SlaveDataRepositoryImpl(
+      remoteDataSource: getIt(),
+      networkInfo: getIt(),
+    ),
   );
 
   //add item
-  getIt.registerLazySingleton<AddItemRemoteDataSource>(() => AddItemRemoteDataSourceImpl());
+  getIt.registerLazySingleton<AddItemRemoteDataSource>(
+    () => AddItemRemoteDataSourceImpl(),
+  );
   getIt.registerLazySingleton<AddItemRepository>(
-        () => AddItemRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () =>
+        AddItemRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   //add items
-  getIt.registerLazySingleton<AddItemsRemoteDataSource>(() => AddItemsRemoteDataSourceImpl());
+  getIt.registerLazySingleton<AddItemsRemoteDataSource>(
+    () => AddItemsRemoteDataSourceImpl(),
+  );
   getIt.registerLazySingleton<AddItemsRepository>(
-        () => AddItemsRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () =>
+        AddItemsRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
   //moderate users
-  getIt.registerLazySingleton<ModerateUsersRemoteDataSource>(() => ModerateUsersRemoteDataSourceImpl());
+  getIt.registerLazySingleton<ModerateUsersRemoteDataSource>(
+    () => ModerateUsersRemoteDataSourceImpl(),
+  );
   getIt.registerLazySingleton<ModerateUsersRepository>(
-        () => ModerateUsersRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () => ModerateUsersRepositoryImpl(
+      remoteDataSource: getIt(),
+      networkInfo: getIt(),
+    ),
   );
   //moderate sales
-  getIt.registerLazySingleton<ModerateSalesRemoteDataSource>(() => ModerateSalesRemoteDataSourceImpl());
+  getIt.registerLazySingleton<ModerateSalesRemoteDataSource>(
+    () => ModerateSalesRemoteDataSourceImpl(),
+  );
   getIt.registerLazySingleton<ModerateSalesRepository>(
-        () => ModerateSalesRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+    () => ModerateSalesRepositoryImpl(
+      remoteDataSource: getIt(),
+      networkInfo: getIt(),
+    ),
   );
 
+  //history
+  getIt.registerLazySingleton<HistoryRemoteDataSource>(
+    () => HistoryRemoteDataSourceImpl(),
+  );
+  getIt.registerLazySingleton<HistoryRepository>(
+    () =>
+        HistoryRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
 
   getIt.registerLazySingleton(() => AuthBloc(repository: getIt()));
   getIt.registerLazySingleton(() => ConfirmAccountBloc(repository: getIt()));
   getIt.registerLazySingleton(() => AddSaleBloc(repository: getIt()));
   getIt.registerLazySingleton(() => SlaveDataBloc(repository: getIt()));
   getIt.registerLazySingleton(() => AddItemBloc(repository: getIt()));
-  getIt.registerLazySingleton(() => AddItemsBloc(repository: getIt(), excelService: getIt()));
+  getIt.registerLazySingleton(
+    () => AddItemsBloc(repository: getIt(), excelService: getIt()),
+  );
   getIt.registerLazySingleton(() => ModerateUsersBloc(repository: getIt()));
   getIt.registerLazySingleton(() => ModerateSalesBloc(repository: getIt()));
+  getIt.registerLazySingleton(() => HistoryBloc(repository: getIt()));
 }

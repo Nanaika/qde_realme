@@ -18,7 +18,10 @@ class HomePageAdmin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(LocaleKeys.home_title.tr()), actions: const [LanguageToggle(), ThemeToggle()]),
+      appBar: AppBar(
+        title: Text(LocaleKeys.home_title.tr()),
+        actions: const [LanguageToggle(), ThemeToggle()],
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(ThemeDimensions.paddingL),
         child: Column(
@@ -31,80 +34,38 @@ class HomePageAdmin extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: ThemeDimensions.spacingS),
-            ElevatedButton(onPressed: () {
-              context.push('/add_item');
-            }, child: Text('add item screen')),
+            ElevatedButton(
+              onPressed: () {
+                context.push('/add_item');
+              },
+              child: Text('add item screen'),
+            ),
             SizedBox(height: ThemeDimensions.spacingXL),
-            ElevatedButton(onPressed: () {
-              context.push('/moderate_users');
-            }, child: Text('MODERATE USERS')),
+            ElevatedButton(
+              onPressed: () {
+                context.push('/moderate_users');
+              },
+              child: Text('MODERATE USERS'),
+            ),
 
             SizedBox(height: ThemeDimensions.spacingM),
-            ElevatedButton(onPressed: () {
-              context.push('/moderate_sales');
-            }, child: Text('MODERATE SALES')),
+            ElevatedButton(
+              onPressed: () {
+                context.push('/moderate_sales');
+              },
+              child: Text('MODERATE SALES'),
+            ),
 
             SizedBox(height: ThemeDimensions.spacingM),
-
+            ElevatedButton(
+              onPressed: () {
+                context.push('/homeslave');
+              },
+              child: Text('Change to slave'),
+            ),
 
             SizedBox(height: ThemeDimensions.spacingXL),
-
-
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ModuleCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _ModuleCard({
-    required this.title,
-    required this.description,
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: ThemeBorderStyles.cardBorderRadius(context),
-        child: Container(
-          padding: EdgeInsets.all(ThemeDimensions.cardPadding),
-          child: Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(ThemeDimensions.paddingM * 0.75),
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(ThemeDimensions.radiusS),
-                ),
-                child: Icon(icon, color: color, size: ThemeDimensions.iconL),
-              ),
-              SizedBox(width: ThemeDimensions.spacingM),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: ThemeTextStyles.cardTitle(context)),
-                    SizedBox(height: ThemeDimensions.spacingXS),
-                    Text(description, style: ThemeTextStyles.cardSubtitle(context)),
-                  ],
-                ),
-              ),
-              Icon(Icons.arrow_forward_ios, size: ThemeDimensions.iconXS, color: Colors.grey.shade400),
-            ],
-          ),
         ),
       ),
     );

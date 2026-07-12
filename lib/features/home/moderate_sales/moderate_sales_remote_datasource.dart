@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qde_realme/core/utils/app_constants.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_type.dart';
 import 'package:qde_realme/features/home/add_sale/sale_model.dart';
+import 'package:qde_realme/features/home/history/history_model.dart';
+import 'package:qde_realme/features/home/history/history_type.dart';
 
 abstract class ModerateSalesRemoteDataSource {
   Future<List<SaleModel>> getFirst();
@@ -72,13 +74,13 @@ class ModerateSalesRemoteDataSourceImpl implements ModerateSalesRemoteDataSource
         .collection(AppConstants.ownerSales)
         .doc(sale.id);
 
-    final historyRef = db
-        .collection(AppConstants.users)
-        .doc(sale.ownerId)
-        .collection(AppConstants.history)
-        .doc();
+    final historyRef = db.collection(AppConstants.users).doc(sale.ownerId).collection(AppConstants.history).doc();
 
     final status = isAccepted ? AddSaleType.accepted.name : AddSaleType.declined.name;
+    final historyType = status == AddSaleType.accepted.name
+        ? HistoryType.imeiAccepted.name
+        : HistoryType.imeiDeclined.name;
+    final history = HistoryModel(message: sale.imei, type: historyType);
 
     // Запускаем транзакцию
     await db.runTransaction((transaction) async {
@@ -94,8 +96,8 @@ class ModerateSalesRemoteDataSourceImpl implements ModerateSalesRemoteDataSource
       transaction.update(saleRef, {'type': status});
       transaction.delete(moderateSaleRef);
       transaction.set(historyRef, {
+        ...history.toJson(),
         'date': FieldValue.serverTimestamp(),
-        'message': 'Sale ${sale.id} was $status',
       });
     });
   }

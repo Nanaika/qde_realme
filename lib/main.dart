@@ -16,6 +16,7 @@ import 'package:showcaseview/showcaseview.dart';
 import 'features/home/add_item/add_item_bloc.dart';
 import 'features/home/add_items/add_items_bloc.dart';
 import 'features/home/confirm_account/confirm_account_bloc.dart';
+import 'features/home/history/history_bloc.dart';
 import 'features/home/moderate_sales/moderate_sales_bloc.dart';
 import 'features/home/moferate_users/moderate_users_bloc.dart';
 
@@ -34,14 +35,19 @@ void main() async {
       final token = await notificationService.getFCMToken();
       if (token != null) {
         print('FCM Token: $token');
-        print('Используйте этот токен для отправки тестовых уведомлений из Firebase Console');
+        print(
+          'Используйте этот токен для отправки тестовых уведомлений из Firebase Console',
+        );
       }
     } catch (e) {
       print('Ошибка инициализации уведомлений: $e');
     }
   }
 
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(
     EasyLocalization(
@@ -53,13 +59,20 @@ void main() async {
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthBloc>(create: (_) => getIt<AuthBloc>()),
-          BlocProvider<ConfirmAccountBloc>(create: (_) => getIt<ConfirmAccountBloc>()),
+          BlocProvider<ConfirmAccountBloc>(
+            create: (_) => getIt<ConfirmAccountBloc>(),
+          ),
           BlocProvider<AddSaleBloc>(create: (_) => getIt<AddSaleBloc>()),
           BlocProvider<SlaveDataBloc>(create: (_) => getIt<SlaveDataBloc>()),
           BlocProvider<AddItemBloc>(create: (_) => getIt<AddItemBloc>()),
           BlocProvider<AddItemsBloc>(create: (_) => getIt<AddItemsBloc>()),
-          BlocProvider<ModerateUsersBloc>(create: (_) => getIt<ModerateUsersBloc>()),
-          BlocProvider<ModerateSalesBloc>(create: (_) => getIt<ModerateSalesBloc>()),
+          BlocProvider<ModerateUsersBloc>(
+            create: (_) => getIt<ModerateUsersBloc>(),
+          ),
+          BlocProvider<ModerateSalesBloc>(
+            create: (_) => getIt<ModerateSalesBloc>(),
+          ),
+          BlocProvider<HistoryBloc>(create: (_) => getIt<HistoryBloc>()),
         ],
         child: const MyApp(),
       ),
@@ -115,9 +128,15 @@ class _MyAppState extends State<MyApp> {
               localizationsDelegates: context.localizationDelegates,
               supportedLocales: context.supportedLocales,
               locale: context.locale,
-              theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue), useMaterial3: true),
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+                useMaterial3: true,
+              ),
               darkTheme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark),
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: Colors.blue,
+                  brightness: Brightness.dark,
+                ),
                 useMaterial3: true,
               ),
               themeMode: _themeMode,

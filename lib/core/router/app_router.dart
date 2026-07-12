@@ -6,6 +6,7 @@ import 'package:qde_realme/features/home/presentation/pages/confirm_account_page
 import 'package:qde_realme/features/home/presentation/pages/home_page_slave.dart';
 import 'package:qde_realme/features/home/presentation/pages/moderate_users_page.dart';
 
+import '../../features/home/presentation/pages/history_page.dart';
 import '../../features/home/presentation/pages/add_item_page.dart';
 import '../../features/home/presentation/pages/home_page_admin.dart';
 import '../../features/home/presentation/pages/moderate_sales_page.dart';
@@ -61,8 +62,11 @@ class AppRouter {
         name: 'moderate_sales',
         builder: (context, state) => const ModerateSalesPage(),
       ),
-
+      GoRoute(
+        path: '/history',
+        name: 'history',
+        builder: (context, state) => const HistoryPage(),
+      ),
     ],
   );
 }
-

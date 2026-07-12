@@ -61,6 +61,18 @@ class _HomePageSlaveState extends State<HomePageSlave> {
                       Text('accepted = ${state.data.acceptedSum}'),
                       Text('declined = ${state.data.declinedSum}'),
                       Text('waiting = ${state.data.awaitingSum}'),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.push('/homeadmin');
+                        },
+                        child: Text('Change to admin'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.push('/history');
+                        },
+                        child: Text('history'),
+                      ),
                     ],
                   ),
                 );
