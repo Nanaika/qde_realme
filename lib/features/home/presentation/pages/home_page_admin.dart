@@ -71,6 +71,13 @@ class HomePageAdmin extends StatelessWidget {
               },
               child: Text('Bonuses'),
             ),
+
+            ElevatedButton(
+              onPressed: () {
+                context.push('/manage_users');
+              },
+              child: Text('Manage users'),
+            ),
           ],
         ),
       ),

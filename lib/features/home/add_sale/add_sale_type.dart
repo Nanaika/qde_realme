@@ -1,3 +1,1 @@
-enum AddSaleType {
-  accepted, declined, onModeration
-}
+enum AddSaleType { accepted, declined, onModeration, paid }

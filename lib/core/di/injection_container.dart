@@ -17,6 +17,7 @@ import 'package:qde_realme/features/auth/data/repositories/auth_repository_impl.
 import 'package:qde_realme/features/auth/domain/repositories/auth_repository.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_bloc.dart';
+import 'package:qde_realme/features/home/manage_users/manage_users_bloc.dart';
 import 'package:qde_realme/features/home/moferate_users/moderate_users_bloc.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,6 +45,9 @@ import '../../features/home/history/history_bloc.dart';
 import '../../features/home/history/history_remote_datasource.dart';
 import '../../features/home/history/history_repository.dart';
 import '../../features/home/history/history_repository_impl.dart';
+import '../../features/home/manage_users/manage_users_remote_datasource.dart';
+import '../../features/home/manage_users/manage_users_repository.dart';
+import '../../features/home/manage_users/manage_users_repository_impl.dart';
 import '../../features/home/moderate_sales/moderate_sales_bloc.dart';
 import '../../features/home/moderate_sales/moderate_sales_remote_datasource.dart';
 import '../../features/home/moderate_sales/moderate_sales_repository.dart';
@@ -195,6 +199,14 @@ Future<void> initDependencies() async {
     () => BonusesRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
   );
 
+  //manage users
+  getIt.registerLazySingleton<ManageUsersRemoteDatasource>(
+    () => ManageUsersRemoteDataSourceImpl(),
+  );
+  getIt.registerLazySingleton<ManageUsersRepository>(
+    () => ManageUsersRepositoryImpl(remoteDataSource: getIt(), networkInfo: getIt()),
+  );
+
   getIt.registerLazySingleton(() => AuthBloc(repository: getIt()));
   getIt.registerLazySingleton(() => ConfirmAccountBloc(repository: getIt()));
   getIt.registerLazySingleton(() => AddSaleBloc(repository: getIt()));
@@ -207,4 +219,5 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton(() => ModerateSalesBloc(repository: getIt()));
   getIt.registerLazySingleton(() => HistoryBloc(repository: getIt()));
   getIt.registerLazySingleton(() => BonusesBloc(repository: getIt()));
+  getIt.registerLazySingleton(() => ManageUsersBloc(repository: getIt()));
 }

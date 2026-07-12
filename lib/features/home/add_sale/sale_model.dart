@@ -7,6 +7,7 @@ class SaleModel {
   final String ownerId;
   final AddSaleType type;
   final String id;
+  final int bonus; // Добавленное поле
 
   SaleModel({
     required this.imei,
@@ -14,6 +15,7 @@ class SaleModel {
     this.type = AddSaleType.onModeration,
     required this.id,
     this.dateAdded,
+    required this.bonus, // Добавленное поле
   });
 
   SaleModel copyWith({
@@ -22,6 +24,7 @@ class SaleModel {
     String? ownerId,
     AddSaleType? type,
     String? id,
+    int? bonus, // Добавленное поле
   }) {
     return SaleModel(
       imei: imei ?? this.imei,
@@ -29,17 +32,19 @@ class SaleModel {
       ownerId: ownerId ?? this.ownerId,
       type: type ?? this.type,
       id: id ?? this.id,
+      bonus: bonus ?? this.bonus, // Добавленное поле
     );
   }
 
   factory SaleModel.fromJson(Map<String, dynamic> json) {
     return SaleModel(
       imei: json['imei'] as String,
-      dateAdded: json['dateAdded'] as Timestamp,
+      dateAdded: json['dateAdded'] as Timestamp?,
       ownerId: json['ownerId'] as String,
       id: json['id'] as String,
+      bonus: (json['bonus'] as num?)?.toInt() ?? 0, // Безопасное приведение к int с дефолтным значением 0
       type: AddSaleType.values.firstWhere(
-            (e) => e.name == json['type'],
+        (e) => e.name == json['type'],
         orElse: () => AddSaleType.onModeration,
       ),
     );
@@ -52,6 +57,7 @@ class SaleModel {
       'ownerId': ownerId,
       'type': type.name,
       'id': id,
+      'bonus': bonus, // Добавленное поле
     };
   }
 }

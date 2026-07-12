@@ -41,7 +41,7 @@ class _AddSalePageState extends State<AddSalePage> {
                 ElevatedButton(
                   onPressed: () {
                     final ownerId = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
-                    final sale = SaleModel(imei: controller.text, ownerId: ownerId, id: '');
+                    final sale = SaleModel(imei: controller.text, ownerId: ownerId, id: '', bonus: 0);
                     context.read<AddSaleBloc>().add(AddEvent(sale));
                   },
                   child: Text('send'),

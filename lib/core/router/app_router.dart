@@ -5,6 +5,7 @@ import 'package:qde_realme/features/home/presentation/pages/add_sale_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/bonuses_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/confirm_account_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/home_page_slave.dart';
+import 'package:qde_realme/features/home/presentation/pages/manage_users_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/moderate_users_page.dart';
 
 import '../../features/home/presentation/pages/history_page.dart';
@@ -72,6 +73,11 @@ class AppRouter {
         path: '/bonuses',
         name: 'bonuses',
         builder: (context, state) => const BonusesPage(),
+      ),
+      GoRoute(
+        path: '/manage_users',
+        name: 'manage_users',
+        builder: (context, state) => const ManageUsersPage(),
       ),
     ],
   );
