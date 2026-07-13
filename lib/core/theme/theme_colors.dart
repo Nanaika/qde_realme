@@ -8,7 +8,7 @@ class ThemeColors {
   // Primary Colors
   static const Color primary = Color(0xFF2196F3); // Blue
   static const Color primaryLight = Color(0xFF64B5F6);
-  static const Color primaryDark = Color(0xFF1976D2);
+  static const Color primaryDark = Color(0xFFF04973);
   static const Color primaryContainer = Color(0xFFE3F2FD);
   static const Color onPrimary = Colors.white;
   static const Color onPrimaryContainer = Color(0xFF0D47A1);
@@ -55,9 +55,9 @@ class ThemeColors {
 
   // Background Colors
   static const Color background = Color(0xFFFFFFFF);
-  static const Color backgroundDark = Color(0xFF121212);
+  static const Color backgroundDark = Color(0xFF1C162E);
   static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceDark = Color(0xFF1E1E1E);
+  static const Color surfaceDark = Color(0xFF1C162E);
   static const Color surfaceVariant = Color(0xFFF5F5F5);
   static const Color surfaceVariantDark = Color(0xFF2C2C2C);
   static const Color onBackground = Color(0xFF1C1B1F);
@@ -199,4 +199,3 @@ class ThemeColors {
     );
   }
 }
-

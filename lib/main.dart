@@ -7,6 +7,7 @@ import 'package:qde_realme/core/di/injection_container.dart';
 import 'package:qde_realme/core/notifications/notification_service.dart';
 import 'package:qde_realme/core/router/app_router.dart';
 import 'package:qde_realme/core/services/theme_service.dart';
+import 'package:qde_realme/core/theme/theme_colors.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_bloc.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_bloc.dart';
@@ -26,6 +27,20 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await EasyLocalization.ensureInitialized();
+
+  // Делаем бары прозрачными
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
+
+  // Говорим Android отрисовывать приложение под системными панелями
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
   await initDependencies();
 
@@ -53,10 +68,10 @@ void main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('ru')],
+      supportedLocales: const [Locale('uz'), Locale('ru')],
       path: 'assets/translations',
-      startLocale: Locale('en'),
-      fallbackLocale: const Locale('en'),
+      startLocale: Locale('ru'),
+      fallbackLocale: const Locale('ru'),
       useOnlyLangCode: true,
       child: MultiBlocProvider(
         providers: [
@@ -142,6 +157,7 @@ class _MyAppState extends State<MyApp> {
                   brightness: Brightness.dark,
                 ),
                 useMaterial3: true,
+                scaffoldBackgroundColor: ThemeColors.surfaceDark,
               ),
               themeMode: _themeMode,
               routerConfig: AppRouter.router,

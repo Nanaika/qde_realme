@@ -66,6 +66,7 @@ dependencies:
   intl: 0.20.2
   showcaseview: ^4.0.1
   flutter_screenutil: ^5.9.0
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +84,7 @@ flutter:
   generate: true
 
   assets:
-    - assets/translations/en.json
+    - assets/translations/uz.json
     - assets/translations/ru.json
+    - assets/images/
 

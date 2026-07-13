@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,7 @@ import 'package:qde_realme/core/theme/theme_text_styles.dart';
 import 'package:qde_realme/core/widgets/language_toggle.dart';
 import 'package:qde_realme/core/widgets/theme_toggle.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:qde_realme/features/auth/presentation/bloc/auth_event.dart';
 import 'package:qde_realme/generated/locale_keys.g.dart';
 
 import '../../../auth/presentation/bloc/auth_state.dart';
@@ -77,6 +79,13 @@ class HomePageAdmin extends StatelessWidget {
                 context.push('/manage_users');
               },
               child: Text('Manage users'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                context.read<AuthBloc>().add(LogoutEvent());
+              },
+              child: Text('Logout'),
             ),
           ],
         ),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qde_realme/core/error/failures.dart';
+import 'package:qde_realme/features/auth/data/models/user_model.dart';
 import 'package:qde_realme/features/auth/domain/repositories/auth_repository.dart';
 
 import 'auth_event.dart';
@@ -36,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
 
     try {
-      await repository.logout();
+      // await repository.logout();
       emit(AuthUnauthenticated());
     } on Failure catch (failure) {
       emit(AuthError(failure));
@@ -47,6 +48,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onCheckAuth(CheckAuthEvent event, Emitter<AuthState> emit) async {
     if (FirebaseAuth.instance.currentUser != null) {
+      emit(
+        AuthAuthenticated(
+          UserModel(
+            id: FirebaseAuth.instance.currentUser!.uid,
+            email: FirebaseAuth.instance.currentUser!.email!,
+          ),
+        ),
+      );
+
       final user = await repository.getCurrentUser(FirebaseAuth.instance.currentUser!.uid);
       emit(AuthAuthenticated(user));
     } else {

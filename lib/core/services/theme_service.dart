@@ -24,7 +24,7 @@ class ThemeServiceImpl implements ThemeService {
   Future<ThemeMode> getThemeMode() async {
     final themeString = _prefs.getString(_themeKey);
     if (themeString == null) {
-      return ThemeMode.system;
+      return ThemeMode.dark;
     }
     switch (themeString) {
       case 'light':
@@ -57,4 +57,3 @@ class ThemeServiceImpl implements ThemeService {
   @override
   Stream<ThemeMode> get themeModeStream => _themeModeController.stream;
 }
-
