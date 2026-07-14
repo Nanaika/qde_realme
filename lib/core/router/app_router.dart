@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:qde_realme/features/auth/presentation/pages/auth_gates.dart';
 import 'package:qde_realme/features/auth/presentation/pages/login_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/add_sale_page.dart';
+import 'package:qde_realme/features/home/presentation/pages/add_single_item_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/bonuses_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/confirm_account_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/home_page_slave.dart';
@@ -78,6 +79,11 @@ class AppRouter {
         path: '/manage_users',
         name: 'manage_users',
         builder: (context, state) => const ManageUsersPage(),
+      ),
+      GoRoute(
+        path: '/add_single_item',
+        name: 'add_single_item',
+        builder: (context, state) => const AddSingleItemPage(),
       ),
     ],
   );
