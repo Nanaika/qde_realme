@@ -36,12 +36,30 @@ class ExcelService {
     final int totalRows = sheet.maxRows;
 
     for (int i = 4; i < totalRows; i++) {
+      final cellA = sheet.cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: i));
+      final valueA = cellA.value?.toString().trim() ?? '';
+
       final cellB = sheet.cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: i));
-      final value = cellB.value?.toString().trim() ?? '';
+      final valueB = cellB.value?.toString().trim() ?? '';
 
-      if (value.isEmpty) continue;
+      final cellC = sheet.cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: i));
+      final valueC = cellC.value?.toString().trim() ?? '';
 
-      items.add(ItemModel(id: '', imei1: value, imei2: '', article: '', skuName: ''));
+      final cellD = sheet.cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: i));
+      final valueD = cellD.value?.toString().trim() ?? '';
+
+      if (valueA.isEmpty || valueB.isEmpty || valueC.isEmpty || valueD.isEmpty) continue;
+
+      items.add(ItemModel(id: '', imei1: valueB, imei2: valueC, article: valueA, skuName: valueD));
+    }
+
+    for (int i = 0; i < items.length; i++) {
+      print('=================  ${items[i].id}');
+      print('=================  ${items[i].article}');
+      print('=================  ${items[i].imei1}');
+      print('=================  ${items[i].imei2}');
+      print('=================  ${items[i].skuName}');
+      print('=================  ');
     }
 
     return items;

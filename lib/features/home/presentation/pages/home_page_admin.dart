@@ -47,7 +47,9 @@ class HomePageAdmin extends StatelessWidget {
                   Expanded(
                     child: AdminButton(
                       text: 'Import',
-                      onTap: () {},
+                      onTap: () {
+                        context.push('/add_excel_items');
+                      },
                     ),
                   ),
                 ],

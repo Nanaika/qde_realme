@@ -11,7 +11,7 @@ class AddItemsBloc extends Bloc<AddItemsEvent, AddItemsState> {
   final ExcelService excelService;
 
   AddItemsBloc({required this.repository, required this.excelService}) : super(AddItemsInitial()) {
-    on<AddMEvent>(_onConfirmAccount);
+    on<AddMEvent>(_onAddM);
     on<ParseEvent>(_onParseExcel);
     on<SaveExcelEvent>(_onSaveExcel);
   }
@@ -42,7 +42,7 @@ class AddItemsBloc extends Bloc<AddItemsEvent, AddItemsState> {
     }
   }
 
-  Future<void> _onConfirmAccount(AddMEvent event, Emitter<AddItemsState> emit) async {
+  Future<void> _onAddM(AddMEvent event, Emitter<AddItemsState> emit) async {
     emit(AddItemsLoading());
 
     try {
