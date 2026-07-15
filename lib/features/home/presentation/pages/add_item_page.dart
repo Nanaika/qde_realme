@@ -47,7 +47,7 @@ class _AddItemPageState extends State<AddItemPage> {
                         TextField(controller: controller),
                         ElevatedButton(
                           onPressed: () {
-                            final item = ItemModel(id: '', imei: controller.text);
+                            final item = ItemModel(id: '', imei1: controller.text, imei2: '', article: '', skuName: '');
                             context.read<AddItemBloc>().add(AddEvent(item));
                           },
                           child: Text('add'),
@@ -67,9 +67,12 @@ class _AddItemPageState extends State<AddItemPage> {
                           },
                           child: Text('Parse = ${excelFilePath}'),
                         ),
-                        ElevatedButton(onPressed: () {
-                          context.read<AddItemsBloc>().add(SaveExcelEvent());
-                        }, child: Text('SAVE')),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<AddItemsBloc>().add(SaveExcelEvent());
+                          },
+                          child: Text('SAVE'),
+                        ),
                       ],
                     ),
                   );

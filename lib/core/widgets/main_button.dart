@@ -8,8 +8,10 @@ class MainButton extends StatelessWidget {
   const MainButton({
     super.key,
     this._onTap,
+    this.text = '',
   });
   final void Function()? _onTap;
+  final String text;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -31,7 +33,7 @@ class MainButton extends StatelessWidget {
           ),
         ),
         child: Text(
-          'Login',
+          text,
           style: ThemeTextStyles.button(context).copyWith(fontSize: 16, fontWeight: FontWeight.w300),
         ),
       ),

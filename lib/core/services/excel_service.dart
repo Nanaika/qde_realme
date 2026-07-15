@@ -41,11 +41,9 @@ class ExcelService {
 
       if (value.isEmpty) continue;
 
-      items.add(ItemModel(id: '', imei: value));
+      items.add(ItemModel(id: '', imei1: value, imei2: '', article: '', skuName: ''));
     }
-for(int i = 0; i < items.length; i++) {
-print('${items[i].imei}');
-}
+
     return items;
   }
 }
