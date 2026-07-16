@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path/path.dart' as p;
 import 'package:qde_realme/core/theme/theme_dimensions.dart';
 import 'package:qde_realme/core/theme/theme_text_styles.dart';
+import 'package:qde_realme/core/utils/app_constants.dart';
 import 'package:qde_realme/core/widgets/main_button.dart';
 import 'package:qde_realme/features/home/add_items/add_items_bloc.dart';
+import 'package:qde_realme/features/home/presentation/pages/add_single_item_page.dart';
 
 import '../../add_items/add_items_event.dart';
 import '../../add_items/add_items_state.dart';
@@ -28,10 +31,30 @@ class _AddExcelItemsState extends State<AddExcelItems> {
       listenWhen: (previous, current) => previous.runtimeType != current.runtimeType,
       listener: (BuildContext context, state) {
         if (state is AddItemsLoading) {
+          LoadingDialog.show(context);
         } else {
           if (ModalRoute.of(context)?.isCurrent == false) {}
         }
-        if (state is AddItemsSuccess) {}
+        if (state is AddItemsSuccess) {
+          LoadingDialog.hide(context);
+          if (state.message == '') {
+            setState(() {
+              excelFilePath = 'file name';
+            });
+          }
+        }
+        if (state is AddItemsError) {
+          LoadingDialog.hide(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.failure.message,
+                style: ThemeTextStyles.bodyMedium(context),
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
       },
       child: Scaffold(
         // appBar: AppBar(
@@ -74,32 +97,27 @@ class _AddExcelItemsState extends State<AddExcelItems> {
                         'Please pick excel file',
                         style: ThemeTextStyles.titleMedium(context),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       ExcelTile(
                         title: 'File name',
-                        fileName: excelFilePath,
+                        fileName: p.basename(excelFilePath),
                         onOpen: () async {
-                          // 1. Забираем Блок сразу, пока контекст жив и стабилен
                           final bloc = context.read<AddItemsBloc>();
 
-                          // 2. Ждем файл
                           final filePath = await pickExcelFile() ?? '';
 
-                          // 3. Если путь пустой — ничего не делаем
                           if (filePath.isEmpty) return;
 
-                          // 4. Проверяем, что виджет все еще на экране (монтирован)
                           if (!mounted) return;
 
-                          // 5. Передаем путь и обновляем стейт
                           excelFilePath = filePath;
                           bloc.add(ParseEvent(excelFilePath));
                           setState(() {});
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 40,
                       ),
                       Center(
@@ -107,6 +125,7 @@ class _AddExcelItemsState extends State<AddExcelItems> {
                           text: 'Save',
                           onTap: () {
                             FocusManager.instance.primaryFocus?.unfocus();
+                            context.read<AddItemsBloc>().add(SaveExcelEvent());
                           },
                         ),
                       ),
@@ -166,7 +185,7 @@ class ExcelTile extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: const Color(
                     0x1A888888,
@@ -177,12 +196,12 @@ class ExcelTile extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           CupertinoIcons.device_phone_portrait,
                           color: Colors.black,
                           size: 15,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 4,
                         ),
                         Expanded(
@@ -192,6 +211,22 @@ class ExcelTile extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                    BlocBuilder<AddItemsBloc, AddItemsState>(
+                      builder: (BuildContext context, state) {
+                        if (state is AddItemsSuccess) {
+                          if (state.message == AppConstants.parseComplete) {
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 16),
+                              child: CompleteTile(),
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -216,6 +251,36 @@ class ExcelTile extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ],
+    );
+  }
+}
+
+class CompleteTile extends StatelessWidget {
+  const CompleteTile({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          'Completed',
+          style: ThemeTextStyles.bodySmall(
+            context,
+          ).copyWith(color: Colors.black, fontWeight: FontWeight.w300),
+        ),
+        const SizedBox(
+          width: 4,
+        ),
+        const Icon(
+          CupertinoIcons.checkmark_alt_circle_fill,
+          color: Colors.green,
+          size: 12,
         ),
       ],
     );

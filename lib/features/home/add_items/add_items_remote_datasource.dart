@@ -32,17 +32,15 @@ class AddItemsRemoteDataSourceImpl implements AddItemsRemoteDataSource {
 
           // Записываем ID документа внутрь данных, если это необходимо
           data['id'] = docRef.id;
+          data['date'] = FieldValue.serverTimestamp();
 
           batch.set(docRef, data);
         }
 
         // Пуляем пачку в базу и ждем завершения, прежде чем брать следующую
         await batch.commit();
-        print('Загружен батч: с $i по ${end - 1}');
       }
-      print('Все данные успешно загружены батчами!');
     } catch (e) {
-      print('Ошибка при загрузке батча в Firestore: $e');
       rethrow; // Прокидываем ошибку дальше в Блок, если надо её там поймать
     }
   }

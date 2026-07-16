@@ -25,6 +25,9 @@ class AppConstants {
   //Remote config names
   static const String adminEmails = 'admin_emails';
 
+  //other
+  static const String parseComplete = 'parse_complete';
+
   // Private constructor
   AppConstants._();
 }

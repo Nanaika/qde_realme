@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qde_realme/core/services/excel_service.dart';
+import 'package:qde_realme/core/utils/app_constants.dart';
 
 import '../../../core/error/failures.dart';
 import 'add_items_event.dart';
@@ -22,6 +23,7 @@ class AddItemsBloc extends Bloc<AddItemsEvent, AddItemsState> {
       await repository.add(excelService.innerItems);
 
       emit(AddItemsSuccess());
+      excelService.clear();
     } on Failure catch (failure) {
       emit(AddItemsError(failure));
     } catch (e) {
@@ -34,7 +36,7 @@ class AddItemsBloc extends Bloc<AddItemsEvent, AddItemsState> {
     try {
       await excelService.parse(event.path);
 
-      emit(AddItemsSuccess());
+      emit(AddItemsSuccess(message: AppConstants.parseComplete));
     } on Failure catch (failure) {
       emit(AddItemsError(failure));
     } catch (e) {
