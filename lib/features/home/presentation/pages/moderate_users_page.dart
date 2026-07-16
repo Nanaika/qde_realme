@@ -1,11 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import 'package:qde_realme/core/utils/app_constants.dart';
-import 'package:qde_realme/features/auth/data/models/user_model.dart';
+import 'package:go_router/go_router.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 
+import '../../../../core/theme/theme_dimensions.dart';
+import '../../../../core/theme/theme_text_styles.dart';
 import '../../moferate_users/moderate_users_bloc.dart';
 import '../../moferate_users/moderate_users_event.dart';
 import '../../moferate_users/moderate_users_state.dart';
@@ -45,60 +46,105 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          for (int i = 0; i < 100; i++) {
-            FirebaseFirestore.instance
-                .collection(AppConstants.moderateUsers)
-                .add(UserModel(id: '${i}', email: 'test', number: '', isModerated: false).toJson());
-          }
-        },
-      ),
       body: SafeArea(
-        child: Column(
-          children: [
-            const Text("MODERATE USERS PAGE"),
-            Expanded(
-              child: BlocBuilder<ModerateUsersBloc, ModerateUsersState>(
-                builder: (context, state) {
-                  if (state is ModerateUsersLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (state is ModerateUsersError) {
-                    return const Center(child: Text("Error"));
-                  }
-                  if (state is ModerateUsersSuccess) {
-                    if (state.items.isEmpty) {
-                      return const Center(child: Text("Empty"));
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingM, vertical: ThemeDimensions.paddingM),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      context.pop();
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(color: Colors.transparent),
+                      child: const Icon(CupertinoIcons.arrow_left),
+                    ),
+                  ),
+                  SizedBox(
+                    width: ThemeDimensions.paddingM,
+                  ),
+                  Text(
+                    'Moderate users',
+                    style: ThemeTextStyles.titleMedium(context),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+
+              Expanded(
+                child: BlocBuilder<ModerateUsersBloc, ModerateUsersState>(
+                  builder: (context, state) {
+                    if (state is ModerateUsersLoading) {
+                      return const Center(child: CircularProgressIndicator());
                     }
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        context.read<ModerateUsersBloc>().add(ModerateUsersGetFirstEvent());
-                      },
-                      child: ListView.builder(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        controller: _scrollController,
-                        itemCount: state.items.length + (state.isMoreLoading ? 1 : 0),
-                        itemBuilder: (context, index) {
-                          if (index >= state.items.length) {
-                            return const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Center(child: CircularProgressIndicator()),
-                            );
-                          }
-                          final user = state.items[index];
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(color: Colors.blue),
+                    if (state is ModerateUsersError) {
+                      final message = state.failure;
+
+                      return Center(child: Text(message.message));
+                    }
+                    if (state is ModerateUsersSuccess) {
+                      if (state.items.isEmpty) {
+                        return const Center(child: Text("Empty"));
+                      }
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          context.read<ModerateUsersBloc>().add(ModerateUsersGetFirstEvent());
+                        },
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          controller: _scrollController,
+                          itemCount: state.items.length + (state.isMoreLoading ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            if (index >= state.items.length) {
+                              return const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Center(child: CircularProgressIndicator()),
+                              );
+                            }
+                            final user = state.items[index];
+                            return Container(
+                              padding: const EdgeInsets.all(30),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                              ),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(user.id),
-                                  Text(user.email),
-                                  Text(user.number),
-                                  Text('Moderated = ${user.isModerated.toString()}'),
+                                  Text(
+                                    user.id,
+                                    style: ThemeTextStyles.headlineSmall(
+                                      context,
+                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    user.email,
+                                    style: ThemeTextStyles.headlineSmall(
+                                      context,
+                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    user.number,
+                                    style: ThemeTextStyles.headlineSmall(
+                                      context,
+                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    'Moderated = ${user.isModerated.toString()}',
+                                    style: ThemeTextStyles.headlineSmall(
+                                      context,
+                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       GestureDetector(
                                         onTap: () {
@@ -139,19 +185,19 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                   ),
                                 ],
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  }
+                            );
+                          },
+                        ),
+                      );
+                    }
 
-                  // Вместо пустого SizedBox возвращаем крутилку для Initial стейта
-                  return const Center(child: CircularProgressIndicator());
-                },
+                    // Вместо пустого SizedBox возвращаем крутилку для Initial стейта
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

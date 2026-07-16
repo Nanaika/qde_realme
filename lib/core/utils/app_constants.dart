@@ -27,6 +27,7 @@ class AppConstants {
 
   //other
   static const String parseComplete = 'parse_complete';
+  static const String onPayLoading = 'on_pay_loading';
 
   // Private constructor
   AppConstants._();

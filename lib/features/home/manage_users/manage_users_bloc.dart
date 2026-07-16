@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qde_realme/core/utils/app_constants.dart';
 
 import '../../../core/error/failures.dart';
 import 'manage_users_event.dart';
@@ -28,7 +29,7 @@ class ManageUsersBloc extends Bloc<ManageUsersEvent, ManageUsersState> {
   }
 
   Future<void> _onPay(ManageUsersPayEvent event, Emitter<ManageUsersState> emit) async {
-    emit(ManageUsersLoading());
+    emit(ManageUsersLoading(message: AppConstants.onPayLoading));
 
     try {
       await repository.pay(event.userId);

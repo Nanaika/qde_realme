@@ -68,14 +68,18 @@ class HomePageAdmin extends StatelessWidget {
                   Expanded(
                     child: AdminButton(
                       text: 'Sellers',
-                      onTap: () {},
+                      onTap: () {
+                        context.push('/moderate_users');
+                      },
                     ),
                   ),
                   SizedBox(width: ThemeDimensions.spacingM),
                   Expanded(
                     child: AdminButton(
                       text: 'Sales',
-                      onTap: () {},
+                      onTap: () {
+                        context.push('/moderate_sales');
+                      },
                     ),
                   ),
                 ],
@@ -94,7 +98,9 @@ class HomePageAdmin extends StatelessWidget {
                   Expanded(
                     child: AdminButton(
                       text: 'Users',
-                      onTap: () {},
+                      onTap: () {
+                        context.push('/manage_users');
+                      },
                     ),
                   ),
                   SizedBox(width: ThemeDimensions.spacingM),

@@ -6,7 +6,11 @@ abstract class ManageUsersState {}
 
 class ManageUsersInitial extends ManageUsersState {}
 
-class ManageUsersLoading extends ManageUsersState {}
+class ManageUsersLoading extends ManageUsersState {
+  final String message;
+
+  ManageUsersLoading({this.message = ''});
+}
 
 class ManageUsersSuccess extends ManageUsersState {
   final List<UserModel> users;
