@@ -332,6 +332,9 @@ class _BonusesPageState extends State<BonusesPage> {
                                         child: Column(
                                           children: [
                                             CustomTextField(
+                                              textStyle: ThemeTextStyles.headlineMedium(
+                                                context,
+                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
                                               hintText: 'Articul',
                                               controller: _keyControllers[index],
                                             ),
@@ -340,6 +343,9 @@ class _BonusesPageState extends State<BonusesPage> {
                                               children: [
                                                 Expanded(
                                                   child: CustomTextField(
+                                                    textStyle: ThemeTextStyles.headlineMedium(
+                                                      context,
+                                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
                                                     hintText: 'Value',
                                                     controller: _valueControllers[index],
                                                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],

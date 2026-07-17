@@ -95,6 +95,9 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                         child: Column(
                           children: [
                             Tile(
+                              textStyle: ThemeTextStyles.headlineMedium(
+                                context,
+                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
                               title: 'ARTICLE',
                               hintText: '123456789...',
                               controller: articleController,
@@ -105,6 +108,9 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                               height: 20,
                             ),
                             Tile(
+                              textStyle: ThemeTextStyles.headlineMedium(
+                                context,
+                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
                               title: 'IMEI 1',
                               hintText: '123456789...',
                               controller: imei1Controller,
@@ -115,6 +121,9 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                               height: 20,
                             ),
                             Tile(
+                              textStyle: ThemeTextStyles.headlineMedium(
+                                context,
+                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
                               title: 'IMEI 2',
                               hintText: '123456789...',
                               controller: imei2Controller,
@@ -125,6 +134,9 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                               height: 20,
                             ),
                             Tile(
+                              textStyle: ThemeTextStyles.headlineMedium(
+                                context,
+                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
                               title: 'SKU NAME',
                               hintText: 'realme 51 ...',
                               controller: skuNameController,
@@ -198,6 +210,7 @@ class Tile extends StatelessWidget {
     this.keyboardType,
     this.inputFormatters,
     this.maxLines = 1,
+    this.textStyle,
   });
 
   final String title;
@@ -206,6 +219,7 @@ class Tile extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLines;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -229,6 +243,7 @@ class Tile extends StatelessWidget {
                 height: 20,
               ),
               CustomTextField(
+                textStyle: textStyle,
                 hintText: hintText,
                 controller: controller,
                 inputFormatters: inputFormatters,
@@ -251,6 +266,8 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.inputFormatters,
     this.maxLines = 1,
+    this.suffixIcon,
+    this.textStyle,
   });
 
   final TextEditingController? controller;
@@ -258,6 +275,8 @@ class CustomTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final int? maxLines;
+  final Widget? suffixIcon;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -266,11 +285,10 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       controller: controller,
-      style: ThemeTextStyles.headlineMedium(
-        context,
-      ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+      style: textStyle,
       // Цвет вводимого текста
       decoration: InputDecoration(
+        suffixIcon: suffixIcon,
         hintText: hintText,
         hintStyle: TextStyle(color: Colors.grey[500]),
         filled: true,

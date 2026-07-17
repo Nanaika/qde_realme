@@ -20,27 +20,40 @@ class ManageUsersPage extends StatefulWidget {
 }
 
 class _ManageUsersPageState extends State<ManageUsersPage> {
+  late final TextEditingController searchController;
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
-    // Триггерим загрузку пользователей при входе на экран
+
     context.read<ManageUsersBloc>().add(ManageUsersGetEvent());
+    searchController = TextEditingController();
+    searchController.addListener(() {
+      setState(() {
+        _searchQuery = searchController.text.toLowerCase().trim();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<ManageUsersBloc, ManageUsersState>(
       listenWhen: (previous, current) {
-        // 1. Если текущий стейт — это лоадинг оплаты, то ОДНОЗНАЧНО пускаем в листенер (показать диалог)
         if (current is ManageUsersLoading && current.message == AppConstants.onPayLoading) {
           return true;
         }
-        // 2. Если предыдущий стейт был лоадингом оплаты, а сейчас он сменился на что-то другое (успех, ошибка или другой лоадинг)
-        // — тоже пускаем в листенер (чтобы сработал hide)
+
         if (previous is ManageUsersLoading && previous.message == AppConstants.onPayLoading) {
           return true;
         }
-        // Во всех остальных случаях (включая запуск экрана с Success) листенер просто игнорирует события
+
         return false;
       },
       listener:
@@ -48,12 +61,10 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
             BuildContext context,
             state,
           ) {
-            // 1. Показываем диалог ТОЛЬКО когда идет конкретная загрузка (оплата)
             if (state is ManageUsersLoading && state.message == AppConstants.onPayLoading) {
               LoadingDialog.show(context);
             }
 
-            // 2. Скрываем диалог ТОЛЬКО когда операция завершилась (успех или ошибка)
             if (state is ManageUsersSuccess || state is ManageUsersError) {
               LoadingDialog.hide(context);
             }
@@ -98,6 +109,22 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                 const SizedBox(
                   height: 20,
                 ),
+                CustomTextField(
+                  textStyle: ThemeTextStyles.headlineMedium(
+                    context,
+                  ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                  suffixIcon: _searchQuery.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(CupertinoIcons.clear_circled_solid, color: Colors.grey),
+                          onPressed: () => searchController.clear(),
+                        )
+                      : null,
+                  hintText: 'Search',
+                  controller: searchController,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 BlocBuilder<ManageUsersBloc, ManageUsersState>(
                   builder: (context, state) {
                     if (state is ManageUsersLoading && state.message == '') {
@@ -117,12 +144,37 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                         );
                       }
 
+                      // 2. Фильтруем его по всем текстовым полям (приводим к lowerCase для точности)
+                      final List<UserModel> filteredUsers = users.where((user) {
+                        final query = _searchQuery;
+                        if (query.isEmpty) return true; // Если поиск пустой — показываем всех
+
+                        return user.id.toLowerCase().contains(query) ||
+                            user.email.toLowerCase().contains(query) ||
+                            (user.name ?? '').toLowerCase().contains(query) ||
+                            user.number.toLowerCase().contains(query) ||
+                            (user.city ?? '').toLowerCase().contains(query) ||
+                            (user.district ?? '').toLowerCase().contains(query);
+                      }).toList();
+
+                      // 3. Если после фильтрации ничего не нашли
+                      if (filteredUsers.isEmpty) {
+                        return const Expanded(
+                          child: Center(
+                            child: Text(
+                              'No matching users found',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                        );
+                      }
+
                       return Expanded(
                         child: ListView.separated(
-                          itemCount: users.length,
+                          itemCount: filteredUsers.length,
                           separatorBuilder: (ctx, index) => const SizedBox(height: 16),
                           itemBuilder: (ctx, index) {
-                            final user = users[index];
+                            final user = filteredUsers[index];
 
                             return Container(
                               padding: const EdgeInsets.all(16),
@@ -133,11 +185,15 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                               child: Column(
                                 children: [
                                   Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       // Иконка или аватарка юзера
-                                      CircleAvatar(
-                                        backgroundColor: Colors.grey[700],
-                                        child: const Icon(Icons.person, color: Colors.white),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 2.0),
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.grey[700],
+                                          child: const Icon(Icons.person, color: Colors.white),
+                                        ),
                                       ),
                                       const SizedBox(width: 16),
 
@@ -152,7 +208,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                                 context,
                                               ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
                                             ),
-                                            const SizedBox(height: 4),
+
                                             Text(
                                               user.email,
                                               style: ThemeTextStyles.bodySmall(
@@ -161,6 +217,24 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                             ),
                                             Text(
                                               user.number == '' ? 'No number' : user.number,
+                                              style: ThemeTextStyles.bodySmall(
+                                                context,
+                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                            ),
+                                            Text(
+                                              user.name == '' ? 'No name' : user.name!,
+                                              style: ThemeTextStyles.bodySmall(
+                                                context,
+                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                            ),
+                                            Text(
+                                              user.city == '' ? 'No city' : user.city!,
+                                              style: ThemeTextStyles.bodySmall(
+                                                context,
+                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                            ),
+                                            Text(
+                                              user.district == '' ? 'No district' : user.district!,
                                               style: ThemeTextStyles.bodySmall(
                                                 context,
                                               ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
