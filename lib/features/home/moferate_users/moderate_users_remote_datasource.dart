@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:qde_realme/core/utils/app_constants.dart';
 import 'package:qde_realme/features/auth/data/models/user_model.dart';
+import 'package:qde_realme/features/home/history/history_model.dart';
+import 'package:qde_realme/features/home/history/history_type.dart';
 
 abstract class ModerateUsersRemoteDataSource {
   Future<List<UserModel>> getFirst();
@@ -66,16 +68,26 @@ class ModerateUsersRemoteDataSourceImpl implements ModerateUsersRemoteDataSource
     final batch = db.batch();
 
     // 2. Ссылки на документы
+    final userModerateModelSnap = await db.collection(AppConstants.moderateUsers).doc(userId).get();
+    final userModel = UserModel.fromJson(userModerateModelSnap.data() ?? {});
     final userRef = db.collection(AppConstants.users).doc(userId);
     final moderateUserRef = db.collection(AppConstants.moderateUsers).doc(userId);
-    final historyRef = db.collection(AppConstants.users).doc(userId).collection(AppConstants.history).doc(); // .doc() без параметров создает новый ID для add-операции
+    final historyRef = db
+        .collection(AppConstants.users)
+        .doc(userId)
+        .collection(AppConstants.history)
+        .doc(); // .doc() без параметров создает новый ID для add-операции
 
     // 3. Навешиваем операции на батч
-    batch.update(userRef, {'isModerated': isModerated});
+    batch.update(userRef, {...userModel.toJson(), 'isModerated': isModerated});
     batch.delete(moderateUserRef);
+    final history = HistoryModel(
+      message: userId,
+      type: isModerated ? HistoryType.userAccepted.name : HistoryType.userDeclined.name,
+    );
     batch.set(historyRef, {
+      ...history.toJson(),
       'date': FieldValue.serverTimestamp(),
-      'message': 'user isModerate to $isModerated',
     });
 
     // 4. Пуляем всё это одним махом в базу

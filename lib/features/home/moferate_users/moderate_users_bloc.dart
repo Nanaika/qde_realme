@@ -1,8 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qde_realme/features/home/moferate_users/moderate_users_event.dart';
 import 'package:qde_realme/features/home/moferate_users/moderate_users_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../core/di/injection_container.dart';
 import '../../../core/error/failures.dart';
+import '../../../core/utils/app_constants.dart';
 import '../../auth/data/models/user_model.dart';
 import 'moderate_users_repository.dart';
 
@@ -16,9 +19,9 @@ class ModerateUsersBloc extends Bloc<ModerateUsersEvent, ModerateUsersState> {
   }
 
   Future<void> _onModerateUser(
-      ModerateUserEvent event,
-      Emitter<ModerateUsersState> emit,
-      ) async {
+    ModerateUserEvent event,
+    Emitter<ModerateUsersState> emit,
+  ) async {
     // Действуем только если текущий стейт успешный и у нас есть список юзеров
     if (state is ModerateUsersSuccess) {
       final currentState = state as ModerateUsersSuccess;
@@ -26,15 +29,14 @@ class ModerateUsersBloc extends Bloc<ModerateUsersEvent, ModerateUsersState> {
       try {
         // 1. Сразу удаляем юзера из локального списка на UI, чтобы приложение не тупило
         // и юзер мгновенно исчезал с экрана (Optimistic UI)
-        final updatedItems = List<UserModel>.from(currentState.items)
-          ..removeWhere((user) => user.id == event.userId);
+        final updatedItems = List<UserModel>.from(currentState.items)..removeWhere((user) => user.id == event.userId);
 
         // Выплевываем обновленный список (без этого юзера)
         emit(currentState.copyWith(items: updatedItems));
 
         // 2. Стучимся в репозиторий к нашему батчу
         await repository.moderateUser(event.isModerated, event.userId);
-
+        getIt<SharedPreferences>().setBool(AppConstants.keyIsFirstEnter, true);
       } on Failure catch (failure) {
         // Если сервак ответил ошибкой — возвращаем юзера обратно в список и показываем ошибку
         emit(ModerateUsersError(failure));
@@ -76,7 +78,6 @@ class ModerateUsersBloc extends Bloc<ModerateUsersEvent, ModerateUsersState> {
 
         // Выплевываем обновленный стейт с полным списком
         emit(ModerateUsersSuccess(items: updatedList));
-
       } on Failure catch (failure) {
         emit(ModerateUsersError(failure));
       } catch (e) {

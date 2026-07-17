@@ -61,6 +61,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 const Spacer(),
                 MainButton(
+                  text: 'Login',
                   onTap: () {
                     context.read<AuthBloc>().add(LoginEvent());
                   },

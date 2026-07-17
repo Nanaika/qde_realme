@@ -135,6 +135,24 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                     ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
                                   ),
                                   Text(
+                                    user.name ?? '',
+                                    style: ThemeTextStyles.headlineSmall(
+                                      context,
+                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    user.city ?? '',
+                                    style: ThemeTextStyles.headlineSmall(
+                                      context,
+                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    user.district == '' ? 'No district' : user.district!,
+                                    style: ThemeTextStyles.headlineSmall(
+                                      context,
+                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
                                     'Moderated = ${user.isModerated.toString()}',
                                     style: ThemeTextStyles.headlineSmall(
                                       context,

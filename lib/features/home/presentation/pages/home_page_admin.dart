@@ -134,29 +134,7 @@ class HomePageAdmin extends StatelessWidget {
                   ),
                 ],
               ),
-              ElevatedButton(
-                onPressed: () {
-                  context.push('/add_item');
-                },
-                child: Text('add item screen'),
-              ),
-              SizedBox(height: ThemeDimensions.spacingXL),
-              ElevatedButton(
-                onPressed: () {
-                  context.push('/moderate_users');
-                },
-                child: Text('MODERATE USERS'),
-              ),
 
-              SizedBox(height: ThemeDimensions.spacingM),
-              ElevatedButton(
-                onPressed: () {
-                  context.push('/moderate_sales');
-                },
-                child: Text('MODERATE SALES'),
-              ),
-
-              SizedBox(height: ThemeDimensions.spacingM),
               ElevatedButton(
                 onPressed: () {
                   context.push('/homeslave');
@@ -164,20 +142,6 @@ class HomePageAdmin extends StatelessWidget {
                 child: Text('Change to slave'),
               ),
 
-              SizedBox(height: ThemeDimensions.spacingXL),
-              ElevatedButton(
-                onPressed: () {
-                  context.push('/bonuses');
-                },
-                child: Text('Bonuses'),
-              ),
-
-              ElevatedButton(
-                onPressed: () {
-                  context.push('/manage_users');
-                },
-                child: Text('Manage users'),
-              ),
               ElevatedButton(
                 onPressed: () async {
                   await FirebaseAuth.instance.signOut();

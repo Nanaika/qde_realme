@@ -1,18 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qde_realme/core/theme/theme_dimensions.dart';
 import 'package:qde_realme/core/theme/theme_text_styles.dart';
 import 'package:qde_realme/core/utils/app_constants.dart';
-import 'package:qde_realme/core/widgets/language_toggle.dart';
-import 'package:qde_realme/core/widgets/theme_toggle.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_bloc.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_event.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_state.dart';
-import 'package:qde_realme/generated/locale_keys.g.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/di/injection_container.dart';
@@ -37,55 +33,144 @@ class _HomePageSlaveState extends State<HomePageSlave> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(LocaleKeys.home_title.tr()), actions: const [LanguageToggle(), ThemeToggle()]),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: ThemeDimensions.spacingM),
-          Text('SLAVE PAGE', style: ThemeTextStyles.headlineLarge(context), textAlign: TextAlign.center),
-          SizedBox(height: ThemeDimensions.spacingS),
-          // Text(
-          //   LocaleKeys.home_description.tr(),
-          //   style: ThemeTextStyles.bodyLarge(context),
-          //   textAlign: TextAlign.center,
-          // ),
-          BlocConsumer<SlaveDataBloc, SlaveDataState>(
-            builder: (BuildContext context, state) {
-              if (state is SlaveDataLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is SlaveDataSuccess) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Text('Bonuses = ${state.data.bonusesSum}'),
-                      Text('accepted = ${state.data.acceptedSum}'),
-                      Text('declined = ${state.data.declinedSum}'),
-                      Text('waiting = ${state.data.awaitingSum}'),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.push('/homeadmin');
-                        },
-                        child: Text('Change to admin'),
+      // appBar: AppBar(title: Text(LocaleKeys.home_title.tr()), actions: const [LanguageToggle(), ThemeToggle()]),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingM, vertical: ThemeDimensions.paddingM),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Text(
+              //   LocaleKeys.home_description.tr(),
+              //   style: ThemeTextStyles.bodyLarge(context),
+              //   textAlign: TextAlign.center,
+              // ),
+              Text(
+                'Hello',
+                style: ThemeTextStyles.headlineLarge(context),
+              ),
+              BlocConsumer<SlaveDataBloc, SlaveDataState>(
+                builder: (BuildContext context, state) {
+                  if (state is SlaveDataLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is SlaveDataSuccess) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.heightOf(context) / 6,
+                            width: double.infinity,
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.lightBlueAccent,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${state.data.bonusesSum} \$',
+                                style: ThemeTextStyles.headlineLarge(context).copyWith(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: MediaQuery.heightOf(context) / 10,
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'accepted = ${state.data.acceptedSum}',
+                                      style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: MediaQuery.heightOf(context) / 10,
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'declined = ${state.data.declinedSum}',
+                                      style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: MediaQuery.heightOf(context) / 10,
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Colors.yellow,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'waiting = ${state.data.acceptedSum}',
+                                      style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                child: SizedBox.shrink(),
+                              ),
+                            ],
+                          ),
+
+                          ElevatedButton(
+                            onPressed: () {
+                              context.push('/homeadmin');
+                            },
+                            child: Text('Change to admin'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.push('/history');
+                            },
+                            child: Text('history'),
+                          ),
+                        ],
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.push('/history');
-                        },
-                        child: Text('history'),
-                      ),
-                    ],
-                  ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
-            listener: (BuildContext context, state) {
-              if (state is SlaveDataError) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.failure.message)));
-              }
-            },
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+                listener: (BuildContext context, state) {
+                  if (state is SlaveDataError) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.failure.message)));
+                  }
+                },
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
