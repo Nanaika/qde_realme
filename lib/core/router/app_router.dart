@@ -7,6 +7,7 @@ import 'package:qde_realme/features/home/presentation/pages/add_single_item_page
 import 'package:qde_realme/features/home/presentation/pages/bonuses_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/confirm_account_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/home_page_slave.dart';
+import 'package:qde_realme/features/home/presentation/pages/imei_scanner_screen.dart';
 import 'package:qde_realme/features/home/presentation/pages/manage_users_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/moderate_users_page.dart';
 
@@ -90,6 +91,11 @@ class AppRouter {
         path: '/add_excel_items',
         name: 'add_excel_items',
         builder: (context, state) => const AddExcelItems(),
+      ),
+      GoRoute(
+        path: '/imei_scanner_page',
+        name: 'imei_scanner_page',
+        builder: (context, state) => const ImeiScannerScreen(),
       ),
     ],
   );

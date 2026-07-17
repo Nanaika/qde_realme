@@ -1,13 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qde_realme/core/widgets/main_button.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_bloc.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_event.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_state.dart';
 import 'package:qde_realme/features/home/add_sale/sale_model.dart';
-import 'package:qde_realme/features/home/presentation/pages/imei_scanner_screen.dart';
+
+import '../../../../core/theme/theme_dimensions.dart';
+import '../../../../core/theme/theme_text_styles.dart';
+import 'add_single_item_page.dart';
 
 class AddSalePage extends StatefulWidget {
   const AddSalePage({super.key});
@@ -34,22 +40,54 @@ class _AddSalePageState extends State<AddSalePage> {
         }
         return Scaffold(
           body: SafeArea(
-            child: Column(
-              children: [
-                Text('add sale page'),
-                TextField(controller: controller),
-                ElevatedButton(
-                  onPressed: () {
-                    final ownerId = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
-                    final sale = SaleModel(imei: controller.text, ownerId: ownerId, id: '', bonus: 0);
-                    context.read<AddSaleBloc>().add(AddEvent(sale));
-                  },
-                  child: Text('send'),
-                ),
-                ElevatedButton(onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) { return const ImeiScannerScreen(); }));
-                }, child: Text('test'))
-              ],
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingM, vertical: ThemeDimensions.paddingM),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          context.pop();
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(color: Colors.transparent),
+                          child: const Icon(CupertinoIcons.arrow_left),
+                        ),
+                      ),
+                      SizedBox(
+                        width: ThemeDimensions.paddingM,
+                      ),
+                      Text(
+                        'Add sale',
+                        style: ThemeTextStyles.titleMedium(context),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ImeiTile(
+                    title: 'IMEI',
+                    hintText: '1234 5678 9012 3456',
+                    controller: controller,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    onScan: () {
+                      context.push('/imei_scanner_page');
+                    },
+                  ),
+                  Spacer(),
+                  MainButton(
+                    text: 'Send',
+                    onTap: () {
+                      final ownerId = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
+                      final sale = SaleModel(imei: controller.text, ownerId: ownerId, id: '', bonus: 0);
+                      context.read<AddSaleBloc>().add(AddEvent(sale));
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -61,6 +99,84 @@ class _AddSalePageState extends State<AddSalePage> {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.failure.message)));
         }
       },
+    );
+  }
+}
+
+class ImeiTile extends StatelessWidget {
+  const ImeiTile({
+    super.key,
+    this.title = '',
+    this.hintText = '',
+    this.controller,
+    this.keyboardType,
+    this.inputFormatters,
+    this.maxLines = 1,
+    this.onScan,
+    this.fileName = '',
+  });
+
+  final String title;
+  final String hintText;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLines;
+  final void Function()? onScan;
+  final String fileName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(22),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: ThemeTextStyles.titleSmall(context).copyWith(color: Colors.black),
+                textAlign: TextAlign.start,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              CustomTextField(
+                hintText: '1234 5678 9123 4567',
+                controller: controller,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                textStyle: ThemeTextStyles.headlineMedium(
+                  context,
+                ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Center(
+                child: GestureDetector(
+                  onTap: onScan,
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Text(
+                      'Scan',
+                      style: ThemeTextStyles.headlineMedium(
+                        context,
+                      ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

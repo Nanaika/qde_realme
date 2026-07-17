@@ -54,109 +54,128 @@ class _HomePageSlaveState extends State<HomePageSlave> {
                   if (state is SlaveDataLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is SlaveDataSuccess) {
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Container(
-                            height: MediaQuery.heightOf(context) / 6,
-                            width: double.infinity,
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.lightBlueAccent,
-                              borderRadius: BorderRadius.circular(10.0),
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        _initData();
+                      },
+                      child: SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.heightOf(context) / 6,
+                              width: double.infinity,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.lightBlueAccent,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '${state.data.bonusesSum} \$',
+                                  style: ThemeTextStyles.headlineLarge(context).copyWith(color: Colors.black),
+                                ),
+                              ),
                             ),
-                            child: Center(
-                              child: Text(
-                                '${state.data.bonusesSum} \$',
-                                style: ThemeTextStyles.headlineLarge(context).copyWith(color: Colors.black),
-                              ),
+                            SizedBox(
+                              height: 4,
                             ),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  height: MediaQuery.heightOf(context) / 10,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'accepted = ${state.data.acceptedSum}',
-                                      style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: MediaQuery.heightOf(context) / 10,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'accepted = ${state.data.acceptedSum}',
+                                        style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Expanded(
-                                child: Container(
-                                  height: MediaQuery.heightOf(context) / 10,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'declined = ${state.data.declinedSum}',
-                                      style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: MediaQuery.heightOf(context) / 10,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'declined = ${state.data.declinedSum}',
+                                        style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  height: MediaQuery.heightOf(context) / 10,
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.yellow,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'waiting = ${state.data.acceptedSum}',
-                                      style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: MediaQuery.heightOf(context) / 10,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.yellow,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'waiting = ${state.data.awaitingSum}',
+                                        style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              Expanded(
-                                child: SizedBox.shrink(),
-                              ),
-                            ],
-                          ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: MediaQuery.heightOf(context) / 10,
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'paid = ${state.data.paidSum}',
+                                        style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
 
-                          ElevatedButton(
-                            onPressed: () {
-                              context.push('/homeadmin');
-                            },
-                            child: Text('Change to admin'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.push('/history');
-                            },
-                            child: Text('history'),
-                          ),
-                        ],
+                            ElevatedButton(
+                              onPressed: () {
+                                context.push('/homeadmin');
+                              },
+                              child: Text('Change to admin'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                context.push('/history');
+                              },
+                              child: Text('history'),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   }

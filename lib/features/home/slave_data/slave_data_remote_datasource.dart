@@ -11,16 +11,52 @@ class SlaveDataRemoteDataSourceImpl implements SlaveDataRemoteDataSource {
 
   @override
   Future<SlaveDataModel> getData(String id) async {
-    final acceptedSnaps = await db.collection(AppConstants.users).doc(id).collection(AppConstants.ownerSales).where(
-        'type', isEqualTo:  'accepted').get();
-    final declinedSnaps = await db.collection(AppConstants.users).doc(id).collection(AppConstants.ownerSales).where(
-        'type', isEqualTo:  'declined').get();
-    final onModerationSnaps = await db.collection(AppConstants.users).doc(id).collection(AppConstants.ownerSales).where(
-        'type', isEqualTo:  'onModeration').get();
+    // Запускаем все запросы одновременно
+    final results = await Future.wait([
+      db
+          .collection(AppConstants.users)
+          .doc(id)
+          .collection(AppConstants.ownerSales)
+          .where('type', isEqualTo: 'accepted')
+          .get(),
+      db
+          .collection(AppConstants.users)
+          .doc(id)
+          .collection(AppConstants.ownerSales)
+          .where('type', isEqualTo: 'declined')
+          .get(),
+      db
+          .collection(AppConstants.users)
+          .doc(id)
+          .collection(AppConstants.ownerSales)
+          .where('type', isEqualTo: 'onModeration')
+          .get(),
+      db
+          .collection(AppConstants.users)
+          .doc(id)
+          .collection(AppConstants.ownerSales)
+          .where('type', isEqualTo: 'paid')
+          .get(),
+    ]);
 
-    return SlaveDataModel(bonusesSum: acceptedSnaps.size * 50,
-        acceptedSum: acceptedSnaps.size,
-        declinedSum: declinedSnaps.size,
-        awaitingSum: onModerationSnaps.size);
+    final acceptedSnaps = results[0];
+    final declinedSnaps = results[1];
+    final onModerationSnaps = results[2];
+    final onPaidSnaps = results[3];
+
+    final int totalBonuses = acceptedSnaps.docs.fold<int>(0, (sum, doc) {
+      final data = doc.data();
+
+      final bonus = data['bonus'] as num? ?? 0;
+      return sum + bonus.toInt();
+    });
+
+    return SlaveDataModel(
+      bonusesSum: totalBonuses, // Если тут логика подсчета суммы из прошлой задачи, перепишешь локально через цикл
+      acceptedSum: acceptedSnaps.size,
+      declinedSum: declinedSnaps.size,
+      awaitingSum: onModerationSnaps.size,
+      paidSum: onPaidSnaps.size,
+    );
   }
 }
