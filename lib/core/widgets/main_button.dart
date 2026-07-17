@@ -7,17 +7,17 @@ import '../theme/theme_text_styles.dart';
 class MainButton extends StatelessWidget {
   const MainButton({
     super.key,
-    this._onTap,
+    this.onTap,
     this.text = '',
   });
-  final void Function()? _onTap;
+  final void Function()? onTap;
   final String text;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.widthOf(context) / 1.6,
       child: ElevatedButton(
-        onPressed: _onTap,
+        onPressed: onTap,
         style: ButtonStyle(
           shape: WidgetStateProperty.all(
             RoundedRectangleBorder(

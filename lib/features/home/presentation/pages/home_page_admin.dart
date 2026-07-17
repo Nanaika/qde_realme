@@ -123,7 +123,9 @@ class HomePageAdmin extends StatelessWidget {
                   Expanded(
                     child: AdminButton(
                       text: 'Bonuses',
-                      onTap: () {},
+                      onTap: () {
+                        context.push('/bonuses');
+                      },
                     ),
                   ),
                   SizedBox(width: ThemeDimensions.spacingM),
