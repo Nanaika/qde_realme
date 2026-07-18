@@ -29,3 +29,6 @@ class PermissionFailure extends Failure {
   const PermissionFailure([super.message = 'Permission denied']);
 }
 
+class PhoneNotFoundFailure extends Failure {
+  const PhoneNotFoundFailure([super.message = 'Phone not found']);
+}

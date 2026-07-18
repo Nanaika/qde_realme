@@ -46,9 +46,11 @@ class SlaveDataRemoteDataSourceImpl implements SlaveDataRemoteDataSource {
 
     final int totalBonuses = acceptedSnaps.docs.fold<int>(0, (sum, doc) {
       final data = doc.data();
+      print('===========  ${data}');
+      final int bonus = (data['bonus'] as num? ?? 0).toInt();
+      print('===========  ${bonus}');
 
-      final bonus = data['bonus'] as num? ?? 0;
-      return sum + bonus.toInt();
+      return sum + bonus;
     });
 
     return SlaveDataModel(

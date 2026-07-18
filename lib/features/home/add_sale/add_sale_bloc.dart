@@ -9,16 +9,35 @@ class AddSaleBloc extends Bloc<AddSaleEvent, AddSaleState> {
   final AddSaleRepository repository;
 
   AddSaleBloc({required this.repository}) : super(AddSaleInitial()) {
-    on<AddEvent>(_onConfirmAccount);
+    on<AddEvent>(_onAddSale);
+    on<GetPhoneByImeiEvent>(_onGetPhoneByImei);
   }
 
-  Future<void> _onConfirmAccount(AddEvent event, Emitter<AddSaleState> emit) async {
+  Future<void> _onAddSale(AddEvent event, Emitter<AddSaleState> emit) async {
     emit(AddSaleLoading());
 
     try {
       await repository.add(event.sale);
 
       emit(AddSaleSuccess());
+    } on Failure catch (failure) {
+      emit(AddSaleError(failure));
+    } catch (e) {
+      emit(AddSaleError(ServerFailure(e.toString())));
+    }
+  }
+
+  Future<void> _onGetPhoneByImei(GetPhoneByImeiEvent event, Emitter<AddSaleState> emit) async {
+    emit(AddSaleLoading());
+
+    try {
+      final item = await repository.getPhoneByImei(event.imei);
+      if (item == null) {
+        emit(AddSaleError(const PhoneNotFoundFailure()));
+        return;
+      }
+      final bonus = await repository.getPhoneBonus(item.article);
+      emit(GetPhoneByImeiSuccess(item, bonus));
     } on Failure catch (failure) {
       emit(AddSaleError(failure));
     } catch (e) {

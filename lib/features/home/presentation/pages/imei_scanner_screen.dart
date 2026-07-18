@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -51,13 +52,13 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
   Future<void> _initCamera() async {
     final status = await Permission.camera.request();
     if (!status.isGranted) {
-      setState(() => _errorMessage = 'Нужен доступ к камере');
+      setState(() => _errorMessage = 'Need camera permission');
       return;
     }
 
     final cameras = await availableCameras();
     if (cameras.isEmpty) {
-      setState(() => _errorMessage = 'Камеры не найдены');
+      setState(() => _errorMessage = 'Camera not found');
       return;
     }
 
@@ -82,10 +83,66 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       await _cameraController!.startImageStream(_processImage);
       if (mounted) setState(() {});
     } catch (e) {
-      setState(() => _errorMessage = "Ошибка камеры: $e");
+      setState(() => _errorMessage = "Camera error: $e");
     }
   }
 
+  // Future<void> _processImage(CameraImage image) async {
+  //   if (_isProcessing || _cameraController == null) return;
+  //
+  //   final now = DateTime.now();
+  //   // ОПТИМИЗАЦИЯ 1: Обрабатываем кадр только если прошло больше 300 мс с прошлой попытки
+  //   if (_lastProcessedTime != null && now.difference(_lastProcessedTime!).inMilliseconds < 300) {
+  //     return;
+  //   }
+  //
+  //   _isProcessing = true;
+  //   _lastProcessedTime = now;
+  //
+  //   try {
+  //     final inputImage = _convertImageOptimized(image);
+  //     if (inputImage == null) return;
+  //
+  //     final recognizedText = await _textRecognizer.processImage(inputImage);
+  //     final RegExp imeiRegex = RegExp(r'\b\d{15,16}\b');
+  //
+  //     final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+  //     final double imageWidth = isPortrait ? image.height.toDouble() : image.width.toDouble();
+  //     final double imageHeight = isPortrait ? image.width.toDouble() : image.height.toDouble();
+  //
+  //     final double frameTopInImage = imageHeight * 0.4;
+  //     final double frameBottomInImage = imageHeight * 0.6;
+  //
+  //     final List<TextLine> linesInFrame = [];
+  //
+  //     for (TextBlock block in recognizedText.blocks) {
+  //       for (TextLine line in block.lines) {
+  //         final rect = line.boundingBox;
+  //         final double lineCenterY = rect.top + (rect.height / 2);
+  //         if (lineCenterY >= frameTopInImage && lineCenterY <= frameBottomInImage) {
+  //           linesInFrame.add(line);
+  //         }
+  //       }
+  //     }
+  //
+  //     if (linesInFrame.isNotEmpty) {
+  //       linesInFrame.sort((a, b) => (a.boundingBox.top ?? 0).compareTo(b.boundingBox.top ?? 0));
+  //
+  //       final cleanText = linesInFrame.first.text.replaceAll(RegExp(r'[\s-]'), '');
+  //       final match = imeiRegex.firstMatch(cleanText);
+  //
+  //       if (match != null) {
+  //         setState(() {
+  //           _scannedImei = match.group(0)!;
+  //         });
+  //       }
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error: $e');
+  //   } finally {
+  //     _isProcessing = false;
+  //   }
+  // }
   Future<void> _processImage(CameraImage image) async {
     if (_isProcessing || _cameraController == null) return;
 
@@ -131,15 +188,30 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
         final match = imeiRegex.firstMatch(cleanText);
 
         if (match != null) {
+          final String foundImei = match.group(0)!;
+
           setState(() {
-            _scannedImei = match.group(0)!;
+            _scannedImei = foundImei;
           });
+
+          // Выключаем камеру перед выходом
+          if (_cameraController != null && _cameraController!.value.isStreamingImages) {
+            await _cameraController!.stopImageStream();
+          }
+
+          if (mounted) {
+            context.pop(foundImei); // Возвращает значение назад через go_router
+          }
+          return; // Уходим сразу, не сбрасывая _isProcessing
         }
       }
     } catch (e) {
-      debugPrint('Ошибка распознавания: $e');
+      debugPrint('Error: $e');
     } finally {
-      _isProcessing = false;
+      // Сбрасываем флаг для следующего кадра только если IMEI еще не нашли
+      if (_scannedImei == 'Наведите на IMEI') {
+        _isProcessing = false;
+      }
     }
   }
 
@@ -228,5 +300,3 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
     );
   }
 }
-
-

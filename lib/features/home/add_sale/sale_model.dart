@@ -7,7 +7,7 @@ class SaleModel {
   final String ownerId;
   final AddSaleType type;
   final String id;
-  final int bonus; // Добавленное поле
+  final int bonus;
 
   SaleModel({
     required this.imei,
@@ -15,7 +15,7 @@ class SaleModel {
     this.type = AddSaleType.onModeration,
     required this.id,
     this.dateAdded,
-    required this.bonus, // Добавленное поле
+    required this.bonus,
   });
 
   SaleModel copyWith({
@@ -24,7 +24,7 @@ class SaleModel {
     String? ownerId,
     AddSaleType? type,
     String? id,
-    int? bonus, // Добавленное поле
+    int? bonus,
   }) {
     return SaleModel(
       imei: imei ?? this.imei,

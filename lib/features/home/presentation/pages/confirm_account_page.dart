@@ -7,12 +7,9 @@ import 'package:qde_realme/features/auth/data/models/user_model.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 import 'package:qde_realme/features/home/presentation/pages/add_single_item_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../core/di/injection_container.dart';
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
-import '../../../../core/utils/app_constants.dart';
 import '../../../../core/utils/uz_cities.dart';
 import '../../confirm_account/confirm_account_bloc.dart';
 import '../../confirm_account/confirm_account_event.dart';
@@ -162,7 +159,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                     MainButton(
                       onTap: () {
                         if (nameController.text.isEmpty || numberController.text.isEmpty || _selectedCityKey == null) {
-                          ErrorDialog.show(context, 'Enter name number and city');
+                          ErrorDialog.show(context, 'Enter name, number and city');
                           return;
                         }
                         final currentUser = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser;

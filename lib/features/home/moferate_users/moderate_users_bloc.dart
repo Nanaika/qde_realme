@@ -36,7 +36,6 @@ class ModerateUsersBloc extends Bloc<ModerateUsersEvent, ModerateUsersState> {
 
         // 2. Стучимся в репозиторий к нашему батчу
         await repository.moderateUser(event.isModerated, event.userId);
-        getIt<SharedPreferences>().setBool(AppConstants.keyIsFirstEnter, true);
       } on Failure catch (failure) {
         // Если сервак ответил ошибкой — возвращаем юзера обратно в список и показываем ошибку
         emit(ModerateUsersError(failure));

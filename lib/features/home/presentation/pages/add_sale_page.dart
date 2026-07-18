@@ -73,17 +73,93 @@ class _AddSalePageState extends State<AddSalePage> {
                     controller: controller,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    onScan: () {
-                      context.push('/imei_scanner_page');
+                    onScan: () async {
+                      final bloc = context.read<AddSaleBloc>();
+                      final scannedImei = await context.push<String?>(
+                        '/imei_scanner_page',
+                      ); // Твой путь к сканеру в GoRouter
+
+                      if (scannedImei != null && scannedImei.isNotEmpty) {
+                        setState(() {
+                          controller.text = scannedImei;
+                        });
+                        bloc.add(GetPhoneByImeiEvent(imei: scannedImei));
+                      }
+                    },
+                    onSuffixTap: () {
+                      final bloc = context.read<AddSaleBloc>();
+                      bloc.add(GetPhoneByImeiEvent(imei: controller.text));
                     },
                   ),
-                  Spacer(),
-                  MainButton(
-                    text: 'Send',
-                    onTap: () {
-                      final ownerId = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
-                      final sale = SaleModel(imei: controller.text, ownerId: ownerId, id: '', bonus: 0);
-                      context.read<AddSaleBloc>().add(AddEvent(sale));
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  BlocBuilder<AddSaleBloc, AddSaleState>(
+                    builder: (BuildContext context, state) {
+                      if (state is GetPhoneByImeiSuccess) {
+                        return Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.item.id,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                state.item.article,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                state.item.imei1,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                state.item.imei2,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                state.item.date.toString(),
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                state.item.skuName,
+                                style: const TextStyle(color: Colors.black),
+                              ),
+                              Text(
+                                'Bonus = ${state.bonus}',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else if (state is AddSaleError) {
+                        return Text(
+                          state.failure.message,
+                          style: const TextStyle(color: Colors.red),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+
+                  const Spacer(),
+                  BlocBuilder<AddSaleBloc, AddSaleState>(
+                    builder: (BuildContext context, state) {
+                      if (state is GetPhoneByImeiSuccess)
+                        return MainButton(
+                          text: 'Send',
+                          onTap: () {
+                            final ownerId = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
+                            final sale = SaleModel(imei: controller.text, ownerId: ownerId, id: '', bonus: state.bonus);
+                            context.read<AddSaleBloc>().add(AddEvent(sale));
+                          },
+                        );
+                      return const SizedBox.shrink();
                     },
                   ),
                 ],
@@ -96,7 +172,15 @@ class _AddSalePageState extends State<AddSalePage> {
         if (state is AddSaleSuccess) {
           context.pop();
         } else if (state is AddSaleError) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.failure.message)));
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //     content: Text(
+          //       state.failure.message,
+          //       style: TextStyle(color: Colors.white),
+          //     ),
+          //     backgroundColor: Colors.red,
+          //   ),
+          // );
         }
       },
     );
@@ -114,6 +198,7 @@ class ImeiTile extends StatelessWidget {
     this.maxLines = 1,
     this.onScan,
     this.fileName = '',
+    this.onSuffixTap,
   });
 
   final String title;
@@ -124,6 +209,7 @@ class ImeiTile extends StatelessWidget {
   final int? maxLines;
   final void Function()? onScan;
   final String fileName;
+  final void Function()? onSuffixTap;
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +240,9 @@ class ImeiTile extends StatelessWidget {
                 textStyle: ThemeTextStyles.headlineMedium(
                   context,
                 ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                suffixIcon: IconButton(onPressed: onSuffixTap, icon: const Icon(CupertinoIcons.search)),
               ),
+
               const SizedBox(
                 height: 20,
               ),
