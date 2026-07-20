@@ -228,7 +228,7 @@ class Tile extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: const Color(0xFF2A243A),
             borderRadius: BorderRadius.circular(16.0),
           ),
           child: Column(
@@ -236,7 +236,7 @@ class Tile extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: ThemeTextStyles.titleSmall(context).copyWith(color: Colors.black),
+                style: ThemeTextStyles.titleSmall(context).copyWith(color: Colors.white),
                 textAlign: TextAlign.start,
               ),
               const SizedBox(
@@ -290,7 +290,7 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey[500]),
+        hintStyle: TextStyle(color: Colors.grey.withValues(alpha: 0.5)),
         filled: true,
         fillColor: const Color(
           0x1A888888,
@@ -307,7 +307,7 @@ class CustomTextField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none, // Убирает обводку даже при нажатии
+          borderSide: BorderSide.none,
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -41,12 +42,14 @@ class HomePageAdmin extends StatelessWidget {
                       onTap: () {
                         context.push('/add_single_item');
                       },
+                      icon: CupertinoIcons.square_pencil,
                     ),
                   ),
                   SizedBox(width: ThemeDimensions.spacingM),
                   Expanded(
                     child: AdminButton(
                       text: 'Import',
+                      icon: CupertinoIcons.square_arrow_down,
                       onTap: () {
                         context.push('/add_excel_items');
                       },
@@ -68,6 +71,7 @@ class HomePageAdmin extends StatelessWidget {
                   Expanded(
                     child: AdminButton(
                       text: 'Sellers',
+                      icon: CupertinoIcons.checkmark_shield_fill,
                       onTap: () {
                         context.push('/moderate_users');
                       },
@@ -77,6 +81,7 @@ class HomePageAdmin extends StatelessWidget {
                   Expanded(
                     child: AdminButton(
                       text: 'Sales',
+                      icon: CupertinoIcons.bag_fill,
                       onTap: () {
                         context.push('/moderate_sales');
                       },
@@ -98,13 +103,14 @@ class HomePageAdmin extends StatelessWidget {
                   Expanded(
                     child: AdminButton(
                       text: 'Users',
+                      icon: CupertinoIcons.person_crop_circle_fill,
                       onTap: () {
                         context.push('/manage_users');
                       },
                     ),
                   ),
                   SizedBox(width: ThemeDimensions.spacingM),
-                  Expanded(
+                  const Expanded(
                     child: SizedBox.shrink(),
                   ),
                 ],
@@ -123,13 +129,14 @@ class HomePageAdmin extends StatelessWidget {
                   Expanded(
                     child: AdminButton(
                       text: 'Bonuses',
+                      icon: CupertinoIcons.creditcard,
                       onTap: () {
                         context.push('/bonuses');
                       },
                     ),
                   ),
                   SizedBox(width: ThemeDimensions.spacingM),
-                  Expanded(
+                  const Expanded(
                     child: SizedBox.shrink(),
                   ),
                 ],
@@ -181,14 +188,14 @@ class AdminButton extends StatelessWidget {
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: const Color(0xFF2A243A),
             borderRadius: BorderRadius.all(
               Radius.circular(ThemeDimensions.radiusL),
             ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               Container(
                 decoration: const BoxDecoration(
                   color: ThemeColors.primaryDark,
@@ -202,9 +209,12 @@ class AdminButton extends StatelessWidget {
                   color: iconColor,
                 ),
               ),
+              const SizedBox(
+                height: 13,
+              ),
               Text(
                 text,
-                style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.black),
+                style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
               ),
             ],
           ),

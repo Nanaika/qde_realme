@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:go_router/go_router.dart';
+import 'package:qde_realme/core/theme/theme_colors.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 
@@ -107,96 +108,156 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                               );
                             }
                             final user = state.items[index];
+                            final city = user.city ?? '';
+                            final district = user.district ?? '';
+                            String location = '';
+                            if (district == '') {
+                              location = city;
+                            } else {
+                              location = '$city, $district';
+                            }
                             return Container(
-                              padding: const EdgeInsets.all(30),
+                              padding: const EdgeInsets.all(17),
                               decoration: const BoxDecoration(
-                                color: Colors.white,
+                                color: Color(0xFF2A243A),
                                 borderRadius: BorderRadius.all(Radius.circular(16)),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    user.id,
-                                    style: ThemeTextStyles.headlineSmall(
-                                      context,
-                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Padding(
+                                        padding: EdgeInsets.only(top: 4.0),
+                                        child: Icon(CupertinoIcons.person_alt_circle),
+                                      ),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          user.name ?? 'no name',
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    user.email,
-                                    style: ThemeTextStyles.headlineSmall(
-                                      context,
-                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  const SizedBox(
+                                    height: 5,
                                   ),
-                                  Text(
-                                    user.number,
-                                    style: ThemeTextStyles.headlineSmall(
-                                      context,
-                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(CupertinoIcons.phone),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          user.number,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    user.name ?? '',
-                                    style: ThemeTextStyles.headlineSmall(
-                                      context,
-                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  const SizedBox(
+                                    height: 5,
                                   ),
-                                  Text(
-                                    user.city ?? '',
-                                    style: ThemeTextStyles.headlineSmall(
-                                      context,
-                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(CupertinoIcons.location_solid),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          location,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    user.district == '' ? 'No district' : user.district!,
-                                    style: ThemeTextStyles.headlineSmall(
-                                      context,
-                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  const SizedBox(
+                                    height: 5,
                                   ),
-                                  Text(
-                                    'Moderated = ${user.isModerated.toString()}',
-                                    style: ThemeTextStyles.headlineSmall(
-                                      context,
-                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(CupertinoIcons.envelope),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          user.email,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
                                   ),
+
                                   const SizedBox(
                                     height: 20,
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          final userId =
-                                              (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
-                                          context.read<ModerateUsersBloc>().add(
-                                            ModerateUserEvent(userId: userId, isModerated: true),
-                                          );
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.green,
-                                            borderRadius: BorderRadius.circular(10.0),
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            final userId =
+                                                (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
+                                            context.read<ModerateUsersBloc>().add(
+                                              ModerateUserEvent(userId: userId, isModerated: false),
+                                            );
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: ThemeColors.primaryDark,
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            child: const Center(
+                                              child: Text(
+                                                'Reject',
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                            ),
                                           ),
-                                          child: Text('confirm'),
                                         ),
                                       ),
-                                      SizedBox(width: 20),
-                                      GestureDetector(
-                                        onTap: () {
-                                          final userId =
-                                              (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
-                                          context.read<ModerateUsersBloc>().add(
-                                            ModerateUserEvent(userId: userId, isModerated: false),
-                                          );
-                                        },
-                                        child: Container(
-                                          padding: EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius: BorderRadius.circular(10.0),
+                                      const SizedBox(width: 25),
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            final userId =
+                                                (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
+                                            context.read<ModerateUsersBloc>().add(
+                                              ModerateUserEvent(userId: userId, isModerated: true),
+                                            );
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                              color: ThemeColors.success,
+                                              borderRadius: BorderRadius.circular(10.0),
+                                            ),
+                                            child: const Center(
+                                              child: Text(
+                                                'Approve',
+                                                style: TextStyle(fontSize: 16),
+                                              ),
+                                            ),
                                           ),
-                                          child: Text('decline'),
                                         ),
                                       ),
                                     ],

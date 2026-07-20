@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ import 'package:qde_realme/features/home/slave_data/slave_data_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/di/injection_container.dart';
+import '../../../../core/theme/theme_colors.dart';
 
 class HomePageSlave extends StatefulWidget {
   const HomePageSlave({super.key});
@@ -45,157 +47,305 @@ class _HomePageSlaveState extends State<HomePageSlave> {
               //   style: ThemeTextStyles.bodyLarge(context),
               //   textAlign: TextAlign.center,
               // ),
-              Text(
-                'Hello',
-                style: ThemeTextStyles.headlineLarge(context),
+              Row(
+                children: [
+                  Text(
+                    'Hello',
+                    style: ThemeTextStyles.headlineLarge(context),
+                  ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      context.push('/history');
+                    },
+                    child: Container(
+                      decoration: const BoxDecoration(color: Colors.transparent),
+                      child: const Icon(CupertinoIcons.clock),
+                    ),
+                  ),
+                ],
               ),
-              BlocConsumer<SlaveDataBloc, SlaveDataState>(
-                builder: (BuildContext context, state) {
-                  if (state is SlaveDataLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is SlaveDataSuccess) {
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        _initData();
-                      },
-                      child: SingleChildScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            Container(
-                              height: MediaQuery.heightOf(context) / 6,
-                              width: double.infinity,
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.lightBlueAccent,
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              child: Center(
+              const SizedBox(
+                height: 16,
+              ),
+              Expanded(
+                child: BlocConsumer<SlaveDataBloc, SlaveDataState>(
+                  builder: (BuildContext context, state) {
+                    if (state is SlaveDataLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is SlaveDataSuccess) {
+                      return RefreshIndicator(
+                        onRefresh: () async {
+                          _initData();
+                        },
+                        child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
                                 child: Text(
-                                  '${state.data.bonusesSum} \$',
-                                  style: ThemeTextStyles.headlineLarge(context).copyWith(color: Colors.black),
+                                  'Total',
+                                  style: ThemeTextStyles.custom(
+                                    context: context,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: MediaQuery.heightOf(context) / 10,
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'accepted = ${state.data.acceptedSum}',
-                                        style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
-                                      ),
+                              const SizedBox(
+                                height: 17,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF2A243A),
+                                  borderRadius: BorderRadius.circular(16.0),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${state.data.bonusesSum} USD',
+                                    style: ThemeTextStyles.custom(
+                                      context: context,
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: MediaQuery.heightOf(context) / 10,
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'declined = ${state.data.declinedSum}',
-                                        style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: MediaQuery.heightOf(context) / 10,
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.yellow,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'waiting = ${state.data.awaitingSum}',
-                                        style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: MediaQuery.heightOf(context) / 10,
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey,
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'paid = ${state.data.paidSum}',
-                                        style: ThemeTextStyles.bodySmall(context).copyWith(color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(
+                                height: 34,
+                              ),
 
-                            ElevatedButton(
-                              onPressed: () {
-                                context.push('/homeadmin');
-                              },
-                              child: Text('Change to admin'),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                context.push('/history');
-                              },
-                              child: Text('history'),
-                            ),
-                          ],
+                              IntrinsicHeight(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 5.0),
+                                            child: Text(
+                                              'Accepted',
+                                              style: ThemeTextStyles.custom(
+                                                context: context,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 17,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF2A243A),
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '${state.data.acceptedSum}',
+                                                  style: ThemeTextStyles.custom(
+                                                    context: context,
+                                                    fontSize: 32,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: const Color(0xFF27ED5F),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 5.0),
+                                            child: Text(
+                                              'Declined',
+                                              style: ThemeTextStyles.custom(
+                                                context: context,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 17,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF2A243A),
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '${state.data.declinedSum}',
+                                                  style: ThemeTextStyles.custom(
+                                                    context: context,
+                                                    fontSize: 32,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: const Color(0xFFFF472F),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 34,
+                              ),
+                              IntrinsicHeight(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 5.0),
+                                            child: Text(
+                                              'Waiting',
+                                              style: ThemeTextStyles.custom(
+                                                context: context,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 17,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF2A243A),
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '${state.data.awaitingSum}',
+                                                  style: ThemeTextStyles.custom(
+                                                    context: context,
+                                                    fontSize: 32,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: const Color(0xFFFFEF40),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 5.0),
+                                            child: Text(
+                                              'Paid',
+                                              style: ThemeTextStyles.custom(
+                                                context: context,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 17,
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF2A243A),
+                                                borderRadius: BorderRadius.circular(16.0),
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  '${state.data.paidSum}',
+                                                  style: ThemeTextStyles.custom(
+                                                    context: context,
+                                                    fontSize: 32,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: const Color(0xFFBFBDBD),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              ElevatedButton(
+                                onPressed: () {
+                                  context.push('/homeadmin');
+                                },
+                                child: const Text('Change to admin'),
+                              ),
+                              const SizedBox(
+                                height: 60,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
-                listener: (BuildContext context, state) {
-                  if (state is SlaveDataError) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.failure.message)));
-                  }
-                },
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                  listener: (BuildContext context, state) {
+                    if (state is SlaveDataError) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.failure.message)));
+                    }
+                  },
+                ),
               ),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: ThemeColors.primaryDark,
+
         onPressed: () {
           context.push('/add_sale');
         },
-        child: Text('add sale'),
+        label: const Text('Add sale'),
       ),
     );
   }

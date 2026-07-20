@@ -175,92 +175,107 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                           separatorBuilder: (ctx, index) => const SizedBox(height: 16),
                           itemBuilder: (ctx, index) {
                             final user = filteredUsers[index];
-
+                            final city = user.city ?? '';
+                            final district = user.district ?? '';
+                            String location = '';
+                            if (district == '') {
+                              location = city;
+                            } else {
+                              location = '$city, $district';
+                            }
                             return Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: Colors.white,
+                                color: const Color(0xFF2A243A),
                                 borderRadius: BorderRadius.circular(16.0),
                               ),
                               child: Column(
                                 children: [
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      // Иконка или аватарка юзера
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 2.0),
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.grey[700],
-                                          child: const Icon(Icons.person, color: Colors.white),
-                                        ),
+                                      const Padding(
+                                        padding: EdgeInsets.only(top: 4.0),
+                                        child: Icon(CupertinoIcons.person_alt_circle),
                                       ),
-                                      const SizedBox(width: 16),
-
-                                      // Инфа о юзере (Имя / Email / Роль — подставь свои поля)
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
                                       Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              user.id,
-                                              style: ThemeTextStyles.bodySmall(
-                                                context,
-                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
-                                            ),
-
-                                            Text(
-                                              user.email,
-                                              style: ThemeTextStyles.bodySmall(
-                                                context,
-                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
-                                            ),
-                                            Text(
-                                              user.number == '' ? 'No number' : user.number,
-                                              style: ThemeTextStyles.bodySmall(
-                                                context,
-                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
-                                            ),
-                                            Text(
-                                              user.name == '' ? 'No name' : user.name!,
-                                              style: ThemeTextStyles.bodySmall(
-                                                context,
-                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
-                                            ),
-                                            Text(
-                                              user.city == '' ? 'No city' : user.city!,
-                                              style: ThemeTextStyles.bodySmall(
-                                                context,
-                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
-                                            ),
-                                            Text(
-                                              user.district == '' ? 'No district' : user.district!,
-                                              style: ThemeTextStyles.bodySmall(
-                                                context,
-                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
-                                            ),
-                                            Text(
-                                              'moderated : ${user.isModerated.toString()}',
-                                              style: ThemeTextStyles.bodySmall(
-                                                context,
-                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
-                                            ),
-                                          ],
+                                        child: Text(
+                                          user.name ?? 'no name',
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                                         ),
                                       ),
-
-                                      // Шеврон вправо, если нужно проваливаться в детали юзера
-                                      // const Icon(
-                                      //   Icons.chevron_right,
-                                      //   color: Colors.grey,
-                                      // ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(CupertinoIcons.phone),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          user.number,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(CupertinoIcons.location_solid),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          location,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(CupertinoIcons.envelope),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          user.email,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   const SizedBox(
                                     height: 20,
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       GestureDetector(
                                         onTap: () {
@@ -282,15 +297,18 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                          width: MediaQuery.widthOf(context) / 2,
                                           decoration: BoxDecoration(
                                             color: Colors.yellow,
                                             borderRadius: BorderRadius.circular(10.0),
                                           ),
-                                          child: Text(
-                                            'Pay',
-                                            style: ThemeTextStyles.chipLabel(
-                                              context,
-                                            ).copyWith(color: Colors.black),
+                                          child: Center(
+                                            child: Text(
+                                              'Pay',
+                                              style: ThemeTextStyles.chipLabel(
+                                                context,
+                                              ).copyWith(color: Colors.black, fontSize: 16),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -304,11 +322,10 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                       );
                     }
 
-                    // 3. Состояние ошибки
                     if (state is ManageUsersError) {
                       return Center(
                         child: Text(
-                          'Ошибка: ${state.failure}',
+                          'Error: ${state.failure}',
                           style: const TextStyle(color: Colors.red),
                         ),
                       );

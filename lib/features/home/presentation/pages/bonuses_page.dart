@@ -169,6 +169,7 @@ import 'package:qde_realme/core/widgets/main_button.dart';
 import 'package:qde_realme/features/home/bonuses/bonuses_event.dart';
 import 'package:qde_realme/features/home/presentation/pages/add_single_item_page.dart';
 
+import '../../../../core/theme/theme_colors.dart';
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
 import '../../bonuses/bonuses_bloc.dart';
@@ -326,7 +327,7 @@ class _BonusesPageState extends State<BonusesPage> {
                                       return Container(
                                         padding: const EdgeInsets.all(16),
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: Color(0xFF2A243A),
                                           borderRadius: BorderRadius.circular(10.0),
                                         ),
                                         child: Column(
@@ -334,7 +335,7 @@ class _BonusesPageState extends State<BonusesPage> {
                                             CustomTextField(
                                               textStyle: ThemeTextStyles.headlineMedium(
                                                 context,
-                                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                                               hintText: 'Articul',
                                               controller: _keyControllers[index],
                                             ),
@@ -345,7 +346,7 @@ class _BonusesPageState extends State<BonusesPage> {
                                                   child: CustomTextField(
                                                     textStyle: ThemeTextStyles.headlineMedium(
                                                       context,
-                                                    ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                                                    ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                                                     hintText: 'Value',
                                                     controller: _valueControllers[index],
                                                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -355,7 +356,10 @@ class _BonusesPageState extends State<BonusesPage> {
                                                 const SizedBox(width: 10),
                                                 // Кнопка удаления конкретной строки
                                                 IconButton(
-                                                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                                                  icon: const Icon(
+                                                    Icons.delete_outline,
+                                                    color: ThemeColors.primaryDark,
+                                                  ),
                                                   onPressed: () => _removeBonusField(index),
                                                 ),
                                               ],

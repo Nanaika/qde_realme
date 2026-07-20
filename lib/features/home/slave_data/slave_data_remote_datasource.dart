@@ -46,15 +46,13 @@ class SlaveDataRemoteDataSourceImpl implements SlaveDataRemoteDataSource {
 
     final int totalBonuses = acceptedSnaps.docs.fold<int>(0, (sum, doc) {
       final data = doc.data();
-      print('===========  ${data}');
       final int bonus = (data['bonus'] as num? ?? 0).toInt();
-      print('===========  ${bonus}');
 
       return sum + bonus;
     });
 
     return SlaveDataModel(
-      bonusesSum: totalBonuses, // Если тут логика подсчета суммы из прошлой задачи, перепишешь локально через цикл
+      bonusesSum: totalBonuses,
       acceptedSum: acceptedSnaps.size,
       declinedSum: declinedSnaps.size,
       awaitingSum: onModerationSnaps.size,

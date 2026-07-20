@@ -97,45 +97,53 @@ class _AddSalePageState extends State<AddSalePage> {
                   BlocBuilder<AddSaleBloc, AddSaleState>(
                     builder: (BuildContext context, state) {
                       if (state is GetPhoneByImeiSuccess) {
-                        return Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                state.item.id,
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                state.item.article,
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                state.item.imei1,
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                state.item.imei2,
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                state.item.date.toString(),
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                state.item.skuName,
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                              Text(
-                                'Bonus = ${state.bonus}',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ],
-                          ),
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            const Text(
+                              'Device information:',
+                              style: TextStyle(color: Colors.white, decoration: TextDecoration.underline),
+                            ),
+                            const SizedBox(
+                              height: 7,
+                            ),
+
+                            Text(
+                              'Articul: ${state.item.article}',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              'imei1: ${state.item.imei1}',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              'imei2: ${state.item.imei2}',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              'Sku name: ${state.item.skuName}',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            const SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              'Bonus = ${state.bonus}\$',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ],
                         );
                       } else if (state is AddSaleError) {
                         return Text(
@@ -150,7 +158,7 @@ class _AddSalePageState extends State<AddSalePage> {
                   const Spacer(),
                   BlocBuilder<AddSaleBloc, AddSaleState>(
                     builder: (BuildContext context, state) {
-                      if (state is GetPhoneByImeiSuccess)
+                      if (state is GetPhoneByImeiSuccess) {
                         return MainButton(
                           text: 'Send',
                           onTap: () {
@@ -159,6 +167,7 @@ class _AddSalePageState extends State<AddSalePage> {
                             context.read<AddSaleBloc>().add(AddEvent(sale));
                           },
                         );
+                      }
                       return const SizedBox.shrink();
                     },
                   ),
@@ -218,7 +227,7 @@ class ImeiTile extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: const Color(0xFF2A243A),
             borderRadius: BorderRadius.circular(16.0),
           ),
           child: Column(
@@ -226,7 +235,7 @@ class ImeiTile extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: ThemeTextStyles.titleSmall(context).copyWith(color: Colors.black),
+                style: ThemeTextStyles.titleSmall(context).copyWith(color: Colors.white),
                 textAlign: TextAlign.start,
               ),
               const SizedBox(
@@ -239,7 +248,7 @@ class ImeiTile extends StatelessWidget {
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 textStyle: ThemeTextStyles.headlineMedium(
                   context,
-                ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                 suffixIcon: IconButton(onPressed: onSuffixTap, icon: const Icon(CupertinoIcons.search)),
               ),
 
@@ -255,7 +264,7 @@ class ImeiTile extends StatelessWidget {
                       'Scan',
                       style: ThemeTextStyles.headlineMedium(
                         context,
-                      ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                      ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                       textAlign: TextAlign.start,
                     ),
                   ),

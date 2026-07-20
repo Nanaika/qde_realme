@@ -8,6 +8,7 @@ import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 import 'package:qde_realme/features/home/presentation/pages/add_single_item_page.dart';
 
+import '../../../../core/theme/theme_colors.dart';
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
 import '../../../../core/utils/uz_cities.dart';
@@ -209,6 +210,7 @@ class LocationSelectionDialog extends StatelessWidget {
     final entries = locations.entries.toList();
 
     return Dialog(
+      backgroundColor: const Color(0xFF2A243A),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Container(
@@ -224,7 +226,7 @@ class LocationSelectionDialog extends StatelessWidget {
                 Expanded(
                   child: Text(
                     title,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 ),
                 IconButton(
@@ -234,7 +236,7 @@ class LocationSelectionDialog extends StatelessWidget {
               ],
             ),
             const Divider(height: 20),
-            // Просто скроллящийся список без лишнего дерьма
+
             Expanded(
               child: ListView.separated(
                 itemCount: entries.length,
@@ -245,7 +247,6 @@ class LocationSelectionDialog extends StatelessWidget {
                     title: Text(entry.value),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                     onTap: () {
-                      // Возвращаем ключ (например, 'chilanzar')
                       Navigator.pop(context, entry.key);
                     },
                   );
@@ -260,9 +261,9 @@ class LocationSelectionDialog extends StatelessWidget {
 }
 
 class LocationTile extends StatelessWidget {
-  final String title; // Например: 'Город / Область'
-  final String? selectedValue; // Сюда передаешь уже переведенную строку из словаря или null
-  final VoidCallback onTap; // Метод, который открывает твой диалог
+  final String title;
+  final String? selectedValue;
+  final VoidCallback onTap;
 
   const LocationTile({
     super.key,
@@ -278,30 +279,29 @@ class LocationTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFFF5F5F5), // Приятный серый фон
+          color: const Color(0xFF2A243A), // Приятный серый фон
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           children: [
-            // Заголовок тайла слева
             Expanded(
               child: Text(
                 title,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),
             const SizedBox(width: 12),
-            // Отображение выбора или заглушки справа
+
             Text(
-              selectedValue ?? 'Выбрать',
+              selectedValue ?? 'Select',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: selectedValue != null ? FontWeight.w600 : FontWeight.normal,
-                color: selectedValue != null ? Colors.blue : Colors.grey,
+                color: selectedValue != null ? Colors.white : Colors.grey,
               ),
             ),
             const SizedBox(width: 4),

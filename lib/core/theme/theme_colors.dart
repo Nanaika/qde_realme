@@ -30,7 +30,7 @@ class ThemeColors {
   static const Color onErrorContainer = Color(0xFFB71C1C);
 
   // Success Colors
-  static const Color success = Color(0xFF4CAF50);
+  static const Color success = Color(0xFF04942D);
   static const Color successLight = Color(0xFF81C784);
   static const Color successDark = Color(0xFF388E3C);
   static const Color successContainer = Color(0xFFE8F5E9);

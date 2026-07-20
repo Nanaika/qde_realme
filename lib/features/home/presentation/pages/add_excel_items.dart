@@ -170,7 +170,7 @@ class ExcelTile extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(22),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: const Color(0xFF2A243A),
             borderRadius: BorderRadius.circular(16.0),
           ),
           child: Column(
@@ -178,7 +178,7 @@ class ExcelTile extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: ThemeTextStyles.titleSmall(context).copyWith(color: Colors.black),
+                style: ThemeTextStyles.titleSmall(context).copyWith(color: Colors.white),
                 textAlign: TextAlign.start,
               ),
               const SizedBox(
@@ -198,7 +198,7 @@ class ExcelTile extends StatelessWidget {
                       children: [
                         const Icon(
                           CupertinoIcons.device_phone_portrait,
-                          color: Colors.black,
+                          color: Colors.white,
                           size: 15,
                         ),
                         const SizedBox(
@@ -207,7 +207,7 @@ class ExcelTile extends StatelessWidget {
                         Expanded(
                           child: Text(
                             fileName,
-                            style: ThemeTextStyles.inputLabel(context).copyWith(color: Colors.black),
+                            style: ThemeTextStyles.inputLabel(context).copyWith(color: Colors.white),
                           ),
                         ),
                       ],
@@ -243,7 +243,7 @@ class ExcelTile extends StatelessWidget {
                       'Open',
                       style: ThemeTextStyles.headlineMedium(
                         context,
-                      ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                      ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                       textAlign: TextAlign.start,
                     ),
                   ),
