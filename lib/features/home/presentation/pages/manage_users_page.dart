@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ import 'package:qde_realme/features/home/presentation/pages/add_single_item_page
 
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
+import '../../../../core/utils/uz_cities.dart';
 import '../../../auth/data/models/user_model.dart';
 
 class ManageUsersPage extends StatefulWidget {
@@ -100,9 +102,12 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                     SizedBox(
                       width: ThemeDimensions.paddingM,
                     ),
-                    Text(
-                      'Manage users',
-                      style: ThemeTextStyles.titleMedium(context),
+                    Expanded(
+                      child: Text(
+                        'manage_users'.tr(),
+                        style: ThemeTextStyles.titleMedium(context),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),
@@ -119,7 +124,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                           onPressed: () => searchController.clear(),
                         )
                       : null,
-                  hintText: 'Search',
+                  hintText: 'search'.tr(),
                   controller: searchController,
                 ),
                 const SizedBox(
@@ -136,10 +141,10 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                       final List<UserModel> users = state.users;
 
                       if (users.isEmpty) {
-                        return const Center(
+                        return Center(
                           child: Text(
-                            'Users not found',
-                            style: TextStyle(color: Colors.grey),
+                            'users_not_found'.tr(),
+                            style: const TextStyle(color: Colors.grey),
                           ),
                         );
                       }
@@ -159,11 +164,11 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
 
                       // 3. Если после фильтрации ничего не нашли
                       if (filteredUsers.isEmpty) {
-                        return const Expanded(
+                        return Expanded(
                           child: Center(
                             child: Text(
-                              'No matching users found',
-                              style: TextStyle(color: Colors.grey),
+                              'no_matching_users_found'.tr(),
+                              style: const TextStyle(color: Colors.grey),
                             ),
                           ),
                         );
@@ -179,9 +184,10 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                             final district = user.district ?? '';
                             String location = '';
                             if (district == '') {
-                              location = city;
+                              location = LocationTranslator.translate(context, city);
                             } else {
-                              location = '$city, $district';
+                              location =
+                                  '${LocationTranslator.translate(context, city)}, ${LocationTranslator.translate(context, district)}';
                             }
                             return Container(
                               padding: const EdgeInsets.all(16),
@@ -203,7 +209,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          user.name ?? 'no name',
+                                          user.name ?? 'no_name'.tr(),
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
@@ -287,7 +293,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                             ScaffoldMessenger.of(context).showSnackBar(
                                               SnackBar(
                                                 content: Text(
-                                                  'User not moderated',
+                                                  'user_not_moderated'.tr(),
                                                   style: ThemeTextStyles.bodyMedium(context),
                                                 ),
                                                 backgroundColor: Colors.red,
@@ -304,7 +310,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              'Pay',
+                                              'pay'.tr(),
                                               style: ThemeTextStyles.chipLabel(
                                                 context,
                                               ).copyWith(color: Colors.black, fontSize: 16),
@@ -325,7 +331,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                     if (state is ManageUsersError) {
                       return Center(
                         child: Text(
-                          'Error: ${state.failure}',
+                          '${'error'.tr()}: ${state.failure}',
                           style: const TextStyle(color: Colors.red),
                         ),
                       );

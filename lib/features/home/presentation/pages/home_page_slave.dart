@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,27 +50,36 @@ class _HomePageSlaveState extends State<HomePageSlave> {
               //   textAlign: TextAlign.center,
               // ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (BuildContext context, AuthState state) {
                       final String text;
                       if (state is AuthAuthenticated) {
-                        final name = state.currentUser.name != '' ? state.currentUser.name : '';
+                        final name = state.currentUser.name != '' || state.currentUser.name != null
+                            ? state.currentUser.name
+                            : '';
                         if (name != '') {
-                          text = 'Hello, ${state.currentUser.name}';
+                          text = 'hello_user'.tr(args: [?state.currentUser.name]) + '';
                         } else {
-                          text = 'Hello';
+                          text = 'hello'.tr();
                         }
                       } else {
-                        text = 'Hello';
+                        text = 'hello'.tr();
                       }
-                      return Text(
-                        text,
-                        style: ThemeTextStyles.headlineLarge(context),
+                      return Expanded(
+                        child: Text(
+                          text,
+                          maxLines: 2,
+                          style: ThemeTextStyles.headlineLarge(context),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       );
                     },
                   ),
-                  const Spacer(),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   GestureDetector(
                     onTap: () {
                       context.push('/history');
@@ -102,7 +112,8 @@ class _HomePageSlaveState extends State<HomePageSlave> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 5.0),
                                 child: Text(
-                                  'Total',
+                                  overflow: TextOverflow.ellipsis,
+                                  'total'.tr(),
                                   style: ThemeTextStyles.custom(
                                     context: context,
                                     fontSize: 20,
@@ -147,7 +158,8 @@ class _HomePageSlaveState extends State<HomePageSlave> {
                                           Padding(
                                             padding: const EdgeInsets.only(left: 5.0),
                                             child: Text(
-                                              'Accepted',
+                                              overflow: TextOverflow.ellipsis,
+                                              'accepted'.tr(),
                                               style: ThemeTextStyles.custom(
                                                 context: context,
                                                 fontSize: 20,
@@ -192,7 +204,8 @@ class _HomePageSlaveState extends State<HomePageSlave> {
                                           Padding(
                                             padding: const EdgeInsets.only(left: 5.0),
                                             child: Text(
-                                              'Declined',
+                                              'declined'.tr(),
+                                              overflow: TextOverflow.ellipsis,
                                               style: ThemeTextStyles.custom(
                                                 context: context,
                                                 fontSize: 20,
@@ -244,7 +257,8 @@ class _HomePageSlaveState extends State<HomePageSlave> {
                                           Padding(
                                             padding: const EdgeInsets.only(left: 5.0),
                                             child: Text(
-                                              'Waiting',
+                                              'waiting'.tr(),
+                                              overflow: TextOverflow.ellipsis,
                                               style: ThemeTextStyles.custom(
                                                 context: context,
                                                 fontSize: 20,
@@ -289,7 +303,8 @@ class _HomePageSlaveState extends State<HomePageSlave> {
                                           Padding(
                                             padding: const EdgeInsets.only(left: 5.0),
                                             child: Text(
-                                              'Paid',
+                                              'paid'.tr(),
+                                              overflow: TextOverflow.ellipsis,
                                               style: ThemeTextStyles.custom(
                                                 context: context,
                                                 fontSize: 20,
@@ -361,7 +376,7 @@ class _HomePageSlaveState extends State<HomePageSlave> {
         onPressed: () {
           context.push('/add_sale');
         },
-        label: const Text('Add sale'),
+        label: Text('add_sale'.tr()),
       ),
     );
   }

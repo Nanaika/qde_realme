@@ -1,6 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
-import "package:flutter/material.dart";
-import "package:flutter_bloc/flutter_bloc.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/theme_colors.dart';
@@ -64,9 +65,12 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                   SizedBox(
                     width: ThemeDimensions.paddingM,
                   ),
-                  Text(
-                    'Moderate sales',
-                    style: ThemeTextStyles.titleMedium(context),
+                  Expanded(
+                    child: Text(
+                      'moderate_sales'.tr(),
+                      style: ThemeTextStyles.titleMedium(context),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -192,10 +196,10 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                               color: ThemeColors.primaryDark,
                                               borderRadius: BorderRadius.circular(10.0),
                                             ),
-                                            child: const Center(
+                                            child: Center(
                                               child: Text(
-                                                'Reject',
-                                                style: TextStyle(fontSize: 16),
+                                                'reject'.tr(),
+                                                style: const TextStyle(fontSize: 16),
                                               ),
                                             ),
                                           ),
@@ -215,10 +219,10 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                               color: ThemeColors.success,
                                               borderRadius: BorderRadius.circular(10.0),
                                             ),
-                                            child: const Center(
+                                            child: Center(
                                               child: Text(
-                                                'Approve',
-                                                style: TextStyle(fontSize: 16),
+                                                'approve'.tr(),
+                                                style: const TextStyle(fontSize: 16),
                                               ),
                                             ),
                                           ),

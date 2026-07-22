@@ -16,11 +16,10 @@ class LanguageToggle extends StatelessWidget {
       barrierDismissible: true,
       barrierLabel: '',
       barrierColor: Colors.black38,
-      // Затемнение заднего фона
+
       pageBuilder: (context, animation, secondaryAnimation) {
         return Scaffold(
           body: SizedBox.expand(
-            // Растягиваем на весь экран
             child: SafeArea(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingL),
@@ -45,7 +44,7 @@ class LanguageToggle extends StatelessWidget {
                             width: 10,
                           ),
                           Text(
-                            'Language',
+                            'language'.tr(),
                             style: ThemeTextStyles.appBarTitle(context),
                           ),
                         ],
@@ -62,7 +61,7 @@ class LanguageToggle extends StatelessWidget {
                               context.setLocale(const Locale('ru'));
                               Navigator.of(context).pop();
                             },
-                            text: 'Russian',
+                            text: 'russian'.tr(),
                             assetPath: 'assets/images/ru.png',
                           ),
                           const SizedBox(
@@ -74,7 +73,7 @@ class LanguageToggle extends StatelessWidget {
                               context.setLocale(const Locale('uz'));
                               Navigator.of(context).pop();
                             },
-                            text: 'Uzbek',
+                            text: 'uzbek'.tr(),
                             assetPath: 'assets/images/uz.png',
                           ),
                         ],

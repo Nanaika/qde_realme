@@ -1,6 +1,6 @@
-import 'dart:async';
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,7 +80,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                           width: ThemeDimensions.paddingM,
                         ),
                         Text(
-                          'Add item',
+                          'add_item'.tr(),
                           style: ThemeTextStyles.titleMedium(context),
                         ),
                       ],
@@ -99,7 +99,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
                               ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-                              title: 'ARTICLE',
+                              title: 'article_'.tr(),
                               hintText: '123456789...',
                               controller: articleController,
                               keyboardType: TextInputType.number,
@@ -112,7 +112,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
                               ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-                              title: 'IMEI 1',
+                              title: 'imei1_'.tr(),
                               hintText: '123456789...',
                               controller: imei1Controller,
                               keyboardType: TextInputType.number,
@@ -125,7 +125,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
                               ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-                              title: 'IMEI 2',
+                              title: 'imei2_'.tr(),
                               hintText: '123456789...',
                               controller: imei2Controller,
                               keyboardType: TextInputType.number,
@@ -138,7 +138,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
                               ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-                              title: 'SKU NAME',
+                              title: 'sku_name_'.tr(),
                               hintText: 'realme 51 ...',
                               controller: skuNameController,
                               maxLines: null,
@@ -164,14 +164,14 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                   right: 0,
                   child: Center(
                     child: MainButton(
-                      text: 'Save',
+                      text: 'save'.tr(),
                       onTap: () {
                         FocusManager.instance.primaryFocus?.unfocus();
                         if (articleController.text.isEmpty ||
                             imei1Controller.text.isEmpty ||
                             imei2Controller.text.isEmpty ||
                             skuNameController.text.isEmpty) {
-                          ErrorDialog.show(context, 'Please fill all fields');
+                          ErrorDialog.show(context, 'please_fill_all_fields'.tr());
                           return;
                         }
                         final item = ItemModel(
@@ -287,7 +287,6 @@ class CustomTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       controller: controller,
       style: textStyle,
-      // Цвет вводимого текста
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         hintText: hintText,
@@ -352,24 +351,22 @@ class ErrorDialog {
                   const SizedBox(height: 20),
 
                   // Заголовок
-                  const Text(
-                    'Error',
-                    style: TextStyle(
+                  Text(
+                    'error'.tr(),
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 12),
-
-                  // Текст ошибки
                   Text(
                     errorMessage,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.grey[700],
-                      height: 1.4, // Межстрочный интервал для читаемости
+                      height: 1.4,
                     ),
                   ),
                   const SizedBox(height: 28),
@@ -408,7 +405,7 @@ class ErrorDialog {
 
 class LoadingDialog {
   // Показать диалог
-  static void show(BuildContext context, {String message = 'Loading...'}) {
+  static void show(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -428,16 +425,13 @@ class LoadingDialog {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Крутилка
                     const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                       strokeWidth: 4,
                     ),
                     const SizedBox(height: 24),
-
-                    // Текст
                     Text(
-                      message,
+                      'loading'.tr(),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 16,

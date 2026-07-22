@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +9,6 @@ import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 import 'package:qde_realme/features/home/presentation/pages/add_single_item_page.dart';
 
-import '../../../../core/theme/theme_colors.dart';
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
 import '../../../../core/utils/uz_cities.dart';
@@ -44,7 +42,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
     final String? resultKey = await showDialog<String>(
       context: context,
       builder: (context) => LocationSelectionDialog(
-        title: 'Select city',
+        title: 'select_city'.tr(),
         locations: citiesMap,
       ),
     );
@@ -53,7 +51,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
       setState(() {
         _selectedCityKey = resultKey;
         if (_selectedCityKey != 'tashkent_city') {
-          _selectedDistrictKey = null; // Сброс района, если выбран другой город
+          _selectedDistrictKey = null;
         }
       });
     }
@@ -65,7 +63,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
     final String? resultKey = await showDialog<String>(
       context: context,
       builder: (context) => LocationSelectionDialog(
-        title: 'Select district',
+        title: 'select_district'.tr(),
         locations: districtsMap,
       ),
     );
@@ -95,7 +93,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                     Row(
                       children: [
                         Text(
-                          'Confirm account',
+                          'confirm_account'.tr(),
                           style: ThemeTextStyles.titleMedium(context),
                         ),
                       ],
@@ -110,7 +108,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Tile(
-                              title: 'Telephon number',
+                              title: 'telephone_number'.tr(),
                               hintText: '998 90 123 45 67',
                               controller: numberController,
                               keyboardType: TextInputType.number,
@@ -123,7 +121,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                               height: 10,
                             ),
                             Tile(
-                              title: 'Name',
+                              title: 'name'.tr(),
                               hintText: 'John Doe',
                               controller: nameController,
                               textStyle: ThemeTextStyles.headlineMedium(
@@ -134,7 +132,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                               height: 10,
                             ),
                             LocationTile(
-                              title: 'Select city',
+                              title: 'select_city'.tr(),
                               selectedValue: _selectedCityKey != null
                                   ? LocationTranslator.translate(context, _selectedCityKey!)
                                   : null,
@@ -147,7 +145,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                               height: 10,
                             ),
                             LocationTile(
-                              title: 'Select district',
+                              title: 'select_district'.tr(),
                               selectedValue: _selectedDistrictKey != null
                                   ? LocationTranslator.translate(context, _selectedDistrictKey!)
                                   : null,
@@ -165,7 +163,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                       onTap: () {
                         FocusManager.instance.primaryFocus?.unfocus();
                         if (nameController.text.isEmpty || numberController.text.isEmpty || _selectedCityKey == null) {
-                          ErrorDialog.show(context, 'Enter name, number and city');
+                          ErrorDialog.show(context, 'enter_name_number_city'.tr());
                           return;
                         }
                         final currentUser = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser;
@@ -180,7 +178,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
 
                         context.read<ConfirmAccountBloc>().add(ConfirmEvent(userModel));
                       },
-                      text: 'Confirm',
+                      text: 'confirm'.tr(),
                     ),
                   ],
                 ),
@@ -301,12 +299,15 @@ class LocationTile extends StatelessWidget {
             ),
             const SizedBox(width: 12),
 
-            Text(
-              selectedValue ?? 'Select',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: selectedValue != null ? FontWeight.w600 : FontWeight.normal,
-                color: selectedValue != null ? Colors.white : Colors.grey,
+            Expanded(
+              child: Text(
+                selectedValue ?? 'select'.tr(),
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: selectedValue != null ? FontWeight.w600 : FontWeight.normal,
+                  color: selectedValue != null ? Colors.white : Colors.grey,
+                ),
               ),
             ),
             const SizedBox(width: 4),

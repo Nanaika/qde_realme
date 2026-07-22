@@ -73,7 +73,7 @@ class _HistoryPageState extends State<HistoryPage> {
                     width: ThemeDimensions.paddingM,
                   ),
                   Text(
-                    'History',
+                    'history'.tr(),
                     style: ThemeTextStyles.titleMedium(context),
                   ),
                 ],
@@ -98,8 +98,8 @@ class _HistoryPageState extends State<HistoryPage> {
 
                     if (state is HistoryStateSuccess) {
                       if (state.items.isEmpty) {
-                        return const Center(
-                          child: Text('History empty'),
+                        return Center(
+                          child: Text('history_empty'.tr()),
                         );
                       }
 
@@ -125,15 +125,24 @@ class _HistoryPageState extends State<HistoryPage> {
                             HistoryType.userPending => const Color(0xFFEAD920),
                             HistoryType.other => const Color(0xFFBFBDBD),
                           };
+
+                          // "sale_imei_pending": "Продажа с IMEI {} на модерации",
+                          // "sale_imei_accepted": "Продажа с IMEI {} одобрена",
+                          // "sale_imei_declined": "Продажа с IMEI {} отклонена",
+                          // "sale_imei_paid": "Продажа с IMEI {} оплачена",
+                          // "user_accepted": "Пользователь {} принят",
+                          // "user_declined": "Пользователь {} отклонён",
+                          // "user_pending": "Пользователь {} на модерации",
+                          // "other": "Другое"
                           final message = switch (type) {
-                            HistoryType.imeiPending => 'Sale with imei ${item.message} on moderate',
-                            HistoryType.imeiAccepted => 'Sale with imei ${item.message} approved',
-                            HistoryType.imeiDeclined => 'Sale with imei ${item.message} rejected',
-                            HistoryType.imeiPaid => 'Sale with imei ${item.message} paid',
-                            HistoryType.userAccepted => 'User ${item.message} accepted',
-                            HistoryType.userDeclined => 'User ${item.message} rejected',
-                            HistoryType.userPending => 'User ${item.message} on moderate',
-                            HistoryType.other => 'Other',
+                            HistoryType.imeiPending => 'sale_imei_pending'.tr(args: [item.message]),
+                            HistoryType.imeiAccepted => 'sale_imei_accepted'.tr(args: [item.message]),
+                            HistoryType.imeiDeclined => 'sale_imei_declined'.tr(args: [item.message]),
+                            HistoryType.imeiPaid => 'sale_imei_paid'.tr(args: [item.message]),
+                            HistoryType.userAccepted => 'user_accepted'.tr(args: [item.message]),
+                            HistoryType.userDeclined => 'user_declined'.tr(args: [item.message]),
+                            HistoryType.userPending => 'user_pending'.tr(args: [item.message]),
+                            HistoryType.other => 'other'.tr(),
                           };
 
                           return Container(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class AddExcelItems extends StatefulWidget {
 }
 
 class _AddExcelItemsState extends State<AddExcelItems> {
-  String excelFilePath = 'file name';
+  String excelFilePath = '';
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,7 @@ class _AddExcelItemsState extends State<AddExcelItems> {
           LoadingDialog.hide(context);
           if (state.message == '') {
             setState(() {
-              excelFilePath = 'file name';
+              excelFilePath = '';
             });
           }
         }
@@ -82,7 +83,7 @@ class _AddExcelItemsState extends State<AddExcelItems> {
                       width: ThemeDimensions.paddingM,
                     ),
                     Text(
-                      'Import excel file',
+                      'import_excel_file'.tr(),
                       style: ThemeTextStyles.titleMedium(context),
                     ),
                   ],
@@ -94,14 +95,14 @@ class _AddExcelItemsState extends State<AddExcelItems> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Please pick excel file',
+                        'please_pick_excel_file'.tr(),
                         style: ThemeTextStyles.titleMedium(context),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       ExcelTile(
-                        title: 'File name',
+                        title: 'file_name'.tr(),
                         fileName: p.basename(excelFilePath),
                         onOpen: () async {
                           final bloc = context.read<AddItemsBloc>();
@@ -122,7 +123,7 @@ class _AddExcelItemsState extends State<AddExcelItems> {
                       ),
                       Center(
                         child: MainButton(
-                          text: 'Save',
+                          text: 'save'.tr(),
                           onTap: () {
                             FocusManager.instance.primaryFocus?.unfocus();
                             context.read<AddItemsBloc>().add(SaveExcelEvent());
@@ -240,7 +241,7 @@ class ExcelTile extends StatelessWidget {
                   child: Container(
                     color: Colors.transparent,
                     child: Text(
-                      'Open',
+                      'open'.tr(),
                       style: ThemeTextStyles.headlineMedium(
                         context,
                       ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
@@ -269,10 +270,10 @@ class CompleteTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          'Completed',
+          'completed'.tr(),
           style: ThemeTextStyles.bodySmall(
             context,
-          ).copyWith(color: Colors.black, fontWeight: FontWeight.w300),
+          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
         ),
         const SizedBox(
           width: 4,

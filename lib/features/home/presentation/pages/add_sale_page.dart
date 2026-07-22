@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -63,7 +64,7 @@ class _AddSalePageState extends State<AddSalePage> {
                           width: ThemeDimensions.paddingM,
                         ),
                         Text(
-                          'Add sale',
+                          'add_sale'.tr(),
                           style: ThemeTextStyles.titleMedium(context),
                         ),
                       ],
@@ -107,44 +108,44 @@ class _AddSalePageState extends State<AddSalePage> {
                               const SizedBox(
                                 height: 20,
                               ),
-                              const Text(
-                                'Device information:',
-                                style: TextStyle(color: Colors.white, decoration: TextDecoration.underline),
+                              Text(
+                                'device_info'.tr(),
+                                style: const TextStyle(color: Colors.white, decoration: TextDecoration.underline),
                               ),
                               const SizedBox(
                                 height: 7,
                               ),
 
                               Text(
-                                'Articul: ${state.item.article}',
+                                'article'.tr(args: [state.item.article]),
                                 style: const TextStyle(color: Colors.white),
                               ),
                               const SizedBox(
                                 height: 7,
                               ),
                               Text(
-                                'imei1: ${state.item.imei1}',
+                                'imei1'.tr(args: [state.item.imei1]),
                                 style: const TextStyle(color: Colors.white),
                               ),
                               const SizedBox(
                                 height: 7,
                               ),
                               Text(
-                                'imei2: ${state.item.imei2}',
+                                'imei2'.tr(args: [state.item.imei2]),
                                 style: const TextStyle(color: Colors.white),
                               ),
                               const SizedBox(
                                 height: 7,
                               ),
                               Text(
-                                'Sku name: ${state.item.skuName}',
+                                'sku_name'.tr(args: [state.item.skuName]),
                                 style: const TextStyle(color: Colors.white),
                               ),
                               const SizedBox(
                                 height: 7,
                               ),
                               Text(
-                                'Bonus = ${state.bonus}\$',
+                                'bonus'.tr(args: [state.bonus.toString()]),
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ],
@@ -164,10 +165,10 @@ class _AddSalePageState extends State<AddSalePage> {
                       builder: (BuildContext context, state) {
                         if (state is GetPhoneByImeiSuccess) {
                           return MainButton(
-                            text: 'Send',
+                            text: 'send'.tr(),
                             onTap: () {
                               if (!(context.read<AuthBloc>().state as AuthAuthenticated).currentUser.isModerated) {
-                                ErrorDialog.show(context, 'User not moderated');
+                                ErrorDialog.show(context, 'user_not_moderated'.tr());
                                 return;
                               }
                               final ownerId = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
@@ -275,7 +276,7 @@ class ImeiTile extends StatelessWidget {
                   child: Container(
                     color: Colors.transparent,
                     child: Text(
-                      'Scan',
+                      'scan'.tr(),
                       style: ThemeTextStyles.headlineMedium(
                         context,
                       ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),

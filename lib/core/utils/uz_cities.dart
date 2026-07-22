@@ -33,7 +33,7 @@ abstract class LocationTranslator {
   // Перевод одного ключа для отображения на UI
   static String translate(BuildContext context, String key) {
     final String lang = Localizations.localeOf(context).languageCode;
-    return _translations[key]?[lang] ?? _translations[key]!['ru'] ?? key;
+    return _translations[key]?[lang] ?? _translations[key]?['ru'] ?? key;
   }
 
   // Сборка мапы всех городов под текущую локаль

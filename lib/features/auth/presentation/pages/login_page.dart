@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qde_realme/core/theme/theme_text_styles.dart';
@@ -44,7 +45,7 @@ class LoginPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        'SET YOUR FINANCIAL GOALS',
+                        'set_your_financial_goals'.tr(),
                         style: ThemeTextStyles.headlineLarge(context),
                         textAlign: TextAlign.center,
                       ),
@@ -52,7 +53,7 @@ class LoginPage extends StatelessWidget {
                         height: 8,
                       ),
                       Text(
-                        'We help our users to make the right financial decisions',
+                        'we_help_users_make_right_financial_decisions'.tr(),
                         style: ThemeTextStyles.bodyMedium(context),
                         textAlign: TextAlign.center,
                       ),
@@ -61,7 +62,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 const Spacer(),
                 MainButton(
-                  text: 'Login',
+                  text: 'login'.tr(),
                   onTap: () {
                     context.read<AuthBloc>().add(LoginEvent());
                   },

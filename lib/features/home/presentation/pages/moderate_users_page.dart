@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:go_router/go_router.dart';
 import 'package:qde_realme/core/theme/theme_colors.dart';
+import 'package:qde_realme/core/utils/uz_cities.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 
@@ -67,7 +69,7 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                     width: ThemeDimensions.paddingM,
                   ),
                   Text(
-                    'Moderate users',
+                    'moderate_users'.tr(),
                     style: ThemeTextStyles.titleMedium(context),
                   ),
                 ],
@@ -89,7 +91,7 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                     }
                     if (state is ModerateUsersSuccess) {
                       if (state.items.isEmpty) {
-                        return const Center(child: Text("Empty"));
+                        return Center(child: Text('empty'.tr()));
                       }
                       return RefreshIndicator(
                         onRefresh: () async {
@@ -112,9 +114,10 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                             final district = user.district ?? '';
                             String location = '';
                             if (district == '') {
-                              location = city;
+                              location = LocationTranslator.translate(context, city);
                             } else {
-                              location = '$city, $district';
+                              location =
+                                  '${LocationTranslator.translate(context, city)}, ${LocationTranslator.translate(context, district)}';
                             }
                             return Container(
                               padding: const EdgeInsets.all(17),
@@ -137,7 +140,7 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          user.name ?? 'no name',
+                                          user.name ?? 'no_name'.tr(),
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
@@ -226,10 +229,10 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                               color: ThemeColors.primaryDark,
                                               borderRadius: BorderRadius.circular(10.0),
                                             ),
-                                            child: const Center(
+                                            child: Center(
                                               child: Text(
-                                                'Reject',
-                                                style: TextStyle(fontSize: 16),
+                                                'reject'.tr(),
+                                                style: const TextStyle(fontSize: 16),
                                               ),
                                             ),
                                           ),
@@ -251,10 +254,10 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                               color: ThemeColors.success,
                                               borderRadius: BorderRadius.circular(10.0),
                                             ),
-                                            child: const Center(
+                                            child: Center(
                                               child: Text(
-                                                'Approve',
-                                                style: TextStyle(fontSize: 16),
+                                                'approve'.tr(),
+                                                style: const TextStyle(fontSize: 16),
                                               ),
                                             ),
                                           ),

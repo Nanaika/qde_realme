@@ -12,7 +12,6 @@ import 'package:qde_realme/features/home/presentation/pages/manage_users_page.da
 import 'package:qde_realme/features/home/presentation/pages/moderate_users_page.dart';
 
 import '../../features/home/presentation/pages/history_page.dart';
-import '../../features/home/presentation/pages/add_item_page.dart';
 import '../../features/home/presentation/pages/home_page_admin.dart';
 import '../../features/home/presentation/pages/moderate_sales_page.dart';
 
@@ -51,11 +50,6 @@ class AppRouter {
         path: '/add_sale',
         name: 'add_sale',
         builder: (context, state) => const AddSalePage(),
-      ),
-      GoRoute(
-        path: '/add_item',
-        name: 'add_item',
-        builder: (context, state) => const AddItemPage(),
       ),
       GoRoute(
         path: '/moderate_users',
