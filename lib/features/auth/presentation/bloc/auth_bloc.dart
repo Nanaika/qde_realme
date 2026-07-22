@@ -14,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginEvent>(_onLogin);
     on<LogoutEvent>(_onLogout);
     on<CheckAuthEvent>(_onCheckAuth);
+    on<RefreshEvent>(_onRefreshUser);
     add(CheckAuthEvent());
   }
 
@@ -62,5 +63,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       emit(AuthUnauthenticated());
     }
+  }
+
+  Future<void> _onRefreshUser(RefreshEvent event, Emitter<AuthState> emit) async {
+    final user = await repository.getCurrentUser(FirebaseAuth.instance.currentUser!.uid);
+    emit(AuthAuthenticated(user));
   }
 }

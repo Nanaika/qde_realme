@@ -6,6 +6,7 @@ import 'package:qde_realme/core/theme/theme_dimensions.dart';
 import 'package:qde_realme/core/theme/theme_text_styles.dart';
 import 'package:qde_realme/core/utils/app_constants.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:qde_realme/features/auth/presentation/bloc/auth_event.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_bloc.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_event.dart';
@@ -49,9 +50,24 @@ class _HomePageSlaveState extends State<HomePageSlave> {
               // ),
               Row(
                 children: [
-                  Text(
-                    'Hello',
-                    style: ThemeTextStyles.headlineLarge(context),
+                  BlocBuilder<AuthBloc, AuthState>(
+                    builder: (BuildContext context, AuthState state) {
+                      final String text;
+                      if (state is AuthAuthenticated) {
+                        final name = state.currentUser.name != '' ? state.currentUser.name : '';
+                        if (name != '') {
+                          text = 'Hello, ${state.currentUser.name}';
+                        } else {
+                          text = 'Hello';
+                        }
+                      } else {
+                        text = 'Hello';
+                      }
+                      return Text(
+                        text,
+                        style: ThemeTextStyles.headlineLarge(context),
+                      );
+                    },
                   ),
                   const Spacer(),
                   GestureDetector(
@@ -361,5 +377,6 @@ class _HomePageSlaveState extends State<HomePageSlave> {
   Future<void> _initData() async {
     final id = (getIt<AuthBloc>().state as AuthAuthenticated).currentUser.id;
     getIt<SlaveDataBloc>().add(GetDataEvent(id));
+    getIt<AuthBloc>().add(RefreshEvent());
   }
 }

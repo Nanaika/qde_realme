@@ -8,6 +8,8 @@ class AddEvent extends AddSaleEvent {
   AddEvent(this.sale);
 }
 
+class AddSaleResetEvent extends AddSaleEvent {}
+
 class GetPhoneByImeiEvent extends AddSaleEvent {
   final String imei;
 

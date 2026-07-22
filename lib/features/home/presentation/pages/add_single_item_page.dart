@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -97,7 +98,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                             Tile(
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                               title: 'ARTICLE',
                               hintText: '123456789...',
                               controller: articleController,
@@ -110,7 +111,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                             Tile(
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                               title: 'IMEI 1',
                               hintText: '123456789...',
                               controller: imei1Controller,
@@ -123,7 +124,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                             Tile(
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                               title: 'IMEI 2',
                               hintText: '123456789...',
                               controller: imei2Controller,
@@ -136,7 +137,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                             Tile(
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                               title: 'SKU NAME',
                               hintText: 'realme 51 ...',
                               controller: skuNameController,

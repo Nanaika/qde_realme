@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -115,7 +117,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                             ),
                             const SizedBox(
                               height: 10,
@@ -126,7 +128,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                               controller: nameController,
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
                             ),
                             const SizedBox(
                               height: 10,
@@ -137,10 +139,11 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                                   ? LocationTranslator.translate(context, _selectedCityKey!)
                                   : null,
                               onTap: () {
+                                FocusManager.instance.primaryFocus?.unfocus();
                                 _showCityPickerDialog();
                               },
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             LocationTile(
@@ -149,6 +152,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
                                   ? LocationTranslator.translate(context, _selectedDistrictKey!)
                                   : null,
                               onTap: () {
+                                FocusManager.instance.primaryFocus?.unfocus();
                                 if (_selectedCityKey == 'tashkent_city') _showDistrictPickerDialog();
                               },
                             ),
@@ -159,6 +163,7 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
 
                     MainButton(
                       onTap: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
                         if (nameController.text.isEmpty || numberController.text.isEmpty || _selectedCityKey == null) {
                           ErrorDialog.show(context, 'Enter name, number and city');
                           return;

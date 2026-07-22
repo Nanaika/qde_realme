@@ -11,6 +11,7 @@ class AddSaleBloc extends Bloc<AddSaleEvent, AddSaleState> {
   AddSaleBloc({required this.repository}) : super(AddSaleInitial()) {
     on<AddEvent>(_onAddSale);
     on<GetPhoneByImeiEvent>(_onGetPhoneByImei);
+    on<AddSaleResetEvent>((event, emit) => emit(AddSaleInitial()));
   }
 
   Future<void> _onAddSale(AddEvent event, Emitter<AddSaleState> emit) async {

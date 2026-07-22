@@ -33,165 +33,179 @@ class _AddSalePageState extends State<AddSalePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AddSaleBloc, AddSaleState>(
-      builder: (BuildContext context, state) {
-        if (state is AddSaleLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        return Scaffold(
-          body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingM, vertical: ThemeDimensions.paddingM),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.pop();
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(color: Colors.transparent),
-                          child: const Icon(CupertinoIcons.arrow_left),
-                        ),
-                      ),
-                      SizedBox(
-                        width: ThemeDimensions.paddingM,
-                      ),
-                      Text(
-                        'Add sale',
-                        style: ThemeTextStyles.titleMedium(context),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ImeiTile(
-                    title: 'IMEI',
-                    hintText: '1234 5678 9012 3456',
-                    controller: controller,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    onScan: () async {
-                      final bloc = context.read<AddSaleBloc>();
-                      final scannedImei = await context.push<String?>(
-                        '/imei_scanner_page',
-                      ); // Твой путь к сканеру в GoRouter
-
-                      if (scannedImei != null && scannedImei.isNotEmpty) {
-                        setState(() {
-                          controller.text = scannedImei;
-                        });
-                        bloc.add(GetPhoneByImeiEvent(imei: scannedImei));
-                      }
-                    },
-                    onSuffixTap: () {
-                      final bloc = context.read<AddSaleBloc>();
-                      bloc.add(GetPhoneByImeiEvent(imei: controller.text));
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  BlocBuilder<AddSaleBloc, AddSaleState>(
-                    builder: (BuildContext context, state) {
-                      if (state is GetPhoneByImeiSuccess) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const Text(
-                              'Device information:',
-                              style: TextStyle(color: Colors.white, decoration: TextDecoration.underline),
-                            ),
-                            const SizedBox(
-                              height: 7,
-                            ),
-
-                            Text(
-                              'Articul: ${state.item.article}',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            const SizedBox(
-                              height: 7,
-                            ),
-                            Text(
-                              'imei1: ${state.item.imei1}',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            const SizedBox(
-                              height: 7,
-                            ),
-                            Text(
-                              'imei2: ${state.item.imei2}',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            const SizedBox(
-                              height: 7,
-                            ),
-                            Text(
-                              'Sku name: ${state.item.skuName}',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            const SizedBox(
-                              height: 7,
-                            ),
-                            Text(
-                              'Bonus = ${state.bonus}\$',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        );
-                      } else if (state is AddSaleError) {
-                        return Text(
-                          state.failure.message,
-                          style: const TextStyle(color: Colors.red),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-
-                  const Spacer(),
-                  BlocBuilder<AddSaleBloc, AddSaleState>(
-                    builder: (BuildContext context, state) {
-                      if (state is GetPhoneByImeiSuccess) {
-                        return MainButton(
-                          text: 'Send',
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        context.read<AddSaleBloc>().add(AddSaleResetEvent());
+      },
+      child: BlocConsumer<AddSaleBloc, AddSaleState>(
+        builder: (BuildContext context, state) {
+          if (state is AddSaleLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingM, vertical: ThemeDimensions.paddingM),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
                           onTap: () {
-                            final ownerId = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
-                            final sale = SaleModel(imei: controller.text, ownerId: ownerId, id: '', bonus: state.bonus);
-                            context.read<AddSaleBloc>().add(AddEvent(sale));
+                            context.pop();
                           },
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                ],
+                          child: Container(
+                            decoration: const BoxDecoration(color: Colors.transparent),
+                            child: const Icon(CupertinoIcons.arrow_left),
+                          ),
+                        ),
+                        SizedBox(
+                          width: ThemeDimensions.paddingM,
+                        ),
+                        Text(
+                          'Add sale',
+                          style: ThemeTextStyles.titleMedium(context),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ImeiTile(
+                      title: 'IMEI',
+                      hintText: '1234 5678 9012 3456',
+                      controller: controller,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      onScan: () async {
+                        final bloc = context.read<AddSaleBloc>();
+                        final scannedImei = await context.push<String?>(
+                          '/imei_scanner_page',
+                        ); // Твой путь к сканеру в GoRouter
+
+                        if (scannedImei != null && scannedImei.isNotEmpty) {
+                          setState(() {
+                            controller.text = scannedImei;
+                          });
+                          bloc.add(GetPhoneByImeiEvent(imei: scannedImei));
+                        }
+                      },
+                      onSuffixTap: () {
+                        final bloc = context.read<AddSaleBloc>();
+                        bloc.add(GetPhoneByImeiEvent(imei: controller.text));
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    BlocBuilder<AddSaleBloc, AddSaleState>(
+                      builder: (BuildContext context, state) {
+                        if (state is GetPhoneByImeiSuccess) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              const Text(
+                                'Device information:',
+                                style: TextStyle(color: Colors.white, decoration: TextDecoration.underline),
+                              ),
+                              const SizedBox(
+                                height: 7,
+                              ),
+
+                              Text(
+                                'Articul: ${state.item.article}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(
+                                height: 7,
+                              ),
+                              Text(
+                                'imei1: ${state.item.imei1}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(
+                                height: 7,
+                              ),
+                              Text(
+                                'imei2: ${state.item.imei2}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(
+                                height: 7,
+                              ),
+                              Text(
+                                'Sku name: ${state.item.skuName}',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              const SizedBox(
+                                height: 7,
+                              ),
+                              Text(
+                                'Bonus = ${state.bonus}\$',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          );
+                        } else if (state is AddSaleError) {
+                          return Text(
+                            state.failure.message,
+                            style: const TextStyle(color: Colors.red),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+
+                    const Spacer(),
+                    BlocBuilder<AddSaleBloc, AddSaleState>(
+                      builder: (BuildContext context, state) {
+                        if (state is GetPhoneByImeiSuccess) {
+                          return MainButton(
+                            text: 'Send',
+                            onTap: () {
+                              if (!(context.read<AuthBloc>().state as AuthAuthenticated).currentUser.isModerated) {
+                                ErrorDialog.show(context, 'User not moderated');
+                                return;
+                              }
+                              final ownerId = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
+                              final sale = SaleModel(
+                                imei: controller.text,
+                                ownerId: ownerId,
+                                id: '',
+                                bonus: state.bonus,
+                              );
+                              context.read<AddSaleBloc>().add(AddEvent(sale));
+                            },
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
-      listener: (BuildContext context, state) {
-        if (state is AddSaleSuccess) {
-          context.pop();
-        } else if (state is AddSaleError) {
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(
-          //     content: Text(
-          //       state.failure.message,
-          //       style: TextStyle(color: Colors.white),
-          //     ),
-          //     backgroundColor: Colors.red,
-          //   ),
-          // );
-        }
-      },
+          );
+        },
+        listener: (BuildContext context, state) {
+          if (state is AddSaleSuccess) {
+            context.pop();
+          } else if (state is AddSaleError) {
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: Text(
+            //       state.failure.message,
+            //       style: TextStyle(color: Colors.white),
+            //     ),
+            //     backgroundColor: Colors.red,
+            //   ),
+            // );
+          }
+        },
+      ),
     );
   }
 }
