@@ -382,11 +382,18 @@ class _HomePageSlaveState extends State<HomePageSlave> {
   }
 
   Future<void> _check() async {
-    final value = getIt<SharedPreferences>().getString(AppConstants.keyIsFirstEnter);
-
-    if (value == null && mounted) {
-      context.push('/confirm_account');
+    final state = context.read<AuthBloc>().state;
+    if (state is AuthAuthenticated) {
+      if (!state.currentUser.isModerated) {
+        context.push('/confirm_account');
+      }
     }
+
+    // final value = getIt<SharedPreferences>().getBool(AppConstants.keyIsFirstEnter);
+    //
+    // if (value == null && mounted) {
+    //   context.push('/confirm_account');
+    // }
   }
 
   Future<void> _initData() async {
