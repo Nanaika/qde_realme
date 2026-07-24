@@ -35,12 +35,9 @@ class _HomePageSlaveState extends State<HomePageSlave> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (BuildContext context, AuthState state) {
-        print('====================1');
         if (state is AuthAuthenticated) {
           if (state.isUserLoaded) {
-            print('====================2');
-            if (!state.currentUser.isModerated) {
-              print('====================3');
+            if (!state.currentUser.isModerated && !state.onModeration) {
               context.push('/confirm_account');
             }
           }

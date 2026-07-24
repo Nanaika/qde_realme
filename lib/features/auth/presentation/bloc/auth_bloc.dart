@@ -62,7 +62,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
       final user = await repository.getCurrentUser(FirebaseAuth.instance.currentUser!.uid);
-      emit(AuthAuthenticated(user, isUserLoaded: true));
+      final onModeration = await repository.getOnModerationStatus(FirebaseAuth.instance.currentUser!.uid);
+
+      print('======================  ${onModeration}');
+      emit(AuthAuthenticated(user, isUserLoaded: true, onModeration: onModeration));
     } else {
       emit(AuthUnauthenticated());
     }

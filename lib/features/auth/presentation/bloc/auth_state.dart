@@ -11,8 +11,9 @@ class AuthLoading extends AuthState {}
 class AuthAuthenticated extends AuthState {
   final UserModel currentUser;
   final bool isUserLoaded;
+  final bool onModeration;
 
-  AuthAuthenticated(this.currentUser, {this.isUserLoaded = false});
+  AuthAuthenticated(this.currentUser, {this.isUserLoaded = false, this.onModeration = false});
 }
 
 class AuthUnauthenticated extends AuthState {}

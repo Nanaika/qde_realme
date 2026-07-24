@@ -17,6 +17,8 @@ abstract class AuthRemoteDataSource {
   Future logout();
 
   Future<UserModel> getCurrentUser(String id);
+
+  Future<bool> getOnModerationStatus(String id);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -84,6 +86,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserModel> getCurrentUser(String id) async {
     final docSnap = await db.collection(AppConstants.users).doc(id).get();
     return UserModel.fromJson(docSnap.data()!);
+  }
+
+  @override
+  Future<bool> getOnModerationStatus(String id) async {
+    final docSnap = await db
+        .collection(AppConstants.moderateUsers)
+        .doc(id)
+        .get(const GetOptions(source: Source.server));
+
+    return docSnap.exists;
   }
 
   String _generateNonce([int length = 32]) {
