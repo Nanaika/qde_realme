@@ -78,7 +78,11 @@
   "login": "Войти",
   "russian": "Русский",
   "uzbek": "Узбекский",
-  "language": "Язык"
+  "language": "Язык",
+  "point_at_IMEI": "Наведите на IMEI",
+  "needCameraPermission": "Нужен доступ к камере",
+  "cameraNotFound": "Камера не найдена",
+  "cameraError": "Ошибка камеры"
 }
 
 

@@ -24,9 +24,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await repository.login();
 
-      final user = await repository.getCurrentUser(FirebaseAuth.instance.currentUser!.uid);
-
-      emit(AuthAuthenticated(user));
+      // final user = await repository.getCurrentUser(FirebaseAuth.instance.currentUser!.uid);
+      // print('============LOGIN===============  ${user}');
+      //
+      // emit(AuthAuthenticated(user, isUserLoaded: true));
+      add(CheckAuthEvent());
     } on Failure catch (failure) {
       emit(AuthError(failure));
     } catch (e) {
@@ -55,11 +57,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             id: FirebaseAuth.instance.currentUser!.uid,
             email: FirebaseAuth.instance.currentUser!.email!,
           ),
+          isUserLoaded: false,
         ),
       );
 
       final user = await repository.getCurrentUser(FirebaseAuth.instance.currentUser!.uid);
-      emit(AuthAuthenticated(user));
+      emit(AuthAuthenticated(user, isUserLoaded: true));
     } else {
       emit(AuthUnauthenticated());
     }

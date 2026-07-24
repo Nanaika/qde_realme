@@ -1,11 +1,17 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:qde_realme/core/theme/theme_colors.dart';
+
+import '../../../../core/theme/theme_dimensions.dart';
+import '../../../../core/theme/theme_text_styles.dart';
 
 class ImeiScannerScreen extends StatefulWidget {
   const ImeiScannerScreen({super.key});
@@ -18,10 +24,9 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
   CameraController? _cameraController;
   final TextRecognizer _textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
   bool _isProcessing = false;
-  String _scannedImei = 'Наведите на IMEI';
-  String _errorMessage = "";
+  String _scannedImei = 'point_at_IMEI'.tr();
+  String _errorMessage = '';
 
-  // Переменная для контроля времени между кадрами
   DateTime? _lastProcessedTime;
 
   @override
@@ -52,13 +57,13 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
   Future<void> _initCamera() async {
     final status = await Permission.camera.request();
     if (!status.isGranted) {
-      setState(() => _errorMessage = 'Need camera permission');
+      setState(() => _errorMessage = 'needCameraPermission'.tr());
       return;
     }
 
     final cameras = await availableCameras();
     if (cameras.isEmpty) {
-      setState(() => _errorMessage = 'Camera not found');
+      setState(() => _errorMessage = 'cameraNotFound'.tr());
       return;
     }
 
@@ -72,8 +77,8 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
     try {
       await _cameraController!.initialize();
 
-      double minZoom = await _cameraController!.getMinZoomLevel();
-      double maxZoom = await _cameraController!.getMaxZoomLevel();
+      final double minZoom = await _cameraController!.getMinZoomLevel();
+      final double maxZoom = await _cameraController!.getMaxZoomLevel();
       double desiredZoom = 2.5;
       if (desiredZoom < minZoom) desiredZoom = minZoom;
       if (desiredZoom > maxZoom) desiredZoom = maxZoom;
@@ -83,7 +88,7 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       await _cameraController!.startImageStream(_processImage);
       if (mounted) setState(() {});
     } catch (e) {
-      setState(() => _errorMessage = "Camera error: $e");
+      setState(() => _errorMessage = '${'cameraError'.tr()}: $e');
     }
   }
 
@@ -91,7 +96,7 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
   //   if (_isProcessing || _cameraController == null) return;
   //
   //   final now = DateTime.now();
-  //   // ОПТИМИЗАЦИЯ 1: Обрабатываем кадр только если прошло больше 300 мс с прошлой попытки
+  //
   //   if (_lastProcessedTime != null && now.difference(_lastProcessedTime!).inMilliseconds < 300) {
   //     return;
   //   }
@@ -147,7 +152,7 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
     if (_isProcessing || _cameraController == null) return;
 
     final now = DateTime.now();
-    // ОПТИМИЗАЦИЯ 1: Обрабатываем кадр только если прошло больше 300 мс с прошлой попытки
+
     if (_lastProcessedTime != null && now.difference(_lastProcessedTime!).inMilliseconds < 300) {
       return;
     }
@@ -182,7 +187,7 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       }
 
       if (linesInFrame.isNotEmpty) {
-        linesInFrame.sort((a, b) => (a.boundingBox.top ?? 0).compareTo(b.boundingBox.top ?? 0));
+        linesInFrame.sort((a, b) => (a.boundingBox.top).compareTo(b.boundingBox.top));
 
         final cleanText = linesInFrame.first.text.replaceAll(RegExp(r'[\s-]'), '');
         final match = imeiRegex.firstMatch(cleanText);
@@ -194,28 +199,25 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
             _scannedImei = foundImei;
           });
 
-          // Выключаем камеру перед выходом
           if (_cameraController != null && _cameraController!.value.isStreamingImages) {
             await _cameraController!.stopImageStream();
           }
 
           if (mounted) {
-            context.pop(foundImei); // Возвращает значение назад через go_router
+            context.pop(foundImei);
           }
-          return; // Уходим сразу, не сбрасывая _isProcessing
+          return;
         }
       }
     } catch (e) {
       debugPrint('Error: $e');
     } finally {
-      // Сбрасываем флаг для следующего кадра только если IMEI еще не нашли
-      if (_scannedImei == 'Наведите на IMEI') {
+      if (_scannedImei == 'point_at_IMEI'.tr()) {
         _isProcessing = false;
       }
     }
   }
 
-  // ОПТИМИЗАЦИЯ 2: Быстрая склейка байтов через выделение буфера под общий размер кадра
   InputImage? _convertImageOptimized(CameraImage image) {
     if (_cameraController == null) return null;
     final sensorOrientation = _cameraController!.description.sensorOrientation;
@@ -224,13 +226,11 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
 
     if (rotation == null || format == null || image.planes.isEmpty) return null;
 
-    // Считаем общий размер всех плоскостей заранее
     int totalBytes = 0;
     for (final plane in image.planes) {
       totalBytes += plane.bytes.length;
     }
 
-    // Выделяем память один раз и копируем напрямую
     final Uint8List bytes = Uint8List(totalBytes);
     int offset = 0;
     for (final plane in image.planes) {
@@ -272,7 +272,7 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
               width: MediaQuery.of(context).size.width * 0.8,
               height: 70,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.blueAccent, width: 3),
+                border: Border.all(color: ThemeColors.primaryDark, width: 3),
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
@@ -284,13 +284,44 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12)),
-              child: Text(
-                _scannedImei,
-                style: const TextStyle(
-                  color: Colors.greenAccent,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'monospace',
+              child: Center(
+                child: Text(
+                  _scannedImei,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingM, vertical: ThemeDimensions.paddingM),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        context.pop();
+                      },
+                      child: Container(
+                        decoration: const BoxDecoration(color: Colors.transparent),
+                        child: const Icon(CupertinoIcons.arrow_left),
+                      ),
+                    ),
+                    SizedBox(
+                      width: ThemeDimensions.paddingM,
+                    ),
+                    Text(
+                      'scan'.tr(),
+                      style: ThemeTextStyles.titleMedium(context),
+                    ),
+                  ],
                 ),
               ),
             ),

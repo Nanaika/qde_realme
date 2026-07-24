@@ -12,6 +12,9 @@ class UserModel extends UserEntity {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    print('>>> JSON FROM DB: $json');
+    print('>>> VALUE: ${json['isModerated']} | TYPE: ${json['isModerated'].runtimeType}');
+
     return UserModel(
       id: (json['id'] ?? '') as String,
       email: (json['email'] ?? '') as String,

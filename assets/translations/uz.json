@@ -78,5 +78,10 @@
   "login": "Kirish",
   "russian": "Rus tili",
   "uzbek": "O‘zbek tili",
-  "language": "Til"
+  "language": "Til",
+  "point_at_IMEI": "IMEI'га йўналтиринг",
+  "needCameraPermission": "Kameraga ruxsat kerak",
+  "cameraNotFound": "Kamera topilmadi",
+  "cameraError": "Kamera xatoligi"
+
 }
