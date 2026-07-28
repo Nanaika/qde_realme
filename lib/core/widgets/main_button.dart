@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/theme_colors.dart';
@@ -9,9 +10,13 @@ class MainButton extends StatelessWidget {
     super.key,
     this.onTap,
     this.text = '',
+    this.isApple = false,
   });
+
   final void Function()? onTap;
   final String text;
+  final bool isApple;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -32,9 +37,29 @@ class MainButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Text(
-          text,
-          style: ThemeTextStyles.button(context).copyWith(fontSize: 16, fontWeight: FontWeight.w300),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              text,
+              style: ThemeTextStyles.button(context).copyWith(fontSize: 16, fontWeight: FontWeight.w300),
+            ),
+            if (isApple)
+              const SizedBox(
+                width: 10,
+              ),
+            if (isApple)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Image.asset(
+                  'assets/images/apple.png',
+                  color: Colors.white,
+                  width: 22,
+                  height: 22,
+                ),
+              ),
+          ],
         ),
       ),
     );

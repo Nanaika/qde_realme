@@ -82,7 +82,8 @@
   "point_at_IMEI": "Наведите на IMEI",
   "needCameraPermission": "Нужен доступ к камере",
   "cameraNotFound": "Камера не найдена",
-  "cameraError": "Ошибка камеры"
+  "cameraError": "Ошибка камеры",
+  "sign_in_with_apple": "Войти с Apple"
 }
 
 

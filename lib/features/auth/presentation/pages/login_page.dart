@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qde_realme/core/theme/theme_text_styles.dart';
@@ -61,12 +62,22 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                MainButton(
-                  text: 'login'.tr(),
-                  onTap: () {
-                    context.read<AuthBloc>().add(LoginEvent());
-                  },
-                ),
+
+                if (defaultTargetPlatform == TargetPlatform.iOS)
+                  MainButton(
+                    text: 'sign_in_with_apple'.tr(),
+                    isApple: true,
+                    onTap: () {
+                      context.read<AuthBloc>().add(LoginEvent());
+                    },
+                  )
+                else
+                  MainButton(
+                    text: 'login'.tr(),
+                    onTap: () {
+                      context.read<AuthBloc>().add(LoginEvent());
+                    },
+                  ),
                 const SizedBox(
                   height: 40,
                 ),
