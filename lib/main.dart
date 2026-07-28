@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qde_realme/core/di/injection_container.dart';
-import 'package:qde_realme/core/notifications/notification_service.dart';
 import 'package:qde_realme/core/router/app_router.dart';
 import 'package:qde_realme/core/services/theme_service.dart';
 import 'package:qde_realme/core/theme/theme_colors.dart';
@@ -43,23 +42,6 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
   await initDependencies();
-
-  if (getIt.isRegistered<NotificationService>()) {
-    try {
-      final notificationService = getIt<NotificationService>();
-      await notificationService.initialize();
-
-      final token = await notificationService.getFCMToken();
-      if (token != null) {
-        print('FCM Token: $token');
-        print(
-          'Используйте этот токен для отправки тестовых уведомлений из Firebase Console',
-        );
-      }
-    } catch (e) {
-      print('Ошибка инициализации уведомлений: $e');
-    }
-  }
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

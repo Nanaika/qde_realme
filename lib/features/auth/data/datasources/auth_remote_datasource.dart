@@ -49,22 +49,41 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserCredential> signInWithApple() async {
-    final rawNonce = _generateNonce();
+    // final rawNonce = _generateNonce();
+    //
+    // final appleCredential = await SignInWithApple.getAppleIDCredential(
+    //   scopes: [
+    //     AppleIDAuthorizationScopes.email,
+    //     AppleIDAuthorizationScopes.fullName,
+    //   ],
+    //   nonce: sha256.convert(utf8.encode(rawNonce)).toString(),
+    // );
+    //
+    // final OAuthCredential credential = OAuthProvider('apple.com').credential(
+    //   idToken: appleCredential.identityToken,
+    //   rawNonce: rawNonce,
+    // );
+    //
+    // final userCredential = await _firebaseAuth.signInWithCredential(credential);
 
-    final appleCredential = await SignInWithApple.getAppleIDCredential(
+    final rawNonce = _generateNonce();
+    final nonce = _sha256ofString(rawNonce);
+    final AuthorizationCredentialAppleID appleCredentials;
+
+    appleCredentials = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
         AppleIDAuthorizationScopes.fullName,
       ],
-      nonce: sha256.convert(utf8.encode(rawNonce)).toString(),
+      nonce: nonce,
     );
 
-    final OAuthCredential credential = OAuthProvider('apple.com').credential(
-      idToken: appleCredential.identityToken,
+    final oauthCredential = OAuthProvider('apple.com').credential(
+      idToken: appleCredentials.identityToken,
+      accessToken: appleCredentials.authorizationCode,
       rawNonce: rawNonce,
     );
-
-    final userCredential = await _firebaseAuth.signInWithCredential(credential);
+    final userCredential = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
 
     if (userCredential.user != null) {
       final doc = await db.collection(AppConstants.users).doc(userCredential.user!.uid).get();
@@ -100,6 +119,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   String _generateNonce([int length = 32]) {
     const charset = '0123456789FFFFFFabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)]).join();
+  }
+
+  String _sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+  String _generateNonce2([int length = 32]) {
+    const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
     return List.generate(length, (_) => charset[random.nextInt(charset.length)]).join();
   }

@@ -1,13 +1,11 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:qde_realme/core/network/api_client.dart';
 import 'package:qde_realme/core/network/network_info.dart';
-import 'package:qde_realme/core/notifications/notification_handler.dart';
-import 'package:qde_realme/core/notifications/notification_service.dart';
 import 'package:qde_realme/core/services/analytics_service.dart';
 import 'package:qde_realme/core/services/excel_service.dart';
 import 'package:qde_realme/core/services/storage_service.dart';
@@ -63,17 +61,21 @@ import '../services/remote_config_service.dart';
 final getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
-  bool firebaseInitialized = false;
   try {
     await Firebase.initializeApp();
-    getIt.registerLazySingleton<FirebaseMessaging>(
-      () => FirebaseMessaging.instance,
-    );
-    firebaseInitialized = true;
+    FlutterError.onError = (errorDetails) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    };
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+
+    // if (kDebugMode) {
+    //   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+    // }
   } catch (e) {}
-  getIt.registerLazySingleton<FlutterLocalNotificationsPlugin>(
-    () => FlutterLocalNotificationsPlugin(),
-  );
 
   // Network
   getIt.registerLazySingleton<Dio>(() => Dio());
@@ -92,18 +94,6 @@ Future<void> initDependencies() async {
   getIt.registerLazySingleton<AnalyticsService>(() => AnalyticsServiceImpl());
   getIt.registerLazySingleton<ThemeService>(() => ThemeServiceImpl(getIt()));
 
-  if (firebaseInitialized) {
-    getIt.registerLazySingleton<NotificationHandler>(
-      () => NotificationHandler(getIt()),
-    );
-    getIt.registerLazySingleton<NotificationService>(
-      () => NotificationService(
-        localNotifications: getIt(),
-        firebaseMessaging: getIt<FirebaseMessaging>(),
-        handler: getIt(),
-      ),
-    );
-  }
   getIt.registerSingleton(RemoteConfigService());
   getIt.registerSingleton(ExcelService());
 

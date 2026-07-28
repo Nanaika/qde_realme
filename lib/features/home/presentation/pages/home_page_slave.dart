@@ -67,7 +67,7 @@ class _HomePageSlaveState extends State<HomePageSlave> {
                               ? state.currentUser.name
                               : '';
                           if (name != '') {
-                            text = 'hello_user'.tr(args: [?state.currentUser.name]) + '';
+                            text = '${'hello_user'.tr(args: [?state.currentUser.name])}';
                           } else {
                             text = 'hello'.tr();
                           }
@@ -387,23 +387,6 @@ class _HomePageSlaveState extends State<HomePageSlave> {
         ),
       ),
     );
-  }
-
-  Future<void> _check() async {
-    final state = context.read<AuthBloc>().state;
-    if (state is AuthAuthenticated) {
-      print('================${state.currentUser.isModerated}');
-      print('================${state.currentUser.id}');
-      if (!state.currentUser.isModerated) {
-        context.push('/confirm_account');
-      }
-    }
-
-    // final value = getIt<SharedPreferences>().getBool(AppConstants.keyIsFirstEnter);
-    //
-    // if (value == null && mounted) {
-    //   context.push('/confirm_account');
-    // }
   }
 
   Future<void> _initData() async {
