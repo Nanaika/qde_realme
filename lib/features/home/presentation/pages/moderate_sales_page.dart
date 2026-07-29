@@ -26,7 +26,6 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
     super.initState();
     _scrollController.addListener(_onScroll);
 
-    // ТУТ ПИНАЕМ БЛОК НА СТАРТЕ (Поменяй на свой эвент, например LoadUsers())
     context.read<ModerateSalesBloc>().add(ModerateSalesGetFirstEvent());
   }
 
@@ -38,7 +37,6 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
 
   void _onScroll() {
     if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
-      // ТУТ ПОДГРУЖАЕМ СЛЕДУЮЩУЮ ПАЧКУ (Поменяй на свой эвент, например GetNextUsers())
       context.read<ModerateSalesBloc>().add(ModerateSalesGetNextEvent());
     }
   }
@@ -89,7 +87,7 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                     }
                     if (state is ModerateSalesSuccess) {
                       if (state.items.isEmpty) {
-                        return const Center(child: Text('Empty'));
+                        return Center(child: Text('empty'.tr()));
                       }
                       return RefreshIndicator(
                         onRefresh: () async {

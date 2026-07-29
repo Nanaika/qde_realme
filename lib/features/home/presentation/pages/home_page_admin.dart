@@ -1,164 +1,236 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qde_realme/core/theme/theme_dimensions.dart';
 import 'package:qde_realme/core/theme/theme_text_styles.dart';
-import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:qde_realme/features/auth/presentation/bloc/auth_event.dart';
+import 'package:qde_realme/features/home/presentation/pages/settings_page.dart';
 
 import '../../../../core/theme/theme_colors.dart';
 
-class HomePageAdmin extends StatelessWidget {
+class HomePageAdmin extends StatefulWidget {
   const HomePageAdmin({super.key});
+
+  @override
+  State<HomePageAdmin> createState() => _HomePageAdminState();
+}
+
+class _HomePageAdminState extends State<HomePageAdmin> {
+  final PageController _pageController = PageController();
+  int _currentIndex = 0;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(LocaleKeys.home_title.tr()),
-      //   actions: const [LanguageToggle(), ThemeToggle()],
-      // ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingM),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: ThemeDimensions.spacingXL),
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        children: const [AdminHomeContentPage(), SettingsPage()],
+      ),
+      bottomNavigationBar: StatefulBuilder(
+        builder: (BuildContext context, void Function(void Function()) setLocalState) {
+          return BottomAppBar(
+            height: 60,
+            padding: EdgeInsets.zero,
 
-              Text(
-                'device_management'.tr(),
-                style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
-              ),
-              SizedBox(height: ThemeDimensions.spacingM),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: AdminButton(
-                      text: 'enter'.tr(),
-                      onTap: () {
-                        context.push('/add_single_item');
-                      },
-                      icon: CupertinoIcons.square_pencil,
+            color: const Color(0xFF2A243A),
+            child: Row(
+              mainAxisAlignment: .spaceAround,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      setLocalState(() {
+                        _currentIndex = 0;
+                        _pageController.animateToPage(
+                          0,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      });
+                    },
+                    child: Container(
+                      height: 60,
+                      color: Colors.transparent,
+                      child: Icon(
+                        CupertinoIcons.house_alt,
+                        color: _currentIndex != 0 ? Colors.white : ThemeColors.primaryDark,
+                      ),
                     ),
                   ),
-                  SizedBox(width: ThemeDimensions.spacingM),
-                  Expanded(
-                    child: AdminButton(
-                      text: 'import'.tr(),
-                      icon: CupertinoIcons.square_arrow_down,
-                      onTap: () {
-                        context.push('/add_excel_items');
-                      },
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      setLocalState(() {
+                        _currentIndex = 1;
+                        _pageController.animateToPage(
+                          1,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                        );
+                      });
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Icon(
+                        CupertinoIcons.settings,
+                        color: _currentIndex != 1 ? Colors.white : ThemeColors.primaryDark,
+                      ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
 
-              SizedBox(height: ThemeDimensions.spacingXL),
+class AdminHomeContentPage extends StatelessWidget {
+  const AdminHomeContentPage({
+    super.key,
+  });
 
-              Text(
-                'moderate'.tr(),
-                style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
-              ),
-              SizedBox(height: ThemeDimensions.spacingM),
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingM),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: ThemeDimensions.spacingXL),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: AdminButton(
-                      text: 'sellers'.tr(),
-                      icon: CupertinoIcons.checkmark_shield_fill,
-                      onTap: () {
-                        context.push('/moderate_users');
-                      },
-                    ),
+            Text(
+              'device_management'.tr(),
+              style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
+            ),
+            SizedBox(height: ThemeDimensions.spacingM),
+
+            Row(
+              children: [
+                Expanded(
+                  child: AdminButton(
+                    text: 'enter'.tr(),
+                    onTap: () {
+                      context.push('/add_single_item');
+                    },
+                    icon: CupertinoIcons.square_pencil,
                   ),
-                  SizedBox(width: ThemeDimensions.spacingM),
-                  Expanded(
-                    child: AdminButton(
-                      text: 'sales'.tr(),
-                      icon: CupertinoIcons.bag_fill,
-                      onTap: () {
-                        context.push('/moderate_sales');
-                      },
-                    ),
+                ),
+                SizedBox(width: ThemeDimensions.spacingM),
+                Expanded(
+                  child: AdminButton(
+                    text: 'import'.tr(),
+                    icon: CupertinoIcons.square_arrow_down,
+                    onTap: () {
+                      context.push('/add_excel_items');
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
 
-              SizedBox(height: ThemeDimensions.spacingXL),
+            SizedBox(height: ThemeDimensions.spacingXL),
 
-              Text(
-                'users'.tr(),
-                style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
-              ),
-              SizedBox(height: ThemeDimensions.spacingM),
+            Text(
+              'moderate'.tr(),
+              style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
+            ),
+            SizedBox(height: ThemeDimensions.spacingM),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: AdminButton(
-                      text: 'users'.tr(),
-                      icon: CupertinoIcons.person_crop_circle_fill,
-                      onTap: () {
-                        context.push('/manage_users');
-                      },
-                    ),
+            Row(
+              children: [
+                Expanded(
+                  child: AdminButton(
+                    text: 'sellers'.tr(),
+                    icon: CupertinoIcons.checkmark_shield_fill,
+                    onTap: () {
+                      context.push('/moderate_users');
+                    },
                   ),
-                  SizedBox(width: ThemeDimensions.spacingM),
-                  const Expanded(
-                    child: SizedBox.shrink(),
+                ),
+                SizedBox(width: ThemeDimensions.spacingM),
+                Expanded(
+                  child: AdminButton(
+                    text: 'sales'.tr(),
+                    icon: CupertinoIcons.bag_fill,
+                    onTap: () {
+                      context.push('/moderate_sales');
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
+            ),
 
-              SizedBox(height: ThemeDimensions.spacingXL),
+            SizedBox(height: ThemeDimensions.spacingXL),
 
-              Text(
-                'bonuses_management'.tr(),
-                style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
-              ),
-              SizedBox(height: ThemeDimensions.spacingM),
+            Text(
+              'users'.tr(),
+              style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
+            ),
+            SizedBox(height: ThemeDimensions.spacingM),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: AdminButton(
-                      text: 'bonuses'.tr(),
-                      icon: CupertinoIcons.creditcard,
-                      onTap: () {
-                        context.push('/bonuses');
-                      },
-                    ),
+            Row(
+              children: [
+                Expanded(
+                  child: AdminButton(
+                    text: 'users'.tr(),
+                    icon: CupertinoIcons.person_crop_circle_fill,
+                    onTap: () {
+                      context.push('/manage_users');
+                    },
                   ),
-                  SizedBox(width: ThemeDimensions.spacingM),
-                  const Expanded(
-                    child: SizedBox.shrink(),
+                ),
+                SizedBox(width: ThemeDimensions.spacingM),
+                const Expanded(
+                  child: SizedBox.shrink(),
+                ),
+              ],
+            ),
+
+            SizedBox(height: ThemeDimensions.spacingXL),
+
+            Text(
+              'bonuses_management'.tr(),
+              style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
+            ),
+            SizedBox(height: ThemeDimensions.spacingM),
+
+            Row(
+              children: [
+                Expanded(
+                  child: AdminButton(
+                    text: 'bonuses'.tr(),
+                    icon: CupertinoIcons.creditcard,
+                    onTap: () {
+                      context.push('/bonuses');
+                    },
                   ),
-                ],
-              ),
+                ),
+                SizedBox(width: ThemeDimensions.spacingM),
+                const Expanded(
+                  child: SizedBox.shrink(),
+                ),
+              ],
+            ),
 
-              ElevatedButton(
-                onPressed: () {
-                  context.push('/homeslave');
-                },
-                child: Text('Change to slave'),
-              ),
-
-              ElevatedButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  context.read<AuthBloc>().add(LogoutEvent());
-                },
-                child: Text('Logout'),
-              ),
-            ],
-          ),
+            ElevatedButton(
+              onPressed: () {
+                context.push('/homeslave');
+              },
+              child: Text('Change to slave'),
+            ),
+          ],
         ),
       ),
     );
