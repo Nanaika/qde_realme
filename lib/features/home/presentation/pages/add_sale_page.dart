@@ -264,25 +264,56 @@ class ImeiTile extends StatelessWidget {
                 textStyle: ThemeTextStyles.headlineMedium(
                   context,
                 ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-                suffixIcon: IconButton(onPressed: onSuffixTap, icon: const Icon(CupertinoIcons.search)),
+                // suffixIcon: IconButton(onPressed: onSuffixTap, icon: const Icon(CupertinoIcons.search)),
               ),
 
               const SizedBox(
                 height: 20,
               ),
-              Center(
-                child: GestureDetector(
-                  onTap: onScan,
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Text(
-                      'scan'.tr(),
-                      style: ThemeTextStyles.headlineMedium(
-                        context,
-                      ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-                      textAlign: TextAlign.start,
+              IntrinsicHeight(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: onScan,
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Text(
+                            'scan'.tr(),
+                            style: ThemeTextStyles.headlineMedium(
+                              context,
+                            ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const VerticalDivider(
+                      color: Colors.white,
+                      thickness: 2,
+                      width: 25,
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: onSuffixTap,
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Text(
+                            'search'.tr(),
+                            style: ThemeTextStyles.headlineMedium(
+                              context,
+                            ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
