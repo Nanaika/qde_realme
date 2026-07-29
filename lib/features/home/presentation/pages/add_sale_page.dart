@@ -82,7 +82,7 @@ class _AddSalePageState extends State<AddSalePage> {
                         final bloc = context.read<AddSaleBloc>();
                         final scannedImei = await context.push<String?>(
                           '/imei_scanner_page',
-                        ); // Твой путь к сканеру в GoRouter
+                        );
 
                         if (scannedImei != null && scannedImei.isNotEmpty) {
                           setState(() {
@@ -152,7 +152,7 @@ class _AddSalePageState extends State<AddSalePage> {
                           );
                         } else if (state is AddSaleError) {
                           return Text(
-                            state.failure.message,
+                            state.failure.message.tr(),
                             style: const TextStyle(color: Colors.red),
                           );
                         }
@@ -270,51 +270,50 @@ class ImeiTile extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              IntrinsicHeight(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: onScan,
-                        child: Container(
-                          color: Colors.transparent,
-                          child: Text(
-                            'scan'.tr(),
-                            style: ThemeTextStyles.headlineMedium(
-                              context,
-                            ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: onScan,
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Text(
+                          'scan'.tr(),
+                          style: ThemeTextStyles.headlineMedium(
+                            context,
+                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ),
                     ),
-                    const VerticalDivider(
-                      color: Colors.white,
-                      thickness: 2,
-                      width: 25,
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: onSuffixTap,
-                        child: Container(
-                          color: Colors.transparent,
-                          child: Text(
-                            'search'.tr(),
-                            style: ThemeTextStyles.headlineMedium(
-                              context,
-                            ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
+                  ),
+
+                  // const VerticalDivider(
+                  //   color: Colors.white,
+                  //   thickness: 2,
+                  //   width: 25,
+                  // ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: onSuffixTap,
+                      child: Container(
+                        color: Colors.transparent,
+                        child: Text(
+                          'search'.tr(),
+                          style: ThemeTextStyles.headlineMedium(
+                            context,
+                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
