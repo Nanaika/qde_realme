@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_event.dart';
 
@@ -41,7 +42,9 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
               SettingsRow(
                 text: 'terms_and_conditions'.tr(),
                 icon: CupertinoIcons.doc_text,
-                onTap: () {},
+                onTap: () {
+                  context.push('/privacy_page');
+                },
               ),
               const SizedBox(
                 height: 18,
@@ -49,7 +52,9 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
               SettingsRow(
                 text: 'privacy_policy'.tr(),
                 icon: CupertinoIcons.shield,
-                onTap: () {},
+                onTap: () {
+                  context.push('/privacy_page', extra: true);
+                },
               ),
               const SizedBox(
                 height: 18,
@@ -115,9 +120,13 @@ class SettingsRow extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            Text(
-              text,
-              style: ThemeTextStyles.inputText(context),
+            Expanded(
+              child: Text(
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                text,
+                style: ThemeTextStyles.inputText(context),
+              ),
             ),
           ],
         ),

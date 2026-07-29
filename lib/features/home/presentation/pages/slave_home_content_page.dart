@@ -92,6 +92,7 @@ class _SlaveHomeContentPageState extends State<SlaveHomeContentPage> with Automa
               ),
               Expanded(
                 child: BlocConsumer<SlaveDataBloc, SlaveDataState>(
+                  key: ValueKey(context.locale.languageCode),
                   builder: (BuildContext context, state) {
                     if (state is SlaveDataLoading) {
                       return const Center(child: CircularProgressIndicator());
