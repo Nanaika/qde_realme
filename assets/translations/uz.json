@@ -83,6 +83,9 @@
   "needCameraPermission": "Kameraga ruxsat kerak",
   "cameraNotFound": "Kamera topilmadi",
   "cameraError": "Kamera xatoligi",
-  "sign_in_with_apple": "Apple орқали кириш"
-
+  "sign_in_with_apple": "Apple орқали кириш",
+  "settings": "Sozlamalar",
+  "privacy_policy": "Maxfiylik siyosati",
+  "terms_and_conditions": "Foydalanish shartlari",
+  "logout": "Chiqish"
 }

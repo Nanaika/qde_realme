@@ -9,7 +9,7 @@ import '../theme/theme_dimensions.dart';
 class LanguageToggle extends StatelessWidget {
   const LanguageToggle({super.key});
 
-  void _showLanguageDialog(BuildContext context) {
+  void showLanguageDialog(BuildContext context) {
     final selectedLang = _getCurrentLanguage(context);
     showGeneralDialog(
       context: context,
@@ -87,30 +87,6 @@ class LanguageToggle extends StatelessWidget {
         );
       },
     );
-    // return AlertDialog(
-    //   title: Text(LocaleKeys.language_select.tr()),
-    //   content: Column(
-    //     mainAxisSize: MainAxisSize.min,
-    //     children: [
-    //       ListTile(
-    //         leading: const Icon(CupertinoIcons.globe),
-    //         title: Text(LocaleKeys.language_english.tr()),
-    //         onTap: () {
-    //           context.setLocale(const Locale('en'));
-    //           Navigator.of(context).pop();
-    //         },
-    //       ),
-    //       ListTile(
-    //         leading: const Icon(CupertinoIcons.globe),
-    //         title: Text(LocaleKeys.language_russian.tr()),
-    //         onTap: () {
-    //           context.setLocale(const Locale('ru'));
-    //           Navigator.of(context).pop();
-    //         },
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   String _getCurrentLanguage(BuildContext context) {
@@ -133,7 +109,7 @@ class LanguageToggle extends StatelessWidget {
         ],
       ),
       tooltip: LocaleKeys.language_change.tr(),
-      onPressed: () => _showLanguageDialog(context),
+      onPressed: () => showLanguageDialog(context),
     );
   }
 }

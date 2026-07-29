@@ -83,7 +83,24 @@
   "needCameraPermission": "Нужен доступ к камере",
   "cameraNotFound": "Камера не найдена",
   "cameraError": "Ошибка камеры",
-  "sign_in_with_apple": "Войти с Apple"
+  "sign_in_with_apple": "Войти с Apple",
+
+
+    "settings": "Настройки",
+
+
+    "privacy_policy": "Политика конфиденциальности",
+
+    "terms_and_conditions": "Условия использования",
+
+    "logout": "Выйти"
+
+
+
+
+
+
+
 }
 
 

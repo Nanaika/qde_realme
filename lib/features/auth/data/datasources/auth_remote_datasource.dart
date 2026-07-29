@@ -97,8 +97,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<dynamic> logout() {
-    throw UnimplementedError();
+  Future<dynamic> logout() async {
+    await FirebaseAuth.instance.signOut();
   }
 
   @override
