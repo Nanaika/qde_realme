@@ -78,6 +78,7 @@ dev_dependencies:
   freezed: ^2.5.2
   injectable_generator: ^2.6.1
   json_serializable: ^6.8.0
+  flutter_native_splash: ^2.4.0
 
 flutter:
   uses-material-design: true
@@ -87,4 +88,13 @@ flutter:
     - assets/translations/uz.json
     - assets/translations/ru.json
     - assets/images/
+
+flutter_native_splash:
+  color: "#1C162E" # Твой HEX-цвет фона (например, #121212 для тёмного)
+  image: assets/images/logo.png # Твоя иконка по центру
+  fullscreen: true
+  # Настройки под Android 12+ (обязательно для новых версий)
+  android_12:
+    color: "#1C162E"
+    image: assets/images/logo.png
 
