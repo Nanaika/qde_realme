@@ -34,4 +34,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<bool> getOnModerationStatus(String id) async {
     return await remoteDataSource.getOnModerationStatus(id);
   }
+
+  @override
+  Future<dynamic> deleteUser(String id) async {
+    return await remoteDataSource.deleteUser(id);
+  }
 }

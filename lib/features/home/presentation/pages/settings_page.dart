@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qde_realme/core/theme/theme_colors.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_event.dart';
+import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
 
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
@@ -78,6 +80,25 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
               ),
               const SizedBox(
                 height: 18,
+              ),
+              SettingsRow(
+                text: 'delete_user'.tr(),
+                icon: CupertinoIcons.person_crop_circle_badge_minus,
+                onTap: () {
+                  showCupertinoDialog(
+                    context: context,
+                    builder: (dialogContext) => AdaptiveDialog(
+                      title: 'deleting_user'.tr(),
+                      content: 'are_you_sure_you_want_to_delete_the_user'.tr(),
+                      cancelText: 'no'.tr(),
+                      confirmText: 'yes'.tr(),
+                      onConfirm: () {
+                        final id = (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
+                        context.read<AuthBloc>().add(DeleteUserEvent(userId: id));
+                      },
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -218,4 +239,50 @@ void showLanguageDialog(BuildContext context) {
 String _getCurrentLanguage(BuildContext context) {
   final locale = context.locale;
   return locale.languageCode == 'ru' ? 'RU' : 'UZ';
+}
+
+class AdaptiveDialog extends StatelessWidget {
+  final String title;
+  final String content;
+  final String cancelText;
+  final String confirmText;
+  final VoidCallback onConfirm;
+
+  const AdaptiveDialog({
+    super.key,
+    required this.title,
+    required this.content,
+    required this.cancelText,
+    required this.confirmText,
+    required this.onConfirm,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoAlertDialog(
+      title: Text(title),
+      content: Text(content),
+      actions: <CupertinoDialogAction>[
+        CupertinoDialogAction(
+          isDefaultAction: true,
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            cancelText,
+            style: ThemeTextStyles.labelLarge(context).copyWith(color: Colors.white),
+          ),
+        ),
+        CupertinoDialogAction(
+          isDestructiveAction: true,
+          onPressed: () {
+            Navigator.pop(context);
+            onConfirm();
+          },
+          child: Text(
+            confirmText,
+            style: ThemeTextStyles.labelLarge(context).copyWith(color: ThemeColors.primaryDark),
+          ),
+        ),
+      ],
+    );
+  }
 }

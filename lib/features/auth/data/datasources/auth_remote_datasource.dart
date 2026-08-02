@@ -19,6 +19,8 @@ abstract class AuthRemoteDataSource {
   Future<UserModel> getCurrentUser(String id);
 
   Future<bool> getOnModerationStatus(String id);
+
+  Future deleteUser(String id);
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -129,9 +131,47 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     return digest.toString();
   }
 
-  String _generateNonce2([int length = 32]) {
-    const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
-    final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)]).join();
+  @override
+  Future<dynamic> deleteUser(
+    String userId,
+  ) async {
+    final DocumentReference userRef = db.collection(AppConstants.users).doc(userId);
+
+    final QuerySnapshot subCol1Docs = await userRef.collection(AppConstants.ownerSales).get();
+    final QuerySnapshot subCol2Docs = await userRef.collection(AppConstants.history).get();
+
+    final DocumentReference moderationUserRef = db.collection(AppConstants.moderateUsers).doc(userId);
+
+    final QuerySnapshot moderationSalesDocs = await db
+        .collection(AppConstants.moderateSales)
+        .where('ownerId', isEqualTo: userId)
+        .get();
+
+    // 3. Удаляем профиль на модерации
+    await moderationUserRef.delete();
+
+    // 4. Удаляем продажи на модерации
+    for (final doc in moderationSalesDocs.docs) {
+      await doc.reference.delete();
+    }
+
+    // 1. Удаляем документы из первой подколлекции
+    for (final doc in subCol1Docs.docs) {
+      await doc.reference.delete();
+    }
+
+    // 2. Удаляем документы из второй подколлекции
+    for (final doc in subCol2Docs.docs) {
+      await doc.reference.delete();
+    }
+
+    // 5. Удаляем самого юзера
+    await userRef.delete();
+
+    // 6. УДАЛЕНИЕ ИЗ FIREBASE AUTH
+    final User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null && currentUser.uid == userId) {
+      await currentUser.delete();
+    }
   }
 }

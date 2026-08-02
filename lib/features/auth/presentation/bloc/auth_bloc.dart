@@ -15,6 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LogoutEvent>(_onLogout);
     on<CheckAuthEvent>(_onCheckAuth);
     on<RefreshEvent>(_onRefreshUser);
+    on<DeleteUserEvent>(_onDeleteUser);
     add(CheckAuthEvent());
   }
 
@@ -45,6 +46,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  Future<void> _onDeleteUser(DeleteUserEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+
+    try {
+      await repository.deleteUser(event.userId);
+      emit(AuthUnauthenticated());
+    } on Failure catch (failure) {
+      emit(AuthError(failure));
+    } catch (e) {
+      emit(AuthError(ServerFailure(e.toString())));
+    }
+  }
+
   Future<void> _onCheckAuth(CheckAuthEvent event, Emitter<AuthState> emit) async {
     if (FirebaseAuth.instance.currentUser != null) {
       emit(
@@ -60,7 +74,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final user = await repository.getCurrentUser(FirebaseAuth.instance.currentUser!.uid);
       final onModeration = await repository.getOnModerationStatus(FirebaseAuth.instance.currentUser!.uid);
 
-      print('======================  ${onModeration}');
       emit(AuthAuthenticated(user, isUserLoaded: true, onModeration: onModeration));
     } else {
       emit(AuthUnauthenticated());

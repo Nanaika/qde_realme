@@ -314,89 +314,121 @@ class CustomTextField extends StatelessWidget {
   }
 }
 
+// class ErrorDialog {
+//   static void show(BuildContext context, String errorMessage) {
+//     showDialog(
+//       context: context,
+//       barrierDismissible: true, // Можно закрыть тапом по экрану
+//       barrierColor: Colors.black.withOpacity(0.4), // Темный полупрозрачный фон
+//       builder: (BuildContext context) {
+//         return BackdropFilter(
+//           // Мягкое размытие заднего фона
+//           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+//           child: Dialog(
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(24.0), // Красивые круглые углы
+//             ),
+//             backgroundColor: Colors.white,
+//             elevation: 10,
+//             child: Padding(
+//               padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 28.0),
+//               child: Column(
+//                 mainAxisSize: MainAxisSize.min, // Диалог подстраивается под высоту контента
+//                 children: [
+//                   // Красивая иконка ошибки с мягким красным фоном вокруг нее
+//                   Container(
+//                     padding: const EdgeInsets.all(16),
+//                     decoration: BoxDecoration(
+//                       color: Colors.red[50]!, // Мягкий красный фон
+//                       shape: BoxShape.circle,
+//                     ),
+//                     child: Icon(
+//                       Icons.error_outline_rounded,
+//                       color: Colors.red[600],
+//                       size: 40,
+//                     ),
+//                   ),
+//                   const SizedBox(height: 20),
+//
+//                   // Заголовок
+//                   Text(
+//                     'error'.tr(),
+//                     style: const TextStyle(
+//                       fontSize: 20,
+//                       fontWeight: FontWeight.bold,
+//                       color: Colors.black,
+//                     ),
+//                   ),
+//                   const SizedBox(height: 12),
+//                   Text(
+//                     errorMessage,
+//                     textAlign: TextAlign.center,
+//                     style: TextStyle(
+//                       fontSize: 15,
+//                       color: Colors.grey[700],
+//                       height: 1.4,
+//                     ),
+//                   ),
+//                   const SizedBox(height: 28),
+//
+//                   SizedBox(
+//                     width: double.infinity,
+//                     height: 48,
+//                     child: ElevatedButton(
+//                       style: ElevatedButton.styleFrom(
+//                         backgroundColor: Colors.red[600],
+//                         foregroundColor: Colors.white,
+//                         elevation: 0,
+//                         shape: RoundedRectangleBorder(
+//                           borderRadius: BorderRadius.circular(14),
+//                         ),
+//                       ),
+//                       onPressed: () => Navigator.of(context).pop(),
+//                       child: const Text(
+//                         'OK',
+//                         style: TextStyle(
+//                           fontSize: 16,
+//                           fontWeight: FontWeight.w600,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
+
 class ErrorDialog {
   static void show(BuildContext context, String errorMessage) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
-      barrierDismissible: true, // Можно закрыть тапом по экрану
-      barrierColor: Colors.black.withOpacity(0.4), // Темный полупрозрачный фон
+      barrierDismissible: true,
       builder: (BuildContext context) {
-        return BackdropFilter(
-          // Мягкое размытие заднего фона
-          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24.0), // Красивые круглые углы
-            ),
-            backgroundColor: Colors.white,
-            elevation: 10,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 28.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min, // Диалог подстраивается под высоту контента
-                children: [
-                  // Красивая иконка ошибки с мягким красным фоном вокруг нее
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.red[50]!, // Мягкий красный фон
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.error_outline_rounded,
-                      color: Colors.red[600],
-                      size: 40,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Заголовок
-                  Text(
-                    'error'.tr(),
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    errorMessage,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey[700],
-                      height: 1.4,
-                    ),
-                  ),
-                  const SizedBox(height: 28),
-
-                  SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red[600],
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text(
-                        'OK',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+        return CupertinoAlertDialog(
+          title: Column(
+            children: [
+              const Icon(
+                CupertinoIcons.exclamationmark_circle_fill,
+                color: CupertinoColors.systemRed,
+                size: 40,
               ),
-            ),
+              const SizedBox(height: 12),
+              Text('error'.tr()),
+            ],
           ),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
         );
       },
     );
