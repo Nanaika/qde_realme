@@ -98,7 +98,7 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                         onRefresh: () async {
                           context.read<ModerateUsersBloc>().add(ModerateUsersGetFirstEvent());
                         },
-                        child: ListView.builder(
+                        child: ListView.separated(
                           padding: EdgeInsets.zero,
                           physics: const AlwaysScrollableScrollPhysics(),
                           controller: _scrollController,
@@ -134,7 +134,10 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                     children: [
                                       const Padding(
                                         padding: EdgeInsets.only(top: 4.0),
-                                        child: Icon(CupertinoIcons.person_alt_circle),
+                                        child: Icon(
+                                          CupertinoIcons.person_alt_circle,
+                                          size: 22,
+                                        ),
                                       ),
                                       const SizedBox(
                                         width: 9,
@@ -142,20 +145,27 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                       Expanded(
                                         child: Text(
                                           user.name ?? 'no_name'.tr(),
-                                          style: ThemeTextStyles.headlineSmall(
-                                            context,
-                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                          style:
+                                              ThemeTextStyles.headlineSmall(
+                                                context,
+                                              ).copyWith(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w300,
+                                              ),
                                         ),
                                       ),
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: 5,
+                                    height: 8,
                                   ),
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(CupertinoIcons.phone),
+                                      const Icon(
+                                        CupertinoIcons.phone,
+                                        size: 22,
+                                      ),
                                       const SizedBox(
                                         width: 9,
                                       ),
@@ -164,18 +174,21 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                           user.number,
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
-                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
                                         ),
                                       ),
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: 5,
+                                    height: 8,
                                   ),
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(CupertinoIcons.location_solid),
+                                      const Icon(
+                                        CupertinoIcons.location_solid,
+                                        size: 22,
+                                      ),
                                       const SizedBox(
                                         width: 9,
                                       ),
@@ -184,18 +197,21 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                           location,
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
-                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
                                         ),
                                       ),
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: 5,
+                                    height: 8,
                                   ),
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(CupertinoIcons.envelope),
+                                      const Icon(
+                                        CupertinoIcons.envelope,
+                                        size: 22,
+                                      ),
                                       const SizedBox(
                                         width: 9,
                                       ),
@@ -204,7 +220,7 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                           user.email,
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
-                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
                                         ),
                                       ),
                                     ],
@@ -294,6 +310,11 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                   ),
                                 ],
                               ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const SizedBox(
+                              height: 16,
                             );
                           },
                         ),

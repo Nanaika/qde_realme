@@ -200,7 +200,7 @@ class ExcelTile extends StatelessWidget {
                         const Icon(
                           CupertinoIcons.device_phone_portrait,
                           color: Colors.white,
-                          size: 15,
+                          size: 20,
                         ),
                         const SizedBox(
                           width: 4,
@@ -244,7 +244,7 @@ class ExcelTile extends StatelessWidget {
                       'open'.tr(),
                       style: ThemeTextStyles.headlineMedium(
                         context,
-                      ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                      ).copyWith(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 16),
                       textAlign: TextAlign.start,
                     ),
                   ),

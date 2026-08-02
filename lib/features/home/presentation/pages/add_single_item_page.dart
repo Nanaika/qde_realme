@@ -98,7 +98,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                             Tile(
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 18),
                               title: 'article_'.tr(),
                               hintText: '123456789...',
                               controller: articleController,
@@ -111,7 +111,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                             Tile(
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 18),
                               title: 'imei1_'.tr(),
                               hintText: '123456789...',
                               controller: imei1Controller,
@@ -124,7 +124,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                             Tile(
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 18),
                               title: 'imei2_'.tr(),
                               hintText: '123456789...',
                               controller: imei2Controller,
@@ -137,7 +137,7 @@ class _AddSingleItemPageState extends State<AddSingleItemPage> {
                             Tile(
                               textStyle: ThemeTextStyles.headlineMedium(
                                 context,
-                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 18),
                               title: 'sku_name_'.tr(),
                               hintText: 'realme 51 ...',
                               controller: skuNameController,

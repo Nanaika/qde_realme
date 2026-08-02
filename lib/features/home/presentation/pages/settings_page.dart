@@ -39,7 +39,17 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
                 ],
               ),
               const SizedBox(
-                height: 20,
+                height: 18,
+              ),
+              SettingsRow(
+                text: 'language'.tr(),
+                icon: CupertinoIcons.globe,
+                onTap: () {
+                  showLanguageDialog(context);
+                },
+              ),
+              const SizedBox(
+                height: 36,
               ),
               SettingsRow(
                 text: 'terms_and_conditions'.tr(),
@@ -58,18 +68,9 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
                   context.push('/privacy_page', extra: true);
                 },
               ),
+
               const SizedBox(
-                height: 18,
-              ),
-              SettingsRow(
-                text: 'language'.tr(),
-                icon: CupertinoIcons.globe,
-                onTap: () {
-                  showLanguageDialog(context);
-                },
-              ),
-              const SizedBox(
-                height: 18,
+                height: 36,
               ),
               SettingsRow(
                 text: 'logout'.tr(),
@@ -84,6 +85,7 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
               SettingsRow(
                 text: 'delete_user'.tr(),
                 icon: CupertinoIcons.person_crop_circle_badge_minus,
+                textColor: ThemeColors.primaryDark,
                 onTap: () {
                   showCupertinoDialog(
                     context: context,
@@ -117,11 +119,13 @@ class SettingsRow extends StatelessWidget {
     this.onTap,
     this.icon,
     this.text = '',
+    this.textColor,
   });
 
   final void Function()? onTap;
   final IconData? icon;
   final String text;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +150,7 @@ class SettingsRow extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 text,
-                style: ThemeTextStyles.inputText(context),
+                style: ThemeTextStyles.inputText(context).copyWith(color: textColor),
               ),
             ),
           ],

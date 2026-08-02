@@ -74,7 +74,6 @@ class AddSaleRemoteDataSourceImpl implements AddSaleRemoteDataSource {
       final Map<String, dynamic> innerMap = data[AppConstants.bonuses] as Map<String, dynamic>? ?? {};
 
       final rawBonus = innerMap[article];
-
       return int.tryParse(rawBonus.toString()) ?? 0;
     });
   }

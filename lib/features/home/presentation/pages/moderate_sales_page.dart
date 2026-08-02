@@ -94,7 +94,7 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                         onRefresh: () async {
                           context.read<ModerateSalesBloc>().add(ModerateSalesGetFirstEvent());
                         },
-                        child: ListView.builder(
+                        child: ListView.separated(
                           physics: const AlwaysScrollableScrollPhysics(),
                           controller: _scrollController,
                           itemCount: state.items.length + (state.isMoreLoading ? 1 : 0),
@@ -118,7 +118,10 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(CupertinoIcons.device_phone_portrait),
+                                      const Icon(
+                                        CupertinoIcons.device_phone_portrait,
+                                        size: 22,
+                                      ),
                                       const SizedBox(
                                         width: 9,
                                       ),
@@ -127,38 +130,44 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                           sale.imei,
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
-                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
                                         ),
                                       ),
                                     ],
                                   ),
+                                  // const SizedBox(
+                                  //   height: 8,
+                                  // ),
+                                  // Row(
+                                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                                  //   children: [
+                                  //     const Icon(
+                                  //       CupertinoIcons.person_alt_circle,
+                                  //       size: 22,
+                                  //     ),
+                                  //     const SizedBox(
+                                  //       width: 9,
+                                  //     ),
+                                  //     Expanded(
+                                  //       child: Text(
+                                  //         sale.ownerId,
+                                  //         style: ThemeTextStyles.headlineSmall(
+                                  //           context,
+                                  //         ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   const SizedBox(
-                                    height: 5,
+                                    height: 8,
                                   ),
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(CupertinoIcons.person_alt_circle),
-                                      const SizedBox(
-                                        width: 9,
+                                      const Icon(
+                                        CupertinoIcons.money_dollar,
+                                        size: 22,
                                       ),
-                                      Expanded(
-                                        child: Text(
-                                          sale.ownerId,
-                                          style: ThemeTextStyles.headlineSmall(
-                                            context,
-                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      const Icon(CupertinoIcons.money_dollar),
                                       const SizedBox(
                                         width: 9,
                                       ),
@@ -167,7 +176,7 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                           sale.bonus.toString(),
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
-                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
                                         ),
                                       ),
                                     ],
@@ -255,6 +264,11 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                   ),
                                 ],
                               ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const SizedBox(
+                              height: 16,
                             );
                           },
                         ),

@@ -242,7 +242,7 @@ class AdminButton extends StatelessWidget {
     super.key,
     this.onTap,
     this.icon = Icons.supervised_user_circle,
-    this.iconSize = 20,
+    this.iconSize = 25,
     this.iconColor = Colors.white,
     this.text = '',
   });
@@ -275,8 +275,8 @@ class AdminButton extends StatelessWidget {
                   color: ThemeColors.primaryDark,
                   shape: BoxShape.circle,
                 ),
-                width: 40,
-                height: 40,
+                width: 50,
+                height: 50,
                 child: Icon(
                   icon,
                   size: iconSize,
@@ -289,7 +289,7 @@ class AdminButton extends StatelessWidget {
               Text(
                 text,
                 overflow: TextOverflow.ellipsis,
-                style: ThemeTextStyles.headlineMedium(context).copyWith(color: Colors.white),
+                style: ThemeTextStyles.headlineSmall(context).copyWith(color: Colors.white),
               ),
             ],
           ),

@@ -282,7 +282,7 @@ class ImeiTile extends StatelessWidget {
                           'scan'.tr(),
                           style: ThemeTextStyles.headlineMedium(
                             context,
-                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 16),
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
@@ -305,7 +305,7 @@ class ImeiTile extends StatelessWidget {
                           'search'.tr(),
                           style: ThemeTextStyles.headlineMedium(
                             context,
-                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300, fontSize: 16),
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
