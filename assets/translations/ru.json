@@ -95,7 +95,13 @@
   "deleting_user": "Удаление пользователя",
   "are_you_sure_you_want_to_delete_the_user": "Вы уверены, что хотите удалить пользователя?",
   "no": "Нет",
-  "yes": "Да"
+  "yes": "Да",
+  "approve_moderation_title": "Одобрение модерации",
+  "are_you_sure_you_want_to_approve": "Вы уверены, что хотите одобрить этот запрос?",
+  "cancel": "Отмена",
+  "reject_moderation_title": "Отклонение модерации",
+  "are_you_sure_you_want_to_reject": "Вы уверены, что хотите отклонить этот запрос?"
+
 }
 
 

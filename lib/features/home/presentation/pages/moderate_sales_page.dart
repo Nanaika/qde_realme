@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qde_realme/features/home/presentation/pages/settings_page.dart';
 
 import '../../../../core/theme/theme_colors.dart';
 import '../../../../core/theme/theme_dimensions.dart';
@@ -184,8 +185,20 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                       Expanded(
                                         child: GestureDetector(
                                           onTap: () {
-                                            context.read<ModerateSalesBloc>().add(
-                                              ModerateSaleEvent(sale: state.items[index], isAccepted: false),
+                                            showCupertinoDialog(
+                                              context: context,
+                                              builder: (ctx) => AdaptiveDialog(
+                                                title: 'reject_moderation_title'.tr(),
+                                                content: 'are_you_sure_you_want_to_reject'.tr(),
+                                                cancelText: 'cancel'.tr(),
+                                                confirmText: 'reject'.tr(),
+                                                confirmColor: ThemeColors.primaryDark,
+                                                onConfirm: () {
+                                                  context.read<ModerateSalesBloc>().add(
+                                                    ModerateSaleEvent(sale: state.items[index], isAccepted: false),
+                                                  );
+                                                },
+                                              ),
                                             );
                                           },
                                           child: Container(
@@ -207,8 +220,20 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                       Expanded(
                                         child: GestureDetector(
                                           onTap: () {
-                                            context.read<ModerateSalesBloc>().add(
-                                              ModerateSaleEvent(sale: state.items[index], isAccepted: true),
+                                            showCupertinoDialog(
+                                              context: context,
+                                              builder: (ctx) => AdaptiveDialog(
+                                                title: 'approve_moderation_title'.tr(),
+                                                content: 'are_you_sure_you_want_to_approve'.tr(),
+                                                cancelText: 'cancel'.tr(),
+                                                confirmText: 'approve'.tr(),
+                                                confirmColor: ThemeColors.success,
+                                                onConfirm: () {
+                                                  context.read<ModerateSalesBloc>().add(
+                                                    ModerateSaleEvent(sale: state.items[index], isAccepted: true),
+                                                  );
+                                                },
+                                              ),
                                             );
                                           },
                                           child: Container(

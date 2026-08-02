@@ -95,5 +95,8 @@
   "deleting_user": "Foydalanuvchini o‘chirish",
   "are_you_sure_you_want_to_delete_the_user": "Haqiqatan ham foydalanuvchini o‘chirib tashlamoqchimisiz?",
   "no": "Yo‘q",
-  "yes": "Ha"
+  "yes": "Ha",
+  "reject_moderation_title": "Moderatsiyani rad etish",
+  "are_you_sure_you_want_to_reject": "Ushbu so‘rovni rad etishga ishonchingiz komilmi?",
+  "cancel": "Bekor qilish"
 }

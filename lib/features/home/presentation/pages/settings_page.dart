@@ -247,6 +247,7 @@ class AdaptiveDialog extends StatelessWidget {
   final String cancelText;
   final String confirmText;
   final VoidCallback onConfirm;
+  final Color confirmColor;
 
   const AdaptiveDialog({
     super.key,
@@ -255,6 +256,7 @@ class AdaptiveDialog extends StatelessWidget {
     required this.cancelText,
     required this.confirmText,
     required this.onConfirm,
+    this.confirmColor = ThemeColors.primaryDark,
   });
 
   @override
@@ -279,7 +281,7 @@ class AdaptiveDialog extends StatelessWidget {
           },
           child: Text(
             confirmText,
-            style: ThemeTextStyles.labelLarge(context).copyWith(color: ThemeColors.primaryDark),
+            style: ThemeTextStyles.labelLarge(context).copyWith(color: confirmColor),
           ),
         ),
       ],

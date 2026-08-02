@@ -7,6 +7,7 @@ import 'package:qde_realme/core/theme/theme_colors.dart';
 import 'package:qde_realme/core/utils/uz_cities.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_state.dart';
+import 'package:qde_realme/features/home/presentation/pages/settings_page.dart';
 
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
@@ -217,10 +218,23 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                       Expanded(
                                         child: GestureDetector(
                                           onTap: () {
-                                            final userId =
-                                                (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
-                                            context.read<ModerateUsersBloc>().add(
-                                              ModerateUserEvent(userId: userId, isModerated: false),
+                                            showCupertinoDialog(
+                                              context: context,
+                                              builder: (ctx) => AdaptiveDialog(
+                                                title: 'reject_moderation_title'.tr(),
+                                                content: 'are_you_sure_you_want_to_reject'.tr(),
+                                                cancelText: 'cancel'.tr(),
+                                                confirmText: 'reject'.tr(),
+                                                confirmColor: ThemeColors.primaryDark,
+                                                onConfirm: () {
+                                                  final userId = (context.read<AuthBloc>().state as AuthAuthenticated)
+                                                      .currentUser
+                                                      .id;
+                                                  context.read<ModerateUsersBloc>().add(
+                                                    ModerateUserEvent(userId: userId, isModerated: false),
+                                                  );
+                                                },
+                                              ),
                                             );
                                           },
                                           child: Container(
@@ -242,10 +256,23 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                       Expanded(
                                         child: GestureDetector(
                                           onTap: () {
-                                            final userId =
-                                                (context.read<AuthBloc>().state as AuthAuthenticated).currentUser.id;
-                                            context.read<ModerateUsersBloc>().add(
-                                              ModerateUserEvent(userId: userId, isModerated: true),
+                                            showCupertinoDialog(
+                                              context: context,
+                                              builder: (ctx) => AdaptiveDialog(
+                                                title: 'approve_moderation_title'.tr(),
+                                                content: 'are_you_sure_you_want_to_approve'.tr(),
+                                                cancelText: 'cancel'.tr(),
+                                                confirmText: 'approve'.tr(),
+                                                confirmColor: ThemeColors.success,
+                                                onConfirm: () {
+                                                  final userId = (context.read<AuthBloc>().state as AuthAuthenticated)
+                                                      .currentUser
+                                                      .id;
+                                                  context.read<ModerateUsersBloc>().add(
+                                                    ModerateUserEvent(userId: userId, isModerated: true),
+                                                  );
+                                                },
+                                              ),
                                             );
                                           },
                                           child: Container(
