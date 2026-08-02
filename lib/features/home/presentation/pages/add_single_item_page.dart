@@ -435,44 +435,84 @@ class ErrorDialog {
   }
 }
 
+// class LoadingDialog {
+//   // Показать диалог
+//   static void show(BuildContext context) {
+//     showDialog(
+//       context: context,
+//       barrierDismissible: false,
+//       barrierColor: Colors.black.withValues(alpha: 0.4),
+//       builder: (BuildContext context) {
+//         return PopScope(
+//           canPop: false,
+//           child: BackdropFilter(
+//             filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+//             child: Dialog(
+//               backgroundColor: Colors.white,
+//               shape: RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(20),
+//               ),
+//               child: Padding(
+//                 padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 24.0),
+//                 child: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: [
+//                     const CircularProgressIndicator(
+//                       valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+//                       strokeWidth: 4,
+//                     ),
+//                     const SizedBox(height: 24),
+//                     Text(
+//                       'loading'.tr(),
+//                       textAlign: TextAlign.center,
+//                       style: const TextStyle(
+//                         fontSize: 16,
+//                         fontWeight: FontWeight.w500,
+//                         color: Colors.black87,
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+//
+//   static void hide(BuildContext context) {
+//     Navigator.of(context).pop();
+//   }
+// }
+
 class LoadingDialog {
-  // Показать диалог
   static void show(BuildContext context) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
       barrierDismissible: false,
-      barrierColor: Colors.black.withValues(alpha: 0.4),
       builder: (BuildContext context) {
         return PopScope(
           canPop: false,
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
-            child: Dialog(
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 24.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                      strokeWidth: 4,
+          child: CupertinoAlertDialog(
+            content: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CupertinoActivityIndicator(
+                    radius: 14,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'loading'.tr(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'loading'.tr(),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

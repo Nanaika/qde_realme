@@ -100,8 +100,9 @@
   "are_you_sure_you_want_to_approve": "Вы уверены, что хотите одобрить этот запрос?",
   "cancel": "Отмена",
   "reject_moderation_title": "Отклонение модерации",
-  "are_you_sure_you_want_to_reject": "Вы уверены, что хотите отклонить этот запрос?"
-
+  "are_you_sure_you_want_to_reject": "Вы уверены, что хотите отклонить этот запрос?",
+  "payment_title": "Оплата",
+  "are_you_sure_you_want_to_pay": "Вы уверены, что хотите произвести оплату?"
 }
 
 

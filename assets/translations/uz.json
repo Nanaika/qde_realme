@@ -98,5 +98,7 @@
   "yes": "Ha",
   "reject_moderation_title": "Moderatsiyani rad etish",
   "are_you_sure_you_want_to_reject": "Ushbu so‘rovni rad etishga ishonchingiz komilmi?",
-  "cancel": "Bekor qilish"
+  "cancel": "Bekor qilish",
+  "payment_title": "To‘lov",
+  "are_you_sure_you_want_to_pay": "To‘lovni amalga oshirishga ishonchingiz komilmi?"
 }
