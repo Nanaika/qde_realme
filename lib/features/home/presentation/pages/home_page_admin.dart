@@ -60,6 +60,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                       color: Colors.transparent,
                       child: Icon(
                         CupertinoIcons.house_alt,
+                        size: 30,
                         color: _currentIndex != 0 ? Colors.white : ThemeColors.primaryDark,
                       ),
                     ),
@@ -81,6 +82,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                       color: Colors.transparent,
                       child: Icon(
                         CupertinoIcons.settings,
+                        size: 30,
                         color: _currentIndex != 1 ? Colors.white : ThemeColors.primaryDark,
                       ),
                     ),
@@ -223,12 +225,8 @@ class AdminHomeContentPage extends StatelessWidget {
                 ),
               ],
             ),
-
-            ElevatedButton(
-              onPressed: () {
-                context.push('/homeslave');
-              },
-              child: Text('Change to slave'),
+            const SizedBox(
+              height: 20,
             ),
           ],
         ),

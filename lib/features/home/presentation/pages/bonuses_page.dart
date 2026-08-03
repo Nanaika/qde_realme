@@ -164,9 +164,14 @@ class _BonusesPageState extends State<BonusesPage> {
                                         child: Column(
                                           children: [
                                             CustomTextField(
-                                              textStyle: ThemeTextStyles.headlineMedium(
-                                                context,
-                                              ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                              textStyle:
+                                                  ThemeTextStyles.headlineMedium(
+                                                    context,
+                                                  ).copyWith(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 18,
+                                                  ),
                                               hintText: 'article_'.tr(),
                                               controller: _keyControllers[index],
                                             ),
@@ -175,23 +180,48 @@ class _BonusesPageState extends State<BonusesPage> {
                                               children: [
                                                 Expanded(
                                                   child: CustomTextField(
-                                                    textStyle: ThemeTextStyles.headlineMedium(
-                                                      context,
-                                                    ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
+                                                    textStyle:
+                                                        ThemeTextStyles.headlineMedium(
+                                                          context,
+                                                        ).copyWith(
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight.w400,
+                                                          fontSize: 18,
+                                                        ),
                                                     hintText: 'bonus_'.tr(),
                                                     controller: _valueControllers[index],
                                                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                                     keyboardType: TextInputType.number,
                                                   ),
                                                 ),
-                                                const SizedBox(width: 10),
-
-                                                IconButton(
-                                                  icon: const Icon(
-                                                    Icons.delete_outline,
-                                                    color: ThemeColors.primaryDark,
+                                              ],
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: GestureDetector(
+                                                    onTap: () => _removeBonusField(index),
+                                                    child: Container(
+                                                      color: Colors.transparent,
+                                                      child: Text(
+                                                        'delete'.tr(),
+                                                        style:
+                                                            ThemeTextStyles.headlineMedium(
+                                                              context,
+                                                            ).copyWith(
+                                                              color: ThemeColors.primaryDark,
+                                                              fontWeight: FontWeight.w300,
+                                                              fontSize: 16,
+                                                            ),
+                                                        textAlign: TextAlign.center,
+                                                        overflow: TextOverflow.ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                                    ),
                                                   ),
-                                                  onPressed: () => _removeBonusField(index),
                                                 ),
                                               ],
                                             ),

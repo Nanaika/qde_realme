@@ -39,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
                 ],
               ),
               const SizedBox(
-                height: 18,
+                height: 36,
               ),
               SettingsRow(
                 text: 'language'.tr(),
@@ -48,9 +48,14 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
                   showLanguageDialog(context);
                 },
               ),
-              const SizedBox(
-                height: 36,
+              Divider(
+                color: Colors.grey.shade800, // Цвет линии
+                thickness: 0.5, // Толщина самой линии
+                height: 36, // Высота контейнера (отступы сверху/снизу)
               ),
+              // const SizedBox(
+              //   height: 36,
+              // ),
               SettingsRow(
                 text: 'terms_and_conditions'.tr(),
                 icon: CupertinoIcons.doc_text,
@@ -69,8 +74,10 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
                 },
               ),
 
-              const SizedBox(
-                height: 36,
+              Divider(
+                color: Colors.grey.shade800, // Цвет линии
+                thickness: 0.5, // Толщина самой линии
+                height: 36, // Высота контейнера (отступы сверху/снизу)
               ),
               SettingsRow(
                 text: 'logout'.tr(),
@@ -101,6 +108,18 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
                     ),
                   );
                 },
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  context.push('/homeslave');
+                },
+                child: const Text('Change to user'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  context.push('/homeadmin');
+                },
+                child: const Text('Change to admin'),
               ),
             ],
           ),

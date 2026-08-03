@@ -102,7 +102,9 @@
   "reject_moderation_title": "Отклонение модерации",
   "are_you_sure_you_want_to_reject": "Вы уверены, что хотите отклонить этот запрос?",
   "payment_title": "Оплата",
-  "are_you_sure_you_want_to_pay": "Вы уверены, что хотите произвести оплату?"
+  "are_you_sure_you_want_to_pay": "Вы уверены, что хотите произвести оплату?",
+  "not_specified": "Не указано",
+  "delete": "Удалить"
 }
 
 

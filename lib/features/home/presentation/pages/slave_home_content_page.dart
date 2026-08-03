@@ -340,12 +340,6 @@ class _SlaveHomeContentPageState extends State<SlaveHomeContentPage> with Automa
                                 ),
                               ),
 
-                              ElevatedButton(
-                                onPressed: () {
-                                  context.push('/homeadmin');
-                                },
-                                child: const Text('Change to admin'),
-                              ),
                               const SizedBox(
                                 height: 60,
                               ),

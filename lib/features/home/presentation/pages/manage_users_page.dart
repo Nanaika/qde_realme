@@ -10,7 +10,6 @@ import 'package:qde_realme/features/home/manage_users/manage_users_state.dart';
 import 'package:qde_realme/features/home/presentation/pages/add_single_item_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/settings_page.dart';
 
-import '../../../../core/theme/theme_colors.dart';
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
 import '../../../../core/utils/uz_cities.dart';
@@ -73,15 +72,16 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
               LoadingDialog.hide(context);
             }
             if (state is ManageUsersError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    state.failure.message,
-                    style: ThemeTextStyles.bodyMedium(context),
-                  ),
-                  backgroundColor: Colors.red,
-                ),
-              );
+              ErrorDialog.show(context, state.failure.message);
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(
+              //     content: Text(
+              //       state.failure.message,
+              //       style: ThemeTextStyles.bodyMedium(context),
+              //     ),
+              //     backgroundColor: Colors.red,
+              //   ),
+              // );
             }
           },
       child: Scaffold(
@@ -203,7 +203,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       const Padding(
-                                        padding: EdgeInsets.only(top: 4.0),
+                                        padding: EdgeInsets.only(top: 2.0),
                                         child: Icon(CupertinoIcons.person_alt_circle),
                                       ),
                                       const SizedBox(
@@ -211,7 +211,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          user.name ?? 'no_name'.tr(),
+                                          (user.name == null || user.name!.isEmpty) ? 'not_specified'.tr() : user.name!,
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
@@ -231,7 +231,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          user.number,
+                                          user.number == '' ? 'not_specified'.tr() : user.number,
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
@@ -251,7 +251,7 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          location,
+                                          location == '' ? 'not_specified'.tr() : location,
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w400),
@@ -304,15 +304,16 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                               ),
                                             );
                                           } else {
-                                            ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  'user_not_moderated'.tr(),
-                                                  style: ThemeTextStyles.bodyMedium(context),
-                                                ),
-                                                backgroundColor: Colors.red,
-                                              ),
-                                            );
+                                            ErrorDialog.show(context, 'user_not_moderated'.tr());
+                                            // ScaffoldMessenger.of(context).showSnackBar(
+                                            //   SnackBar(
+                                            //     content: Text(
+                                            //       'user_not_moderated'.tr(),
+                                            //       style: ThemeTextStyles.bodyMedium(context),
+                                            //     ),
+                                            //     backgroundColor: Colors.red,
+                                            //   ),
+                                            // );
                                           }
                                         },
                                         child: Container(

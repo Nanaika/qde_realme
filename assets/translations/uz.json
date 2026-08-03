@@ -100,5 +100,7 @@
   "are_you_sure_you_want_to_reject": "Ushbu so‘rovni rad etishga ishonchingiz komilmi?",
   "cancel": "Bekor qilish",
   "payment_title": "To‘lov",
-  "are_you_sure_you_want_to_pay": "To‘lovni amalga oshirishga ishonchingiz komilmi?"
+  "are_you_sure_you_want_to_pay": "To‘lovni amalga oshirishga ishonchingiz komilmi?",
+  "not_specified": "Ko'rsatilmagan",
+  "delete": "O'chirish"
 }
