@@ -67,30 +67,77 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       return;
     }
 
+    // 1. Берем заднюю камеру явно (cameras.first не всегда задняя на iOS)
+    final backCamera = cameras.firstWhere(
+      (c) => c.lensDirection == CameraLensDirection.back,
+      orElse: () => cameras.first,
+    );
+
     _cameraController = CameraController(
-      cameras.first,
-      ResolutionPreset.max,
+      backCamera,
+      ResolutionPreset.high, // Заменил max на high, чтобы iOS не захлебывалась в стриме
       enableAudio: false,
-      imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.bgra8888,
+      imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.yuv420,
     );
 
     try {
       await _cameraController!.initialize();
 
+      // 2. Сначала ставим стрим и обновляем UI
+      await _cameraController!.startImageStream(_processImage);
+      if (mounted) setState(() {});
+
+      // 3. Зум и фокус настраиваем ПОСЛЕ того, как камера уже погнала кадры
       final double minZoom = await _cameraController!.getMinZoomLevel();
       final double maxZoom = await _cameraController!.getMaxZoomLevel();
       double desiredZoom = 2.5;
       if (desiredZoom < minZoom) desiredZoom = minZoom;
       if (desiredZoom > maxZoom) desiredZoom = maxZoom;
-      await _cameraController!.setZoomLevel(desiredZoom);
 
+      await _cameraController!.setZoomLevel(desiredZoom);
       await _cameraController!.setFocusMode(FocusMode.auto);
-      await _cameraController!.startImageStream(_processImage);
-      if (mounted) setState(() {});
     } catch (e) {
+      print('ОШИБКА КАМЕРЫ IOS: $e');
       setState(() => _errorMessage = '${'cameraError'.tr()}: $e');
     }
   }
+  // Future<void> _initCamera() async {
+  //   final status = await Permission.camera.request();
+  //   if (!status.isGranted) {
+  //     setState(() => _errorMessage = 'needCameraPermission'.tr());
+  //     return;
+  //   }
+  //
+  //   final cameras = await availableCameras();
+  //   if (cameras.isEmpty) {
+  //     setState(() => _errorMessage = 'cameraNotFound'.tr());
+  //     return;
+  //   }
+  //
+  //   _cameraController = CameraController(
+  //     cameras.first,
+  //     ResolutionPreset.max,
+  //     enableAudio: false,
+  //     imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.bgra8888,
+  //   );
+  //
+  //   try {
+  //     await _cameraController!.initialize();
+  //
+  //     final double minZoom = await _cameraController!.getMinZoomLevel();
+  //     final double maxZoom = await _cameraController!.getMaxZoomLevel();
+  //     double desiredZoom = 2.5;
+  //     if (desiredZoom < minZoom) desiredZoom = minZoom;
+  //     if (desiredZoom > maxZoom) desiredZoom = maxZoom;
+  //     await _cameraController!.setZoomLevel(desiredZoom);
+  //
+  //     await _cameraController!.setFocusMode(FocusMode.auto);
+  //     await _cameraController!.startImageStream(_processImage);
+  //     if (mounted) setState(() {});
+  //   } catch (e) {
+  //     setState(() => _errorMessage = '${'cameraError'.tr()}: $e');
+  //   }
+  // }
 
   // Future<void> _processImage(CameraImage image) async {
   //   if (_isProcessing || _cameraController == null) return;
