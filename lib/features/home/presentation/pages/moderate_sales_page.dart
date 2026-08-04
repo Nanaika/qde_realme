@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qde_realme/features/home/presentation/pages/history_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/settings_page.dart';
 
 import '../../../../core/theme/theme_colors.dart';
@@ -119,6 +120,29 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       const Icon(
+                                        CupertinoIcons.clock,
+                                        size: 22,
+                                      ),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          formatDate(sale.dateAdded),
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
                                         CupertinoIcons.device_phone_portrait,
                                         size: 22,
                                       ),
@@ -128,6 +152,144 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                       Expanded(
                                         child: Text(
                                           sale.imei,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.device_phone_portrait,
+                                        size: 22,
+                                      ),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          sale.imei2,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.device_phone_portrait,
+                                        size: 22,
+                                      ),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          sale.article,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.device_phone_portrait,
+                                        size: 22,
+                                      ),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          sale.skuName,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.person_alt_circle,
+                                        size: 22,
+                                      ),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          sale.ownerName,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.phone,
+                                        size: 22,
+                                      ),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          sale.ownerNumber,
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        CupertinoIcons.envelope,
+                                        size: 22,
+                                      ),
+                                      const SizedBox(
+                                        width: 9,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          sale.ownerEmail,
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),

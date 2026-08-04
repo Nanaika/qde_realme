@@ -18,12 +18,24 @@ class AddSaleRemoteDataSourceImpl implements AddSaleRemoteDataSource {
 
   @override
   Future<void> add(SaleModel sale) async {
+    final userDoc = await db.collection(AppConstants.users).doc(sale.ownerId).get();
+    final userData = userDoc.data() ?? {};
+
+    final ownerEmail = userData['email'] as String? ?? '';
+    final ownerName = userData['name'] as String? ?? '';
+    final ownerNumber = userData['number'] as String? ?? '';
+
     final batch = db.batch();
 
     final refModerate = db.collection(AppConstants.moderateSales).doc();
     final historyRef = db.collection(AppConstants.users).doc(sale.ownerId).collection(AppConstants.history).doc();
 
-    final updatedSale = sale.copyWith(id: refModerate.id);
+    final updatedSale = sale.copyWith(
+      id: refModerate.id,
+      ownerEmail: ownerEmail,
+      ownerName: ownerName,
+      ownerNumber: ownerNumber,
+    );
 
     final history = HistoryModel(message: updatedSale.imei, type: HistoryType.imeiPending.name);
 

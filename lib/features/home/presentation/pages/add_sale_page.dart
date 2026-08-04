@@ -178,7 +178,12 @@ class _AddSalePageState extends State<AddSalePage> {
                                 id: '',
                                 bonus: state.bonus,
                               );
-                              context.read<AddSaleBloc>().add(AddEvent(sale));
+                              final updatedSale = sale.copyWith(
+                                imei2: state.item.imei2,
+                                article: state.item.article,
+                                skuName: state.item.skuName,
+                              );
+                              context.read<AddSaleBloc>().add(AddEvent(updatedSale));
                             },
                           );
                         }
