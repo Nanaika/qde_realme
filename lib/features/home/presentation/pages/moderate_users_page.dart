@@ -11,9 +11,9 @@ import 'package:qde_realme/features/home/presentation/pages/settings_page.dart';
 
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
-import '../../moferate_users/moderate_users_bloc.dart';
-import '../../moferate_users/moderate_users_event.dart';
-import '../../moferate_users/moderate_users_state.dart';
+import '../../moderate_users/moderate_users_bloc.dart';
+import '../../moderate_users/moderate_users_event.dart';
+import '../../moderate_users/moderate_users_state.dart';
 
 class ModerateUsersPage extends StatefulWidget {
   const ModerateUsersPage({super.key});

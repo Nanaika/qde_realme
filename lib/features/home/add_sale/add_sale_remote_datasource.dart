@@ -37,7 +37,11 @@ class AddSaleRemoteDataSourceImpl implements AddSaleRemoteDataSource {
       ownerNumber: ownerNumber,
     );
 
-    final history = HistoryModel(message: updatedSale.imei, type: HistoryType.imeiPending.name);
+    final history = HistoryModel(
+      message: updatedSale.imei,
+      type: HistoryType.imeiPending.name,
+      bonus: updatedSale.bonus.toString(),
+    );
 
     final ref = db
         .collection(AppConstants.users)

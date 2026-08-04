@@ -16,7 +16,6 @@ import 'package:qde_realme/features/auth/domain/repositories/auth_repository.dar
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/home/add_sale/add_sale_bloc.dart';
 import 'package:qde_realme/features/home/manage_users/manage_users_bloc.dart';
-import 'package:qde_realme/features/home/moferate_users/moderate_users_bloc.dart';
 import 'package:qde_realme/features/home/slave_data/slave_data_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,9 +49,10 @@ import '../../features/home/moderate_sales/moderate_sales_bloc.dart';
 import '../../features/home/moderate_sales/moderate_sales_remote_datasource.dart';
 import '../../features/home/moderate_sales/moderate_sales_repository.dart';
 import '../../features/home/moderate_sales/moderate_sales_repository_impl.dart';
-import '../../features/home/moferate_users/moderate_users_remote_datasource.dart';
-import '../../features/home/moferate_users/moderate_users_repository.dart';
-import '../../features/home/moferate_users/moderate_users_repository_impl.dart';
+import '../../features/home/moderate_users/moderate_users_bloc.dart';
+import '../../features/home/moderate_users/moderate_users_remote_datasource.dart';
+import '../../features/home/moderate_users/moderate_users_repository.dart';
+import '../../features/home/moderate_users/moderate_users_repository_impl.dart';
 import '../../features/home/slave_data/slave_data_remote_datasource.dart';
 import '../../features/home/slave_data/slave_data_repository.dart';
 import '../../features/home/slave_data/slave_data_repository_impl.dart';

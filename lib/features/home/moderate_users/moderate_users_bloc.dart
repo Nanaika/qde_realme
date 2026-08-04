@@ -1,13 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qde_realme/features/home/moferate_users/moderate_users_event.dart';
-import 'package:qde_realme/features/home/moferate_users/moderate_users_state.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/di/injection_container.dart';
 import '../../../core/error/failures.dart';
-import '../../../core/utils/app_constants.dart';
 import '../../auth/data/models/user_model.dart';
+import 'moderate_users_event.dart';
 import 'moderate_users_repository.dart';
+import 'moderate_users_state.dart';
 
 class ModerateUsersBloc extends Bloc<ModerateUsersEvent, ModerateUsersState> {
   final ModerateUsersRepository repository;
