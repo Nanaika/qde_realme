@@ -102,53 +102,57 @@ class _AddSalePageState extends State<AddSalePage> {
                     BlocBuilder<AddSaleBloc, AddSaleState>(
                       builder: (BuildContext context, state) {
                         if (state is GetPhoneByImeiSuccess) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                'device_info'.tr(),
-                                style: const TextStyle(color: Colors.white, decoration: TextDecoration.underline),
-                              ),
-                              const SizedBox(
-                                height: 7,
-                              ),
+                          return Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    'device_info'.tr(),
+                                    style: const TextStyle(color: Colors.white, decoration: TextDecoration.underline),
+                                  ),
+                                  const SizedBox(
+                                    height: 7,
+                                  ),
 
-                              Text(
-                                'article'.tr(args: [state.item.article]),
-                                style: const TextStyle(color: Colors.white),
+                                  Text(
+                                    'article'.tr(args: [state.item.article]),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  const SizedBox(
+                                    height: 7,
+                                  ),
+                                  Text(
+                                    'imei1'.tr(args: [state.item.imei1]),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  const SizedBox(
+                                    height: 7,
+                                  ),
+                                  Text(
+                                    'imei2'.tr(args: [state.item.imei2]),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  const SizedBox(
+                                    height: 7,
+                                  ),
+                                  Text(
+                                    'sku_name'.tr(args: [state.item.skuName]),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  const SizedBox(
+                                    height: 7,
+                                  ),
+                                  Text(
+                                    'bonus'.tr(args: [state.bonus.toString()]),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(
-                                height: 7,
-                              ),
-                              Text(
-                                'imei1'.tr(args: [state.item.imei1]),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              const SizedBox(
-                                height: 7,
-                              ),
-                              Text(
-                                'imei2'.tr(args: [state.item.imei2]),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              const SizedBox(
-                                height: 7,
-                              ),
-                              Text(
-                                'sku_name'.tr(args: [state.item.skuName]),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              const SizedBox(
-                                height: 7,
-                              ),
-                              Text(
-                                'bonus'.tr(args: [state.bonus.toString()]),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ],
+                            ),
                           );
                         } else if (state is AddSaleError) {
                           return Text(
@@ -156,11 +160,21 @@ class _AddSalePageState extends State<AddSalePage> {
                             style: const TextStyle(color: Colors.red),
                           );
                         }
-                        return const SizedBox.shrink();
+                        return const Expanded(child: SizedBox.shrink());
                       },
                     ),
-
-                    const Spacer(),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      'fcm_rules'.tr(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    // const Spacer(),
                     BlocBuilder<AddSaleBloc, AddSaleState>(
                       builder: (BuildContext context, state) {
                         if (state is GetPhoneByImeiSuccess) {

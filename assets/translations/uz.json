@@ -102,5 +102,6 @@
   "payment_title": "To‘lov",
   "are_you_sure_you_want_to_pay": "To‘lovni amalga oshirishga ishonchingiz komilmi?",
   "not_specified": "Ko'rsatilmagan",
-  "delete": "O'chirish"
+  "delete": "O'chirish",
+  "fcm_rules": "SO ma'lumotlarini Realme Device ID tizimi orqali olishingiz mumkin.\n\nFSM SO aktivatsiya qoidalari:\nSotilgan telefon haqidagi ma'lumot Realme Device ID tizimiga kiritilgan sanadan 15 kun oldin yoki 7 kun ichida faollashtirilgan (aktivatsiya qilingan) bo‘lishi kerak."
 }
