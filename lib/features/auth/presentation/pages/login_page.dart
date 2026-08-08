@@ -35,7 +35,7 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
                 Image.asset(
-                  'assets/images/auth.png',
+                  'assets/images/maskot.webp',
                   height: MediaQuery.heightOf(context) / 2.5,
                 ),
                 const SizedBox(
