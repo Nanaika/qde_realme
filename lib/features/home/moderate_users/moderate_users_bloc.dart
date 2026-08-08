@@ -36,8 +36,10 @@ class ModerateUsersBloc extends Bloc<ModerateUsersEvent, ModerateUsersState> {
       } on Failure catch (failure) {
         // Если сервак ответил ошибкой — возвращаем юзера обратно в список и показываем ошибку
         emit(ModerateUsersError(failure));
+        print('=================== ${failure}');
       } catch (e) {
         emit(ModerateUsersError(ServerFailure(e.toString())));
+        print('=================== ${e}');
       }
     }
   }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qde_realme/core/theme/theme_colors.dart';
 import 'package:qde_realme/core/theme/theme_dimensions.dart';
 import 'package:qde_realme/core/theme/theme_text_styles.dart';
 import 'package:qde_realme/core/widgets/main_button.dart';
@@ -414,19 +415,34 @@ class ErrorDialog {
             children: [
               const Icon(
                 CupertinoIcons.exclamationmark_circle_fill,
-                color: CupertinoColors.systemRed,
+                color: ThemeColors.error,
                 size: 40,
               ),
               const SizedBox(height: 12),
-              Text('error'.tr()),
+              Text(
+                'error'.tr(),
+                style: ThemeTextStyles.labelLarge(
+                  context,
+                ).copyWith(color: Colors.white, inherit: false, fontFamily: 'gilroy', fontSize: 18),
+              ),
             ],
           ),
-          content: Text(errorMessage),
+          content: Text(
+            errorMessage,
+            style: ThemeTextStyles.labelLarge(
+              context,
+            ).copyWith(color: Colors.white, inherit: false, fontFamily: 'gilroy', fontSize: 14),
+          ),
           actions: <Widget>[
             CupertinoDialogAction(
               isDefaultAction: true,
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
+              child: Text(
+                'OK',
+                style: ThemeTextStyles.labelLarge(
+                  context,
+                ).copyWith(color: ThemeColors.error, inherit: false, fontFamily: 'gilroy', fontSize: 18),
+              ),
             ),
           ],
         );
@@ -510,6 +526,8 @@ class LoadingDialog {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
+                      inherit: false,
+                      fontFamily: 'gilroy',
                     ),
                   ),
                 ],

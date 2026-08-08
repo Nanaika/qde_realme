@@ -31,19 +31,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<UserCredential> signInWithGoogle() async {
     await GoogleSignIn.instance.initialize();
     final GoogleSignInAccount googleUser = await GoogleSignIn.instance.authenticate();
+    print('LOGIN==================google user  ${googleUser}');
 
     final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
     final credential = GoogleAuthProvider.credential(idToken: googleAuth.idToken);
+    print('LOGIN==================cred  ${googleUser}');
 
-    final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-    if (userCredential.user != null) {
-      final doc = await db.collection(AppConstants.users).doc(userCredential.user!.uid).get();
-      if (!doc.exists) {
-        final email = userCredential.user!.email ?? '';
-        final user = UserModel(id: userCredential.user!.uid, email: email);
-        await db.collection(AppConstants.users).doc(userCredential.user!.uid).set(user.toJson());
-      }
+    final userCredential = await _firebaseAuth.signInWithCredential(credential);
+    if (userCredential.user == null || userCredential.user!.uid.trim().isEmpty) {
+      throw Exception('Firebase Auth dont return user UID');
+    }
+    print('LOGIN==================user  ${userCredential}');
+
+    final doc = await db.collection(AppConstants.users).doc(userCredential.user!.uid).get();
+    if (!doc.exists) {
+      final email = userCredential.user!.email ?? '';
+      final user = UserModel(id: userCredential.user!.uid, email: email);
+      await db.collection(AppConstants.users).doc(userCredential.user!.uid).set(user.toJson());
     }
 
     return userCredential;
@@ -86,14 +91,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       rawNonce: rawNonce,
     );
     final userCredential = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    if (userCredential.user == null || userCredential.user!.uid.trim().isEmpty) {
+      throw Exception('Firebase Auth dont return user UID');
+    }
 
-    if (userCredential.user != null) {
-      final doc = await db.collection(AppConstants.users).doc(userCredential.user!.uid).get();
-      if (!doc.exists) {
-        final email = userCredential.user!.email ?? '';
-        final user = UserModel(id: userCredential.user!.uid, email: email);
-        await db.collection(AppConstants.users).doc(userCredential.user!.uid).set(user.toJson());
-      }
+    final doc = await db.collection(AppConstants.users).doc(userCredential.user!.uid).get();
+    if (!doc.exists) {
+      final email = userCredential.user!.email ?? '';
+      final user = UserModel(id: userCredential.user!.uid, email: email);
+      await db.collection(AppConstants.users).doc(userCredential.user!.uid).set(user.toJson());
     }
     return userCredential;
   }

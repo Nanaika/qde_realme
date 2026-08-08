@@ -43,7 +43,9 @@ class MainButton extends StatelessWidget {
           children: [
             Text(
               text,
-              style: ThemeTextStyles.button(context).copyWith(fontSize: 16, fontWeight: FontWeight.w300),
+              style: ThemeTextStyles.button(
+                context,
+              ).copyWith(fontSize: 16, fontWeight: FontWeight.w300, color: Colors.black),
             ),
             if (isApple)
               const SizedBox(

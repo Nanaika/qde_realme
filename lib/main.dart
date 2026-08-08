@@ -132,6 +132,10 @@ class _MyAppState extends State<MyApp> {
               theme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
                 useMaterial3: true,
+                fontFamily: 'gilroy',
+                textTheme: ThemeData.light().textTheme.apply(
+                  fontFamily: 'gilroy',
+                ),
               ),
               darkTheme: ThemeData(
                 colorScheme: ColorScheme.fromSeed(
@@ -140,6 +144,10 @@ class _MyAppState extends State<MyApp> {
                 ),
                 useMaterial3: true,
                 scaffoldBackgroundColor: ThemeColors.surfaceDark,
+                fontFamily: 'gilroy',
+                textTheme: ThemeData.dark().textTheme.apply(
+                  fontFamily: 'gilroy',
+                ),
               ),
               themeMode: _themeMode,
               routerConfig: AppRouter.router,

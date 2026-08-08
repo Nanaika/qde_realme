@@ -212,7 +212,7 @@ class _BonusesPageState extends State<BonusesPage> {
                                                             ThemeTextStyles.headlineMedium(
                                                               context,
                                                             ).copyWith(
-                                                              color: ThemeColors.primaryDark,
+                                                              color: ThemeColors.error,
                                                               fontWeight: FontWeight.w300,
                                                               fontSize: 16,
                                                             ),

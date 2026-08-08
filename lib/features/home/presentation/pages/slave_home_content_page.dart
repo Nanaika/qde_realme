@@ -367,7 +367,12 @@ class _SlaveHomeContentPageState extends State<SlaveHomeContentPage> with Automa
         onPressed: () {
           context.push('/add_sale');
         },
-        label: Text('add_sale'.tr()),
+        label: Text(
+          'add_sale'.tr(),
+          style: ThemeTextStyles.button(
+            context,
+          ).copyWith(fontSize: 16, fontWeight: FontWeight.w300, color: Colors.black),
+        ),
       ),
     );
   }

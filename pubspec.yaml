@@ -89,6 +89,29 @@ flutter:
     - assets/translations/uz.json
     - assets/translations/ru.json
     - assets/images/
+  fonts:
+    - family: gilroy
+      fonts:
+          - asset: assets/fonts/Gilroy-Black_0.ttf
+          - asset: assets/fonts/Gilroy-BlackItalic_0.ttf
+          - asset: assets/fonts/Gilroy-Bold_0.ttf
+          - asset: assets/fonts/Gilroy-BoldItalic_0.ttf
+          - asset: assets/fonts/Gilroy-Extrabold_0.ttf
+          - asset: assets/fonts/Gilroy-ExtraboldItalic_0.ttf
+          - asset: assets/fonts/Gilroy-Heavy_0.ttf
+          - asset: assets/fonts/Gilroy-HeavyItalic_0.ttf
+          - asset: assets/fonts/Gilroy-Light_0.ttf
+          - asset: assets/fonts/Gilroy-LightItalic_0.ttf
+          - asset: assets/fonts/Gilroy-Medium_0.ttf
+          - asset: assets/fonts/Gilroy-MediumItalic_0.ttf
+          - asset: assets/fonts/Gilroy-Regular_0.ttf
+          - asset: assets/fonts/Gilroy-RegularItalic_0.ttf
+          - asset: assets/fonts/Gilroy-Semibold_0.ttf
+          - asset: assets/fonts/Gilroy-SemiboldItalic_0.ttf
+          - asset: assets/fonts/Gilroy-Thin_0.ttf
+          - asset: assets/fonts/Gilroy-ThinItalic_0.ttf
+          - asset: assets/fonts/Gilroy-UltraLight_0.ttf
+          - asset: assets/fonts/Gilroy-UltraLightItalic_0.ttf
 
 flutter_native_splash:
   color: "#1C162E" # Твой HEX-цвет фона (например, #121212 для тёмного)

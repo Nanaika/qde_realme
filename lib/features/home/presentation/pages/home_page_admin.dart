@@ -241,7 +241,7 @@ class AdminButton extends StatelessWidget {
     this.onTap,
     this.icon = Icons.supervised_user_circle,
     this.iconSize = 25,
-    this.iconColor = Colors.white,
+    this.iconColor = Colors.black,
     this.text = '',
   });
 

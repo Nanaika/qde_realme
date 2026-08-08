@@ -8,7 +8,7 @@ class ThemeColors {
   // Primary Colors
   static const Color primary = Color(0xFF2196F3); // Blue
   static const Color primaryLight = Color(0xFF64B5F6);
-  static const Color primaryDark = Color(0xFFF04973);
+  static const Color primaryDark = Color(0xFFFFB443);
   static const Color primaryContainer = Color(0xFFE3F2FD);
   static const Color onPrimary = Colors.white;
   static const Color onPrimaryContainer = Color(0xFF0D47A1);
@@ -22,7 +22,7 @@ class ThemeColors {
   static const Color onSecondaryContainer = Color(0xFF004D40);
 
   // Error Colors
-  static const Color error = Color(0xFFB00020);
+  static const Color error = Color(0xFFF04973);
   static const Color errorLight = Color(0xFFEF5350);
   static const Color errorDark = Color(0xFFC62828);
   static const Color errorContainer = Color(0xFFFFEBEE);

@@ -92,7 +92,7 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
               SettingsRow(
                 text: 'delete_user'.tr(),
                 icon: CupertinoIcons.person_crop_circle_badge_minus,
-                textColor: ThemeColors.primaryDark,
+                textColor: ThemeColors.error,
                 onTap: () {
                   showCupertinoDialog(
                     context: context,
@@ -108,18 +108,6 @@ class _SettingsPageState extends State<SettingsPage> with AutomaticKeepAliveClie
                     ),
                   );
                 },
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  context.push('/homeslave');
-                },
-                child: const Text('Change to user'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  context.push('/homeadmin');
-                },
-                child: const Text('Change to admin'),
               ),
             ],
           ),
@@ -285,15 +273,27 @@ class AdaptiveDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text(title),
-      content: Text(content),
+      title: Text(
+        title,
+        style: ThemeTextStyles.labelLarge(
+          context,
+        ).copyWith(color: Colors.white, inherit: false, fontFamily: 'gilroy', fontSize: 18),
+      ),
+      content: Text(
+        content,
+        style: ThemeTextStyles.labelLarge(
+          context,
+        ).copyWith(color: Colors.white, inherit: false, fontFamily: 'gilroy', fontSize: 14),
+      ),
       actions: <CupertinoDialogAction>[
         CupertinoDialogAction(
           isDefaultAction: true,
           onPressed: () => Navigator.pop(context),
           child: Text(
             cancelText,
-            style: ThemeTextStyles.labelLarge(context).copyWith(color: Colors.white),
+            style: ThemeTextStyles.labelLarge(
+              context,
+            ).copyWith(color: Colors.white, inherit: false, fontFamily: 'gilroy'),
           ),
         ),
         CupertinoDialogAction(
@@ -304,7 +304,9 @@ class AdaptiveDialog extends StatelessWidget {
           },
           child: Text(
             confirmText,
-            style: ThemeTextStyles.labelLarge(context).copyWith(color: confirmColor),
+            style: ThemeTextStyles.labelLarge(
+              context,
+            ).copyWith(color: confirmColor, inherit: false, fontFamily: 'gilroy'),
           ),
         ),
       ],

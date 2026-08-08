@@ -365,7 +365,7 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                                 content: 'are_you_sure_you_want_to_reject'.tr(),
                                                 cancelText: 'cancel'.tr(),
                                                 confirmText: 'reject'.tr(),
-                                                confirmColor: ThemeColors.primaryDark,
+                                                confirmColor: ThemeColors.error,
                                                 onConfirm: () {
                                                   context.read<ModerateSalesBloc>().add(
                                                     ModerateSaleEvent(sale: state.items[index], isAccepted: false),
@@ -377,7 +377,7 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                           child: Container(
                                             padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                              color: ThemeColors.primaryDark,
+                                              color: ThemeColors.error,
                                               borderRadius: BorderRadius.circular(10.0),
                                             ),
                                             child: Center(

@@ -241,11 +241,10 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                                 content: 'are_you_sure_you_want_to_reject'.tr(),
                                                 cancelText: 'cancel'.tr(),
                                                 confirmText: 'reject'.tr(),
-                                                confirmColor: ThemeColors.primaryDark,
+                                                confirmColor: ThemeColors.error,
                                                 onConfirm: () {
-                                                  final userId = (context.read<AuthBloc>().state as AuthAuthenticated)
-                                                      .currentUser
-                                                      .id;
+                                                  final userId = user.id;
+                                                  print('USER ID===================${userId}');
                                                   context.read<ModerateUsersBloc>().add(
                                                     ModerateUserEvent(userId: userId, isModerated: false),
                                                   );
@@ -256,7 +255,7 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                           child: Container(
                                             padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                              color: ThemeColors.primaryDark,
+                                              color: ThemeColors.error,
                                               borderRadius: BorderRadius.circular(10.0),
                                             ),
                                             child: Center(
@@ -281,9 +280,7 @@ class _ModerateUsersPageState extends State<ModerateUsersPage> {
                                                 confirmText: 'approve'.tr(),
                                                 confirmColor: ThemeColors.success,
                                                 onConfirm: () {
-                                                  final userId = (context.read<AuthBloc>().state as AuthAuthenticated)
-                                                      .currentUser
-                                                      .id;
+                                                  final userId = user.id;
                                                   context.read<ModerateUsersBloc>().add(
                                                     ModerateUserEvent(userId: userId, isModerated: true),
                                                   );
