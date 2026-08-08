@@ -142,16 +142,25 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        CupertinoIcons.device_phone_portrait,
-                                        size: 22,
-                                      ),
-                                      const SizedBox(
-                                        width: 9,
-                                      ),
                                       Expanded(
                                         child: Text(
-                                          sale.imei,
+                                          'device_info'.tr(),
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'imei1'.tr(args: [sale.imei]),
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
@@ -165,16 +174,9 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        CupertinoIcons.device_phone_portrait,
-                                        size: 22,
-                                      ),
-                                      const SizedBox(
-                                        width: 9,
-                                      ),
                                       Expanded(
                                         child: Text(
-                                          sale.imei2,
+                                          'imei2'.tr(args: [sale.imei2]),
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
@@ -188,16 +190,9 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      const Icon(
-                                        CupertinoIcons.device_phone_portrait,
-                                        size: 22,
-                                      ),
-                                      const SizedBox(
-                                        width: 9,
-                                      ),
                                       Expanded(
                                         child: Text(
-                                          sale.article,
+                                          'article'.tr(args: [sale.article]),
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
@@ -211,16 +206,42 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const Icon(
-                                        CupertinoIcons.device_phone_portrait,
-                                        size: 22,
-                                      ),
-                                      const SizedBox(
-                                        width: 9,
-                                      ),
                                       Expanded(
                                         child: Text(
-                                          sale.skuName,
+                                          'sku_name'.tr(args: [sale.skuName]),
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 4,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'bonus'.tr(args: [sale.bonus.toString()]),
+
+                                          style: ThemeTextStyles.headlineSmall(
+                                            context,
+                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 16,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          'user_info'.tr(),
                                           style: ThemeTextStyles.headlineSmall(
                                             context,
                                           ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
@@ -323,26 +344,7 @@ class _ModerateSalesPageState extends State<ModerateSalesPage> {
                                   const SizedBox(
                                     height: 8,
                                   ),
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        CupertinoIcons.money_dollar,
-                                        size: 22,
-                                      ),
-                                      const SizedBox(
-                                        width: 9,
-                                      ),
-                                      Expanded(
-                                        child: Text(
-                                          sale.bonus.toString(),
-                                          style: ThemeTextStyles.headlineSmall(
-                                            context,
-                                          ).copyWith(color: Colors.white, fontWeight: FontWeight.w300),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+
                                   const SizedBox(
                                     height: 5,
                                   ),
