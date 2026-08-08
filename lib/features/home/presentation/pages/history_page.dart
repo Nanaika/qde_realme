@@ -135,10 +135,16 @@ class _HistoryPageState extends State<HistoryPage> {
                           // "user_pending": "Пользователь {} на модерации",
                           // "other": "Другое"
                           final message = switch (type) {
-                            HistoryType.imeiPending => 'sale_imei_pending'.tr(args: [item.message, item.bonus]),
-                            HistoryType.imeiAccepted => 'sale_imei_accepted'.tr(args: [item.message, item.bonus]),
-                            HistoryType.imeiDeclined => 'sale_imei_declined'.tr(args: [item.message, item.bonus]),
-                            HistoryType.imeiPaid => 'sale_imei_paid'.tr(args: [item.message]),
+                            HistoryType.imeiPending => 'sale_imei_pending'.tr(
+                              args: [item.message, item.bonus, item.skuName],
+                            ),
+                            HistoryType.imeiAccepted => 'sale_imei_accepted'.tr(
+                              args: [item.message, item.bonus, item.skuName],
+                            ),
+                            HistoryType.imeiDeclined => 'sale_imei_declined'.tr(
+                              args: [item.message, item.bonus, item.skuName],
+                            ),
+                            HistoryType.imeiPaid => 'sale_imei_paid'.tr(args: [item.message, item.bonus, item.skuName]),
                             HistoryType.userAccepted => 'user_accepted'.tr(),
                             HistoryType.userDeclined => 'user_declined'.tr(),
                             HistoryType.userPending => 'user_pending'.tr(),

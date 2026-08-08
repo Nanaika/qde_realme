@@ -39,7 +39,12 @@ class ManageUsersRemoteDataSourceImpl implements ManageUsersRemoteDatasource {
           'type': 'paid', // Сетим новое состояние
         });
 
-        final history = HistoryModel(message: doc.data()['imei'], type: HistoryType.imeiPaid.name);
+        final history = HistoryModel(
+          message: doc.data()['imei'],
+          type: HistoryType.imeiPaid.name,
+          bonus: doc.data()['bonus'].toString(),
+          skuName: doc.data()['skuName'],
+        );
 
         final newDocRef = historyRef.doc();
 

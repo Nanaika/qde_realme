@@ -80,7 +80,12 @@ class ModerateSalesRemoteDataSourceImpl implements ModerateSalesRemoteDataSource
     final historyType = status == AddSaleType.accepted.name
         ? HistoryType.imeiAccepted.name
         : HistoryType.imeiDeclined.name;
-    final history = HistoryModel(message: sale.imei, type: historyType, bonus: sale.bonus.toString());
+    final history = HistoryModel(
+      message: sale.imei,
+      type: historyType,
+      bonus: sale.bonus.toString(),
+      skuName: sale.skuName,
+    );
 
     // Запускаем транзакцию
     await db.runTransaction((transaction) async {

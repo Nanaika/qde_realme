@@ -41,6 +41,7 @@ class AddSaleRemoteDataSourceImpl implements AddSaleRemoteDataSource {
       message: updatedSale.imei,
       type: HistoryType.imeiPending.name,
       bonus: updatedSale.bonus.toString(),
+      skuName: updatedSale.skuName,
     );
 
     final ref = db
