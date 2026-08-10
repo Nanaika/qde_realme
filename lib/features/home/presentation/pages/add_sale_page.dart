@@ -104,53 +104,56 @@ class _AddSalePageState extends State<AddSalePage> {
                         if (state is GetPhoneByImeiSuccess) {
                           return Expanded(
                             child: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Text(
-                                    'device_info'.tr(),
-                                    style: const TextStyle(color: Colors.white, decoration: TextDecoration.underline),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                      'device_info'.tr(),
+                                      style: const TextStyle(color: Colors.white, decoration: TextDecoration.underline),
+                                    ),
+                                    const SizedBox(
+                                      height: 7,
+                                    ),
 
-                                  Text(
-                                    'article'.tr(args: [state.item.article]),
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  Text(
-                                    'imei1'.tr(args: [state.item.imei1]),
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  Text(
-                                    'imei2'.tr(args: [state.item.imei2]),
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  Text(
-                                    'sku_name'.tr(args: [state.item.skuName]),
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  const SizedBox(
-                                    height: 7,
-                                  ),
-                                  Text(
-                                    'bonus'.tr(args: [state.bonus.toString()]),
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                ],
+                                    Text(
+                                      'article'.tr(args: [state.item.article]),
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                    const SizedBox(
+                                      height: 7,
+                                    ),
+                                    Text(
+                                      'imei1'.tr(args: [state.item.imei1]),
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                    const SizedBox(
+                                      height: 7,
+                                    ),
+                                    Text(
+                                      'imei2'.tr(args: [state.item.imei2]),
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                    const SizedBox(
+                                      height: 7,
+                                    ),
+                                    Text(
+                                      'sku_name'.tr(args: [state.item.skuName]),
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                    const SizedBox(
+                                      height: 7,
+                                    ),
+                                    Text(
+                                      'bonus'.tr(args: [state.bonus.toString()]),
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );
