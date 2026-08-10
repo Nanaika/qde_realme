@@ -24,9 +24,7 @@ class UserSalesBloc extends Bloc<UserSalesEvent, UserSalesState> {
   }
 
   Future<void> _onPaySale(PaySaleEvent event, Emitter<UserSalesState> emit) async {
-    final currentSales = state is UserSalesSuccess
-        ? (state as UserSalesSuccess).data
-        : <SaleModel>[]; // Замени SaleModel на свой класс модели
+    final currentSales = state is UserSalesSuccess ? (state as UserSalesSuccess).data : <SaleModel>[];
     emit(UserSalesLoading());
     try {
       await repository.pay(event.id, event.saleId);

@@ -31,7 +31,7 @@ class _UserSalesPageState extends State<UserSalesPage> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: ThemeDimensions.paddingM, vertical: ThemeDimensions.paddingM),
           child: Column(
-            children: <Widget>[
+            children: [
               Row(
                 children: [
                   GestureDetector(
@@ -58,16 +58,8 @@ class _UserSalesPageState extends State<UserSalesPage> {
               const SizedBox(
                 height: 20,
               ),
-              BlocBuilder<UserSalesBloc, UserSalesState>(
+              BlocConsumer<UserSalesBloc, UserSalesState>(
                 builder: (context, state) {
-                  if (state is UserSalesLoading) {
-                    return const Expanded(child: Center(child: CircularProgressIndicator()));
-                  }
-
-                  if (state is UserSalesError) {
-                    return Expanded(child: Center(child: Text(state.failure)));
-                  }
-
                   if (state is UserSalesSuccess) {
                     if (state.data.isEmpty) {
                       return Expanded(child: Center(child: Text('no_sales'.tr())));
@@ -347,6 +339,20 @@ class _UserSalesPageState extends State<UserSalesPage> {
                   }
 
                   return const SizedBox.shrink();
+                },
+                listener: (BuildContext context, UserSalesState state) {
+                  if (state is UserSalesError) {
+                    LoadingDialog.hide(context);
+                    WidgetsBinding.instance.addPostFrameCallback((w) {
+                      ErrorDialog.show(context, state.failure);
+                    });
+                  }
+                  if (state is UserSalesLoading) {
+                    LoadingDialog.show(context);
+                  }
+                  if (state is UserSalesSuccess) {
+                    LoadingDialog.hide(context);
+                  }
                 },
               ),
             ],
