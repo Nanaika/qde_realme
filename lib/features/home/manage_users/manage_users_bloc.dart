@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qde_realme/core/utils/app_constants.dart';
 
 import '../../../core/error/failures.dart';
 import 'manage_users_event.dart';
@@ -11,7 +10,6 @@ class ManageUsersBloc extends Bloc<ManageUsersEvent, ManageUsersState> {
 
   ManageUsersBloc({required this.repository}) : super(ManageUsersInitial()) {
     on<ManageUsersGetEvent>(_onGet);
-    on<ManageUsersPayEvent>(_onPay);
   }
 
   Future<void> _onGet(ManageUsersGetEvent event, Emitter<ManageUsersState> emit) async {
@@ -20,20 +18,6 @@ class ManageUsersBloc extends Bloc<ManageUsersEvent, ManageUsersState> {
     try {
       final users = await repository.get();
 
-      emit(ManageUsersSuccess(users: users));
-    } on Failure catch (failure) {
-      emit(ManageUsersError(failure));
-    } catch (e) {
-      emit(ManageUsersError(ServerFailure(e.toString())));
-    }
-  }
-
-  Future<void> _onPay(ManageUsersPayEvent event, Emitter<ManageUsersState> emit) async {
-    emit(ManageUsersLoading(message: AppConstants.onPayLoading));
-
-    try {
-      await repository.pay(event.userId);
-      final users = await repository.get();
       emit(ManageUsersSuccess(users: users));
     } on Failure catch (failure) {
       emit(ManageUsersError(failure));

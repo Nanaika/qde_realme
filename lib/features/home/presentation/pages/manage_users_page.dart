@@ -10,6 +10,7 @@ import 'package:qde_realme/features/home/manage_users/manage_users_state.dart';
 import 'package:qde_realme/features/home/presentation/pages/add_single_item_page.dart';
 import 'package:qde_realme/features/home/presentation/pages/settings_page.dart';
 
+import '../../../../core/theme/theme_colors.dart';
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/theme/theme_text_styles.dart';
 import '../../../../core/utils/uz_cities.dart';
@@ -287,48 +288,40 @@ class _ManageUsersPageState extends State<ManageUsersPage> {
                                     children: [
                                       GestureDetector(
                                         onTap: () {
-                                          if (user.isModerated) {
-                                            showCupertinoDialog(
-                                              context: context,
-                                              builder: (ctx) => AdaptiveDialog(
-                                                title: 'payment_title'.tr(),
-                                                content: 'are_you_sure_you_want_to_pay'.tr(),
-                                                cancelText: 'cancel'.tr(),
-                                                confirmText: 'pay'.tr(),
-                                                confirmColor: Colors.yellow,
-                                                onConfirm: () {
-                                                  context.read<ManageUsersBloc>().add(
-                                                    ManageUsersPayEvent(userId: user.id),
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          } else {
-                                            ErrorDialog.show(context, 'user_not_moderated'.tr());
-                                            // ScaffoldMessenger.of(context).showSnackBar(
-                                            //   SnackBar(
-                                            //     content: Text(
-                                            //       'user_not_moderated'.tr(),
-                                            //       style: ThemeTextStyles.bodyMedium(context),
-                                            //     ),
-                                            //     backgroundColor: Colors.red,
-                                            //   ),
-                                            // );
-                                          }
+                                          // if (user.isModerated) {
+                                          //   showCupertinoDialog(
+                                          //     context: context,
+                                          //     builder: (ctx) => AdaptiveDialog(
+                                          //       title: 'payment_title'.tr(),
+                                          //       content: 'are_you_sure_you_want_to_pay'.tr(),
+                                          //       cancelText: 'cancel'.tr(),
+                                          //       confirmText: 'pay'.tr(),
+                                          //       confirmColor: Colors.yellow,
+                                          //       onConfirm: () {
+                                          //         context.read<ManageUsersBloc>().add(
+                                          //           ManageUsersPayEvent(userId: user.id),
+                                          //         );
+                                          //       },
+                                          //     ),
+                                          //   );
+                                          // } else {
+                                          //   ErrorDialog.show(context, 'user_not_moderated'.tr());
+                                          // }
+                                          context.push('/user_sales', extra: user);
                                         },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                                           width: MediaQuery.widthOf(context) / 2,
                                           decoration: BoxDecoration(
-                                            color: Colors.yellow,
+                                            color: ThemeColors.success,
                                             borderRadius: BorderRadius.circular(10.0),
                                           ),
                                           child: Center(
                                             child: Text(
-                                              'pay'.tr(),
+                                              'sales'.tr(),
                                               style: ThemeTextStyles.chipLabel(
                                                 context,
-                                              ).copyWith(color: Colors.black, fontSize: 16),
+                                              ).copyWith(color: Colors.white, fontSize: 16),
                                             ),
                                           ),
                                         ),
