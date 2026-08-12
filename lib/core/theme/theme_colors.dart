@@ -55,9 +55,9 @@ class ThemeColors {
 
   // Background Colors
   static const Color background = Color(0xFFFFFFFF);
-  static const Color backgroundDark = Color(0xFF1C162E);
+  static const Color backgroundDark = Color(0xFF1D182B);
   static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceDark = Color(0xFF1C162E);
+  static const Color surfaceDark = Color(0xFF1D182B);
   static const Color surfaceVariant = Color(0xFFF5F5F5);
   static const Color surfaceVariantDark = Color(0xFF2C2C2C);
   static const Color onBackground = Color(0xFF1C1B1F);

@@ -114,16 +114,16 @@ flutter:
           - asset: assets/fonts/Gilroy-UltraLightItalic_0.ttf
 
 flutter_native_splash:
-  color: "#1C162E" # Твой HEX-цвет фона (например, #121212 для тёмного)
-  image: assets/images/logo.png # Твоя иконка по центру
+  color: "#1D182B" # Твой HEX-цвет фона (например, #121212 для тёмного)
+  image: assets/images/app-icon.png # Твоя иконка по центру
   fullscreen: true
   # Настройки под Android 12+ (обязательно для новых версий)
   android_12:
-    color: "#1C162E"
-    image: assets/images/logo.png
+    color: "#1D182B"
+    image: assets/images/app-icon.png
 
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/app_icon.png"
+  image_path: "assets/images/logo.png"
   min_sdk_android: 21
