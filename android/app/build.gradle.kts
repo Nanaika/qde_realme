@@ -67,11 +67,77 @@
 //    implementation("com.google.firebase:firebase-analytics")
 //}
 
+//plugins {
+//    id("com.android.application")
+//    id("dev.flutter.flutter-gradle-plugin")
+//    id("com.google.gms.google-services")
+//    id("com.google.firebase.crashlytics")
+//}
+//
+//
+//
+//android {
+//    namespace = "com.qde.qde_realme"
+//    compileSdk = flutter.compileSdkVersion
+//    ndkVersion = flutter.ndkVersion
+//
+//    compileOptions {
+//        sourceCompatibility = JavaVersion.VERSION_17
+//        targetCompatibility = JavaVersion.VERSION_17
+//        isCoreLibraryDesugaringEnabled = true
+//    }
+//
+//    defaultConfig {
+//        applicationId = "com.qde.qde_realme"
+//        minSdk = flutter.minSdkVersion
+//        targetSdk = flutter.targetSdkVersion
+//        versionCode = flutter.versionCode
+//        versionName = flutter.versionName
+//    }
+//
+//    buildTypes {
+//        release {
+//            isMinifyEnabled = false
+//            isShrinkResources = false
+//            signingConfig = signingConfigs.getByName("debug")
+//            proguardFiles(
+//                getDefaultProguardFile("proguard-android-optimize.txt"),
+//                "proguard-rules.pro"
+//            )
+//        }
+//    }
+//}
+//
+//kotlin {
+//    compilerOptions {
+//        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+//    }
+//}
+//
+//flutter {
+//    source = "../.."
+//}
+//
+//dependencies {
+//    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+//    implementation(platform("com.google.firebase:firebase-bom:34.15.0"))
+//    implementation("com.google.firebase:firebase-analytics")
+//}
+
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("dev.flutter.flutter-gradle-plugin")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+}
+
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
 android {
@@ -87,17 +153,26 @@ android {
 
     defaultConfig {
         applicationId = "com.qde.qde_realme"
-        minSdk = flutter.minSdkVersion
+        minSdk = 31
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = keystoreProperties.getProperty("storeFile")?.let { file(it) }
+            storePassword = keystoreProperties.getProperty("storePassword")
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             isShrinkResources = false
-            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -108,7 +183,7 @@ android {
 
 kotlin {
     compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 

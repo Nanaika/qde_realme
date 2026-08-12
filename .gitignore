@@ -49,6 +49,12 @@ app.*.map.json
 *.config.dart
 
 # Firebase config files (добавьте реальные файлы в .gitignore при коммите)
-# android/app/google-services.json
-# ios/Runner/GoogleService-Info.plist
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
+# Секретные ключи для подписи сборки Android
+**/android/key.properties
+**/android/app/upload-keystore.jks
+*.jks
+*.keystore
 

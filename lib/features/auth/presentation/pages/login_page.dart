@@ -6,6 +6,7 @@ import 'package:qde_realme/core/theme/theme_text_styles.dart';
 import 'package:qde_realme/core/widgets/language_toggle.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:qde_realme/features/auth/presentation/bloc/auth_event.dart';
+import 'package:qde_realme/features/home/presentation/pages/add_single_item_page.dart';
 
 import '../../../../core/theme/theme_dimensions.dart';
 import '../../../../core/widgets/main_button.dart';
@@ -20,7 +21,9 @@ class LoginPage extends StatelessWidget {
       listener: (BuildContext context, state) {
         if (state is AuthLoading) {
         } else if (state is AuthUnauthenticated || state is AuthInitial) {
-        } else {}
+        } else {
+          ErrorDialog.show(context, (state as AuthError).failure.message);
+        }
       },
       child: Scaffold(
         // appBar: AppBar(title: Text(LocaleKeys.auth_login.tr()), actions: const [LanguageToggle(), ThemeToggle()]),
