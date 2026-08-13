@@ -29,7 +29,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<UserCredential> signInWithGoogle() async {
-    await GoogleSignIn.instance.initialize();
+    await GoogleSignIn.instance.initialize(
+      serverClientId: '219323219125-se6ck2fbkfcopug10oc2568hb722g126.apps.googleusercontent.com',
+    );
     final GoogleSignInAccount googleUser = await GoogleSignIn.instance.authenticate();
     print('LOGIN==================google user  ${googleUser}');
 

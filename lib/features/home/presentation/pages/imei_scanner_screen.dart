@@ -56,6 +56,8 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
 
   Future<void> _initCamera() async {
     final status = await Permission.camera.request();
+    print('===============  ${status}');
+
     if (!status.isGranted) {
       setState(() => _errorMessage = 'needCameraPermission'.tr());
       return;
@@ -77,7 +79,7 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       backCamera,
       ResolutionPreset.high, // Заменил max на high, чтобы iOS не захлебывалась в стриме
       enableAudio: false,
-      imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.yuv420,
+      imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
     try {

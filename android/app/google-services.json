@@ -14,11 +14,35 @@
       },
       "oauth_client": [
         {
+          "client_id": "219323219125-1ql6uvlcjtdp1s06r21jp9m2cqu05l4k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qde.qde_realme",
+            "certificate_hash": "2711dc9312dce447a74b12ec6e73cbd30d725613"
+          }
+        },
+        {
+          "client_id": "219323219125-ggsnrecv5q8milhi56h33iadnqvi8sd0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qde.qde_realme",
+            "certificate_hash": "1591600b2bb6f9c846aef3cb3b8950306e576766"
+          }
+        },
+        {
           "client_id": "219323219125-gsg67i9mm2h1k97d0sopcg5kcka7amea.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.qde.qde_realme",
             "certificate_hash": "3bf2421f7915b8200614840bc08893ac39afcf60"
+          }
+        },
+        {
+          "client_id": "219323219125-hph53hng7l6073kkhcc95i6s36b3n03h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qde.qde_realme",
+            "certificate_hash": "7f2d27acb9da6eb56cf9936096e5967d09c3fdce"
           }
         },
         {
@@ -37,6 +61,13 @@
             {
               "client_id": "219323219125-se6ck2fbkfcopug10oc2568hb722g126.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "219323219125-jtctdmd84v6hctalsijatlps04na3mab.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.realme"
+              }
             }
           ]
         }
