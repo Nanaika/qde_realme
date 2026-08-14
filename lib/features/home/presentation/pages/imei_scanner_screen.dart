@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:camera/camera.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -26,6 +27,7 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
   bool _isProcessing = false;
   String _scannedImei = 'point_at_IMEI'.tr();
   String _errorMessage = '';
+  final GlobalKey _scanWindowKey = GlobalKey();
 
   DateTime? _lastProcessedTime;
 
@@ -107,8 +109,11 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
   Future<void> _processImage(CameraImage image) async {
     if (_isProcessing || _cameraController == null) return;
 
-    final now = DateTime.now();
+    // Жесткий блок: работаем ТОЛЬКО в стандартном портретном режиме
+    final orientation = MediaQuery.of(context).orientation;
+    if (orientation != Orientation.portrait) return;
 
+    final now = DateTime.now();
     if (_lastProcessedTime != null && now.difference(_lastProcessedTime!).inMilliseconds < 300) {
       return;
     }
@@ -123,20 +128,60 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       final recognizedText = await _textRecognizer.processImage(inputImage);
       final RegExp imeiRegex = RegExp(r'\b\d{15,16}\b');
 
-      final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-      final double imageWidth = isPortrait ? image.height.toDouble() : image.width.toDouble();
-      final double imageHeight = isPortrait ? image.width.toDouble() : image.height.toDouble();
+      // Берем точные координаты рамки сканера с экрана
+      final RenderBox? renderBox = _scanWindowKey.currentContext?.findRenderObject() as RenderBox?;
+      if (renderBox == null) return;
 
-      final double frameTopInImage = imageHeight * 0.4;
-      final double frameBottomInImage = imageHeight * 0.6;
+      final Offset containerOffset = renderBox.localToGlobal(Offset.zero);
+      final Size containerSize = renderBox.size;
+      final Size screenSize = MediaQuery.of(context).size;
+
+      // Учет масштабирования камеры под экран (BoxFit.cover)
+      final double cameraAspectRatio = _cameraController!.value.aspectRatio;
+      final double previewAspectRatio = 1 / cameraAspectRatio; // В портрете инвертируем
+      final double screenAspectRatio = screenSize.width / screenSize.height;
+
+      double scaleX = 1.0;
+      double scaleY = 1.0;
+      double offsetX = 0.0;
+      double offsetY = 0.0;
+
+      if (previewAspectRatio > screenAspectRatio) {
+        scaleX = previewAspectRatio / screenAspectRatio;
+        offsetX = (scaleX - 1.0) / 2.0;
+      } else {
+        scaleY = screenAspectRatio / previewAspectRatio;
+        offsetY = (scaleY - 1.0) / 2.0;
+      }
+
+      // Перевод координат рамки в процентные от 0.0 до 1.0
+      final double normLeft = (containerOffset.dx / screenSize.width) * scaleX - offsetX;
+      final double normTop = (containerOffset.dy / screenSize.height) * scaleY - offsetY;
+      final double normRight = ((containerOffset.dx + containerSize.width) / screenSize.width) * scaleX - offsetX;
+      final double normBottom = ((containerOffset.dy + containerSize.height) / screenSize.height) * scaleY - offsetY;
+
+      // Размеры повернутого кадра в ML Kit (в портрете height = width изображения)
+      final double imageWidth = image.height.toDouble();
+      final double imageHeight = image.width.toDouble();
+
+      final double frameLeft = normLeft * imageWidth;
+      final double frameTop = normTop * imageHeight;
+      final double frameRight = normRight * imageWidth;
+      final double frameBottom = normBottom * imageHeight;
 
       final List<TextLine> linesInFrame = [];
 
       for (TextBlock block in recognizedText.blocks) {
         for (TextLine line in block.lines) {
           final rect = line.boundingBox;
+          final double lineCenterX = rect.left + (rect.width / 2);
           final double lineCenterY = rect.top + (rect.height / 2);
-          if (lineCenterY >= frameTopInImage && lineCenterY <= frameBottomInImage) {
+
+          // Попадание строго внутрь рамки
+          if (lineCenterX >= frameLeft &&
+              lineCenterX <= frameRight &&
+              lineCenterY >= frameTop &&
+              lineCenterY <= frameBottom) {
             linesInFrame.add(line);
           }
         }
@@ -173,6 +218,176 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       }
     }
   }
+
+  // Future<void> _processImage(CameraImage image) async {
+  //   if (_isProcessing || _cameraController == null) return;
+  //
+  //   // Проверяем, что устройство в портретном режиме
+  //   final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+  //   if (!isPortrait) return;
+  //
+  //   final now = DateTime.now();
+  //
+  //   if (_lastProcessedTime != null && now.difference(_lastProcessedTime!).inMilliseconds < 300) {
+  //     return;
+  //   }
+  //
+  //   _isProcessing = true;
+  //   _lastProcessedTime = now;
+  //
+  //   try {
+  //     final inputImage = _convertImageOptimized(image);
+  //     if (inputImage == null) return;
+  //
+  //     final recognizedText = await _textRecognizer.processImage(inputImage);
+  //     final RegExp imeiRegex = RegExp(r'\b\d{15,16}\b');
+  //
+  //     // Размеры экрана
+  //     final screenSize = MediaQuery.of(context).size;
+  //     final double screenWidth = screenSize.width;
+  //     final double screenHeight = screenSize.height;
+  //
+  //     // Размеры изображения в портретном режиме (ширина и высота меняются местами)
+  //     final double imageWidth = image.height.toDouble();
+  //     final double imageHeight = image.width.toDouble();
+  //
+  //     // Расчет маштабирования CameraPreview (BoxFit.cover)
+  //     final double scale = math.max(screenWidth / imageWidth, screenHeight / imageHeight);
+  //     final double offsetX = (screenWidth - imageWidth * scale) / 2;
+  //     final double offsetY = (screenHeight - imageHeight * scale) / 2;
+  //
+  //     // Параметры вашего контейнера из Scaffold/Stack
+  //     final double containerWidth = screenWidth * 0.8;
+  //     final double containerHeight = 70.0;
+  //     final double containerLeft = (screenWidth - containerWidth) / 2;
+  //     final double containerTop = (screenHeight - containerHeight) / 2;
+  //     final double containerRight = containerLeft + containerWidth;
+  //     final double containerBottom = containerTop + containerHeight;
+  //
+  //     // Переводим экранные координаты контейнера в координаты изображения
+  //     final double frameLeftInImage = (containerLeft - offsetX) / scale;
+  //     final double frameTopInImage = (containerTop - offsetY) / scale;
+  //     final double frameRightInImage = (containerRight - offsetX) / scale;
+  //     final double frameBottomInImage = (containerBottom - offsetY) / scale;
+  //
+  //     final List<TextLine> linesInFrame = [];
+  //
+  //     for (TextBlock block in recognizedText.blocks) {
+  //       for (TextLine line in block.lines) {
+  //         final rect = line.boundingBox;
+  //         final double lineCenterX = rect.left + (rect.width / 2);
+  //         final double lineCenterY = rect.top + (rect.height / 2);
+  //
+  //         // Проверяем, что центр текста находится внутри границ контейнера
+  //         if (lineCenterX >= frameLeftInImage &&
+  //             lineCenterX <= frameRightInImage &&
+  //             lineCenterY >= frameTopInImage &&
+  //             lineCenterY <= frameBottomInImage) {
+  //           linesInFrame.add(line);
+  //         }
+  //       }
+  //     }
+  //
+  //     if (linesInFrame.isNotEmpty) {
+  //       linesInFrame.sort((a, b) => (a.boundingBox.top).compareTo(b.boundingBox.top));
+  //
+  //       final cleanText = linesInFrame.first.text.replaceAll(RegExp(r'[\s-]'), '');
+  //       final match = imeiRegex.firstMatch(cleanText);
+  //
+  //       if (match != null) {
+  //         final String foundImei = match.group(0)!;
+  //
+  //         setState(() {
+  //           _scannedImei = foundImei;
+  //         });
+  //
+  //         if (_cameraController != null && _cameraController!.value.isStreamingImages) {
+  //           await _cameraController!.stopImageStream();
+  //         }
+  //
+  //         if (mounted) {
+  //           context.pop(foundImei);
+  //         }
+  //         return;
+  //       }
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error: $e');
+  //   } finally {
+  //     if (_scannedImei == 'point_at_IMEI'.tr()) {
+  //       _isProcessing = false;
+  //     }
+  //   }
+  // }
+  // Future<void> _processImage(CameraImage image) async {
+  //   if (_isProcessing || _cameraController == null) return;
+  //
+  //   final now = DateTime.now();
+  //
+  //   if (_lastProcessedTime != null && now.difference(_lastProcessedTime!).inMilliseconds < 300) {
+  //     return;
+  //   }
+  //
+  //   _isProcessing = true;
+  //   _lastProcessedTime = now;
+  //
+  //   try {
+  //     final inputImage = _convertImageOptimized(image);
+  //     if (inputImage == null) return;
+  //
+  //     final recognizedText = await _textRecognizer.processImage(inputImage);
+  //     final RegExp imeiRegex = RegExp(r'\b\d{15,16}\b');
+  //
+  //     final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+  //     final double imageWidth = isPortrait ? image.height.toDouble() : image.width.toDouble();
+  //     final double imageHeight = isPortrait ? image.width.toDouble() : image.height.toDouble();
+  //
+  //     final double frameTopInImage = imageHeight * 0.4;
+  //     final double frameBottomInImage = imageHeight * 0.6;
+  //
+  //     final List<TextLine> linesInFrame = [];
+  //
+  //     for (TextBlock block in recognizedText.blocks) {
+  //       for (TextLine line in block.lines) {
+  //         final rect = line.boundingBox;
+  //         final double lineCenterY = rect.top + (rect.height / 2);
+  //         if (lineCenterY >= frameTopInImage && lineCenterY <= frameBottomInImage) {
+  //           linesInFrame.add(line);
+  //         }
+  //       }
+  //     }
+  //
+  //     if (linesInFrame.isNotEmpty) {
+  //       linesInFrame.sort((a, b) => (a.boundingBox.top).compareTo(b.boundingBox.top));
+  //
+  //       final cleanText = linesInFrame.first.text.replaceAll(RegExp(r'[\s-]'), '');
+  //       final match = imeiRegex.firstMatch(cleanText);
+  //
+  //       if (match != null) {
+  //         final String foundImei = match.group(0)!;
+  //
+  //         setState(() {
+  //           _scannedImei = foundImei;
+  //         });
+  //
+  //         if (_cameraController != null && _cameraController!.value.isStreamingImages) {
+  //           await _cameraController!.stopImageStream();
+  //         }
+  //
+  //         if (mounted) {
+  //           context.pop(foundImei);
+  //         }
+  //         return;
+  //       }
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error: $e');
+  //   } finally {
+  //     if (_scannedImei == 'point_at_IMEI'.tr()) {
+  //       _isProcessing = false;
+  //     }
+  //   }
+  // }
 
   InputImage? _convertImageOptimized(CameraImage image) {
     if (_cameraController == null) return null;
@@ -225,6 +440,7 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
           Positioned.fill(child: CameraPreview(_cameraController!)),
           Center(
             child: Container(
+              key: _scanWindowKey,
               width: MediaQuery.of(context).size.width * 0.8,
               height: 70,
               decoration: BoxDecoration(
