@@ -250,7 +250,7 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       backCamera,
       ResolutionPreset.high, // Заменил max на high, чтобы iOS не захлебывалась в стриме
       enableAudio: false,
-      imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.bgra8888,
+      imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.yuv420,
     );
 
     try {
@@ -278,9 +278,9 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
   Future<void> _processImage(CameraImage image) async {
     if (_isProcessing || _cameraController == null) return;
 
-    // Жесткий блок: работаем ТОЛЬКО в стандартном портретном режиме
-    final orientation = MediaQuery.of(context).orientation;
-    if (orientation != Orientation.portrait) return;
+    // 1. Блокировка: сканируем ТОЛЬКО в портрете
+    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    if (!isPortrait) return;
 
     final now = DateTime.now();
     if (_lastProcessedTime != null && now.difference(_lastProcessedTime!).inMilliseconds < 300) {
@@ -297,79 +297,30 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       final recognizedText = await _textRecognizer.processImage(inputImage);
       final RegExp imeiRegex = RegExp(r'\b\d{15,16}\b');
 
-      // Берем точные координаты рамки сканера с экрана
-      final RenderBox? renderBox = _scanWindowKey.currentContext?.findRenderObject() as RenderBox?;
-      if (renderBox == null) return;
+      final screenSize = MediaQuery.of(context).size;
 
-      final Offset containerOffset = renderBox.localToGlobal(Offset.zero);
-      final Size containerSize = renderBox.size;
-      final Size screenSize = MediaQuery.of(context).size;
+      // КРИТИЧЕСКАЯ РАЗНИЦА ОС:
+      // Android поворачивает координаты boundingBox (меняем W и H местами)
+      // iOS оставляет координаты в ориентации матрицы камеры (берем как есть)
+      final double imgW = Platform.isAndroid ? image.height.toDouble() : image.width.toDouble();
+      final double imgH = Platform.isAndroid ? image.width.toDouble() : image.height.toDouble();
 
-      // Учет масштабирования камеры под экран (BoxFit.cover)
-      // final double cameraAspectRatio = _cameraController!.value.aspectRatio;
-      // final double previewAspectRatio = 1 / cameraAspectRatio; // В портрете инвертируем
-      // final double screenAspectRatio = screenSize.width / screenSize.height;
-      //
-      // double scaleX = 1.0;
-      // double scaleY = 1.0;
-      // double offsetX = 0.0;
-      // double offsetY = 0.0;
-      //
-      // if (previewAspectRatio > screenAspectRatio) {
-      //   scaleX = previewAspectRatio / screenAspectRatio;
-      //   offsetX = (scaleX - 1.0) / 2.0;
-      // } else {
-      //   scaleY = screenAspectRatio / previewAspectRatio;
-      //   offsetY = (scaleY - 1.0) / 2.0;
-      // }
-      //
-      // // Перевод координат рамки в процентные от 0.0 до 1.0
-      // final double normLeft = (containerOffset.dx / screenSize.width) * scaleX - offsetX;
-      // final double normTop = (containerOffset.dy / screenSize.height) * scaleY - offsetY;
-      // final double normRight = ((containerOffset.dx + containerSize.width) / screenSize.width) * scaleX - offsetX;
-      // final double normBottom = ((containerOffset.dy + containerSize.height) / screenSize.height) * scaleY - offsetY;
-      //
-      // // Размеры повернутого кадра в ML Kit (в портрете height = width изображения)
-      // final double imageWidth = image.height.toDouble();
-      // final double imageHeight = image.width.toDouble();
-      //
-      // final double frameLeft = normLeft * imageWidth;
-      // final double frameTop = normTop * imageHeight;
-      // final double frameRight = normRight * imageWidth;
-      // final double frameBottom = normBottom * imageHeight;
+      // Расчет масштабирования BoxFit.cover
+      final double scale = math.max(screenSize.width / imgW, screenSize.height / imgH);
+      final double offsetX = (imgW * scale - screenSize.width) / 2;
+      final double offsetY = (imgH * scale - screenSize.height) / 2;
 
-      // Размер изображения в portrait
-      final double imageWidth = image.height.toDouble();
-      final double imageHeight = image.width.toDouble();
+      // Параметры контейнера из UI (ширина 80%, высота 70, по центру)
+      final double containerW = screenSize.width * 0.8;
+      final double containerH = 70.0;
+      final double containerLeft = (screenSize.width - containerW) / 2;
+      final double containerTop = (screenSize.height - containerH) / 2;
 
-      // Размер экрана
-      final double screenWidth = screenSize.width;
-      final double screenHeight = screenSize.height;
-
-      // CameraPreview работает как BoxFit.cover
-      final double scale = math.max(
-        screenWidth / imageWidth,
-        screenHeight / imageHeight,
-      );
-
-      // Реальный размер изображения после масштабирования
-      final double displayedWidth = imageWidth * scale;
-      final double displayedHeight = imageHeight * scale;
-
-      // Что было обрезано CameraPreview
-      final double cropX = (displayedWidth - screenWidth) / 2.0;
-
-      final double cropY = (displayedHeight - screenHeight) / 2.0;
-
-      // Координаты РАМКИ на экране
-      // переводим непосредственно в координаты изображения
-      final double frameLeft = (containerOffset.dx + cropX) / scale;
-
-      final double frameTop = (containerOffset.dy + cropY) / scale;
-
-      final double frameRight = (containerOffset.dx + containerSize.width + cropX) / scale;
-
-      final double frameBottom = (containerOffset.dy + containerSize.height + cropY) / scale;
+      // Границы контейнера в координатах кадра
+      final double frameLeft = (containerLeft + offsetX) / scale;
+      final double frameRight = (containerLeft + containerW + offsetX) / scale;
+      final double frameTop = (containerTop + offsetY) / scale;
+      final double frameBottom = (containerTop + containerH + offsetY) / scale;
 
       final List<TextLine> linesInFrame = [];
 
@@ -420,6 +371,162 @@ class _ImeiScannerScreenState extends State<ImeiScannerScreen> with WidgetsBindi
       }
     }
   }
+  // Future<void> _processImage(CameraImage image) async {
+  //   if (_isProcessing || _cameraController == null) return;
+  //
+  //   // Жесткий блок: работаем ТОЛЬКО в стандартном портретном режиме
+  //   final orientation = MediaQuery.of(context).orientation;
+  //   if (orientation != Orientation.portrait) return;
+  //
+  //   final now = DateTime.now();
+  //   if (_lastProcessedTime != null && now.difference(_lastProcessedTime!).inMilliseconds < 300) {
+  //     return;
+  //   }
+  //
+  //   _isProcessing = true;
+  //   _lastProcessedTime = now;
+  //
+  //   try {
+  //     final inputImage = _convertImageOptimized(image);
+  //     if (inputImage == null) return;
+  //
+  //     print(
+  //       'CAMERA IMAGE ===================== '
+  //       'w: ${image.width} h: ${image.height}',
+  //     );
+  //
+  //     print(
+  //       'CAMERA ASPECT ===================== '
+  //       '${image.width / image.height}',
+  //     );
+  //
+  //     print(
+  //       'CONTROLLER ASPECT ================= '
+  //       '${_cameraController!.value.aspectRatio}',
+  //     );
+  //
+  //     print(
+  //       'INPUT IMAGE ======================= '
+  //       'w: ${inputImage.metadata?.size.width} '
+  //       'h: ${inputImage.metadata?.size.height}',
+  //     );
+  //
+  //     print(
+  //       'INPUT ROTATION ==================== '
+  //       '${inputImage.metadata?.rotation}',
+  //     );
+  //
+  //     final recognizedText = await _textRecognizer.processImage(inputImage);
+  //     final RegExp imeiRegex = RegExp(r'\b\d{15,16}\b');
+  //
+  //     // Берем точные координаты рамки сканера с экрана
+  //     final RenderBox? renderBox = _scanWindowKey.currentContext?.findRenderObject() as RenderBox?;
+  //     if (renderBox == null) return;
+  //
+  //     final Offset containerOffset = renderBox.localToGlobal(Offset.zero);
+  //     final Size containerSize = renderBox.size;
+  //     final Size screenSize = MediaQuery.of(context).size;
+  //
+  //     // Размер изображения в portrait
+  //     final double imageWidth = image.height.toDouble();
+  //     final double imageHeight = image.width.toDouble();
+  //     print('IMAGE ===================== w: ${imageWidth} =====  h: ${imageHeight}');
+  //     // Размер экрана
+  //     final double screenWidth = screenSize.width;
+  //     final double screenHeight = screenSize.height;
+  //     print('SCREEN ===================== w: ${screenWidth} =====  h: ${screenHeight}');
+  //
+  //     // CameraPreview работает как BoxFit.cover
+  //     final double scale = math.max(
+  //       screenWidth / imageWidth,
+  //       screenHeight / imageHeight,
+  //     );
+  //     print('SCALE ===================== $scale');
+  //
+  //     // Реальный размер изображения после масштабирования
+  //     final double displayedWidth = imageWidth * scale;
+  //     final double displayedHeight = imageHeight * scale;
+  //     print('IMAGE WITH SCALE ===================== w: ${displayedWidth} =====  h: ${displayedHeight}');
+  //
+  //     // Что было обрезано CameraPreview
+  //     final double cropX = (displayedWidth - screenWidth) / 2.0;
+  //
+  //     final double cropY = (displayedHeight - screenHeight) / 2.0;
+  //     print('CROP ===================== x: ${cropX} =====  y: ${cropY}');
+  //
+  //     // Координаты РАМКИ на экране
+  //     // переводим непосредственно в координаты изображения
+  //     final double frameLeft = (containerOffset.dx + cropX) / scale;
+  //
+  //     final double frameTop = (containerOffset.dy + cropY) / scale;
+  //
+  //     final double frameRight = (containerOffset.dx + containerSize.width + cropX) / scale;
+  //
+  //     final double frameBottom = (containerOffset.dy + containerSize.height + cropY) / scale;
+  //
+  //     print(
+  //       'COOR FRAME ===================== l: ${frameLeft} =====  r: ${frameRight}  ==== t: ${frameTop} ====== b: ${frameBottom}',
+  //     );
+  //
+  //     final List<TextLine> linesInFrame = [];
+  //
+  //     for (TextBlock block in recognizedText.blocks) {
+  //       for (TextLine line in block.lines) {
+  //         final rect = line.boundingBox;
+  //
+  //         print(
+  //           'BOX ===================== '
+  //           'left: ${rect.left} '
+  //           'top: ${rect.top} '
+  //           'right: ${rect.right} '
+  //           'bottom: ${rect.bottom} '
+  //           'centerX: ${rect.left + rect.width / 2} '
+  //           'centerY: ${rect.top + rect.height / 2}',
+  //         );
+  //         final double lineCenterX = rect.left + (rect.width / 2);
+  //         final double lineCenterY = rect.top + (rect.height / 2);
+  //
+  //         // Попадание строго внутрь рамки
+  //         if (lineCenterX >= frameLeft &&
+  //             lineCenterX <= frameRight &&
+  //             lineCenterY >= frameTop &&
+  //             lineCenterY <= frameBottom) {
+  //           linesInFrame.add(line);
+  //         }
+  //       }
+  //     }
+  //
+  //     if (linesInFrame.isNotEmpty) {
+  //       linesInFrame.sort((a, b) => (a.boundingBox.top).compareTo(b.boundingBox.top));
+  //
+  //       final cleanText = linesInFrame.first.text.replaceAll(RegExp(r'[\s-]'), '');
+  //       final match = imeiRegex.firstMatch(cleanText);
+  //
+  //       if (match != null) {
+  //         final String foundImei = match.group(0)!;
+  //
+  //         setState(() {
+  //           _scannedImei = foundImei;
+  //         });
+  //
+  //         if (_cameraController != null && _cameraController!.value.isStreamingImages) {
+  //           await _cameraController!.stopImageStream();
+  //         }
+  //
+  //         if (mounted) {
+  //           context.pop(foundImei);
+  //         }
+  //         return;
+  //       }
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error: $e');
+  //   } finally {
+  //     if (_scannedImei == 'point_at_IMEI'.tr()) {
+  //       _isProcessing = false;
+  //     }
+  //   }
+  // }
 
   InputImage? _convertImageOptimized(CameraImage image) {
     // }

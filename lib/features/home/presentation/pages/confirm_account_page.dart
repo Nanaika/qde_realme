@@ -34,6 +34,10 @@ class _ConfirmAccountPageState extends State<ConfirmAccountPage> {
     super.initState();
     numberController = TextEditingController();
     nameController = TextEditingController();
+    final authBlocState = context.read<AuthBloc>().state;
+    if (authBlocState is AuthAuthenticated) {
+      nameController.text = (authBlocState).currentUser.name ?? '';
+    }
   }
 
   void _showCityPickerDialog() async {

@@ -49,7 +49,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final doc = await db.collection(AppConstants.users).doc(userCredential.user!.uid).get();
     if (!doc.exists) {
       final email = userCredential.user!.email ?? '';
-      final user = UserModel(id: userCredential.user!.uid, email: email);
+      final name = userCredential.user!.displayName ?? '';
+      final user = UserModel(id: userCredential.user!.uid, email: email, name: name);
       await db.collection(AppConstants.users).doc(userCredential.user!.uid).set(user.toJson());
     }
 
@@ -100,7 +101,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final doc = await db.collection(AppConstants.users).doc(userCredential.user!.uid).get();
     if (!doc.exists) {
       final email = userCredential.user!.email ?? '';
-      final user = UserModel(id: userCredential.user!.uid, email: email);
+      final name = userCredential.user!.displayName ?? '';
+      final user = UserModel(id: userCredential.user!.uid, email: email, name: name);
       await db.collection(AppConstants.users).doc(userCredential.user!.uid).set(user.toJson());
     }
     return userCredential;
